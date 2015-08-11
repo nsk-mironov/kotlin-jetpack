@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "com.zeroturnaround.jrebel.android"
 apply plugin: "kotlin-android"
 
 android {
