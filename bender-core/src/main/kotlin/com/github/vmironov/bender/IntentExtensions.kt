@@ -9,13 +9,13 @@ import android.os.Parcelable
 import java.util.ArrayList
 import java.io.Serializable
 
-public fun Intent.putBooleanOrIgnore(key: String, value: Boolean?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Boolean?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getBooleanOrNull(key: String): Boolean? {
+public fun Intent.getBooleanExtraOrNull(key: String): Boolean? {
   return if (hasExtra(key)) {
     getBooleanExtra(key, false)
   } else {
@@ -23,21 +23,21 @@ public fun Intent.getBooleanOrNull(key: String): Boolean? {
   }
 }
 
-public fun Intent.getBooleanOrDefault(key: String, value: Boolean): Boolean {
-  return getBooleanOrNull(key) ?: value
+public fun Intent.getBooleanExtraOrDefault(key: String, value: Boolean): Boolean {
+  return getBooleanExtraOrNull(key) ?: value
 }
 
-public fun Intent.getBooleanOrThrow(key: String): Boolean {
-  return getBooleanOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getBooleanExtraOrThrow(key: String): Boolean {
+  return getBooleanExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putBooleanArrayOrIgnore(key: String, value: BooleanArray?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: BooleanArray?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getBooleanArrayOrNull(key: String): BooleanArray? {
+public fun Intent.getBooleanArrayExtraOrNull(key: String): BooleanArray? {
   return if (hasExtra(key)) {
     getBooleanArrayExtra(key)
   } else {
@@ -45,21 +45,21 @@ public fun Intent.getBooleanArrayOrNull(key: String): BooleanArray? {
   }
 }
 
-public fun Intent.getBooleanArrayOrDefault(key: String, value: BooleanArray): BooleanArray {
-  return getBooleanArrayOrNull(key) ?: value
+public fun Intent.getBooleanArrayExtraOrDefault(key: String, value: BooleanArray): BooleanArray {
+  return getBooleanArrayExtraOrNull(key) ?: value
 }
 
-public fun Intent.getBooleanArrayOrThrow(key: String): BooleanArray {
-  return getBooleanArrayOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getBooleanArrayExtraOrThrow(key: String): BooleanArray {
+  return getBooleanArrayExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putDoubleOrIgnore(key: String, value: Double?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Double?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getDoubleOrNull(key: String): Double? {
+public fun Intent.getDoubleExtraOrNull(key: String): Double? {
   return if (hasExtra(key)) {
     getDoubleExtra(key, 0.0)
   } else {
@@ -67,21 +67,21 @@ public fun Intent.getDoubleOrNull(key: String): Double? {
   }
 }
 
-public fun Intent.getDoubleOrDefault(key: String, value: Double): Double {
-  return getDoubleOrNull(key) ?: value
+public fun Intent.getDoubleExtraOrDefault(key: String, value: Double): Double {
+  return getDoubleExtraOrNull(key) ?: value
 }
 
-public fun Intent.getDoubleOrThrow(key: String): Double {
-  return getDoubleOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getDoubleExtraOrThrow(key: String): Double {
+  return getDoubleExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putDoubleArrayOrIgnore(key: String, value: DoubleArray?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: DoubleArray?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getDoubleArrayOrNull(key: String): DoubleArray? {
+public fun Intent.getDoubleArrayExtraOrNull(key: String): DoubleArray? {
   return if (hasExtra(key)) {
     getDoubleArrayExtra(key)
   } else {
@@ -89,21 +89,21 @@ public fun Intent.getDoubleArrayOrNull(key: String): DoubleArray? {
   }
 }
 
-public fun Intent.getDoubleArrayOrDefault(key: String, value: DoubleArray): DoubleArray {
-  return getDoubleArrayOrNull(key) ?: value
+public fun Intent.getDoubleArrayExtraOrDefault(key: String, value: DoubleArray): DoubleArray {
+  return getDoubleArrayExtraOrNull(key) ?: value
 }
 
-public fun Intent.getDoubleArrayOrThrow(key: String): DoubleArray {
-  return getDoubleArrayOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getDoubleArrayExtraOrThrow(key: String): DoubleArray {
+  return getDoubleArrayExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putIntOrIgnore(key: String, value: Int?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Int?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getIntOrNull(key: String): Int? {
+public fun Intent.getIntExtraOrNull(key: String): Int? {
   return if (hasExtra(key)) {
     getIntExtra(key, 0)
   } else {
@@ -111,21 +111,21 @@ public fun Intent.getIntOrNull(key: String): Int? {
   }
 }
 
-public fun Intent.getIntOrDefault(key: String, value: Int): Int {
-  return getIntOrNull(key) ?: value
+public fun Intent.getIntExtraOrDefault(key: String, value: Int): Int {
+  return getIntExtraOrNull(key) ?: value
 }
 
-public fun Intent.getIntOrThrow(key: String): Int {
-  return getIntOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getIntExtraOrThrow(key: String): Int {
+  return getIntExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putIntArrayOrIgnore(key: String, value: IntArray?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: IntArray?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getIntArrayOrNull(key: String): IntArray? {
+public fun Intent.getIntArrayExtraOrNull(key: String): IntArray? {
   return if (hasExtra(key)) {
     getIntArrayExtra(key)
   } else {
@@ -133,21 +133,21 @@ public fun Intent.getIntArrayOrNull(key: String): IntArray? {
   }
 }
 
-public fun Intent.getIntArrayOrDefault(key: String, value: IntArray): IntArray {
-  return getIntArrayOrNull(key) ?: value
+public fun Intent.getIntArrayExtraOrDefault(key: String, value: IntArray): IntArray {
+  return getIntArrayExtraOrNull(key) ?: value
 }
 
-public fun Intent.getIntArrayOrThrow(key: String): IntArray {
-  return getIntArrayOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getIntArrayExtraOrThrow(key: String): IntArray {
+  return getIntArrayExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putLongOrIgnore(key: String, value: Long?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Long?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getLongOrNull(key: String): Long? {
+public fun Intent.getLongExtraOrNull(key: String): Long? {
   return if (hasExtra(key)) {
     getLongExtra(key, 0L)
   } else {
@@ -155,21 +155,21 @@ public fun Intent.getLongOrNull(key: String): Long? {
   }
 }
 
-public fun Intent.getLongOrDefault(key: String, value: Long): Long {
-  return getLongOrNull(key) ?: value
+public fun Intent.getLongExtraOrDefault(key: String, value: Long): Long {
+  return getLongExtraOrNull(key) ?: value
 }
 
-public fun Intent.getLongOrThrow(key: String): Long {
-  return getLongOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getLongExtraOrThrow(key: String): Long {
+  return getLongExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putLongArrayOrIgnore(key: String, value: LongArray?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: LongArray?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getLongArrayOrNull(key: String): LongArray? {
+public fun Intent.getLongArrayExtraOrNull(key: String): LongArray? {
   return if (hasExtra(key)) {
     getLongArrayExtra(key)
   } else {
@@ -177,21 +177,21 @@ public fun Intent.getLongArrayOrNull(key: String): LongArray? {
   }
 }
 
-public fun Intent.getLongArrayOrDefault(key: String, value: LongArray): LongArray {
-  return getLongArrayOrNull(key) ?: value
+public fun Intent.getLongArrayExtraOrDefault(key: String, value: LongArray): LongArray {
+  return getLongArrayExtraOrNull(key) ?: value
 }
 
-public fun Intent.getLongArrayOrThrow(key: String): LongArray {
-  return getLongArrayOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getLongArrayExtraOrThrow(key: String): LongArray {
+  return getLongArrayExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putStringOrIgnore(key: String, value: String?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: String?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getStringOrNull(key: String): String? {
+public fun Intent.getStringExtraOrNull(key: String): String? {
   return if (hasExtra(key)) {
     getStringExtra(key)
   } else {
@@ -199,21 +199,21 @@ public fun Intent.getStringOrNull(key: String): String? {
   }
 }
 
-public fun Intent.getStringOrDefault(key: String, value: String): String {
-  return getStringOrNull(key) ?: value
+public fun Intent.getStringExtraOrDefault(key: String, value: String): String {
+  return getStringExtraOrNull(key) ?: value
 }
 
-public fun Intent.getStringOrThrow(key: String): String {
-  return getStringOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getStringExtraOrThrow(key: String): String {
+  return getStringExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putStringArrayOrIgnore(key: String, value: Array<String>?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Array<String>?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getStringArrayOrNull(key: String): Array<String>? {
+public fun Intent.getStringArrayExtraOrNull(key: String): Array<String>? {
   return if (hasExtra(key)) {
     getStringArrayExtra(key)
   } else {
@@ -221,21 +221,21 @@ public fun Intent.getStringArrayOrNull(key: String): Array<String>? {
   }
 }
 
-public fun Intent.getStringArrayOrDefault(key: String, value: Array<String>): Array<String> {
-  return getStringArrayOrNull(key) ?: value
+public fun Intent.getStringArrayExtraOrDefault(key: String, value: Array<String>): Array<String> {
+  return getStringArrayExtraOrNull(key) ?: value
 }
 
-public fun Intent.getStringArrayOrThrow(key: String): Array<String> {
-  return getStringArrayOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getStringArrayExtraOrThrow(key: String): Array<String> {
+  return getStringArrayExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putBundleOrIgnore(key: String, value: Bundle?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Bundle?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getBundleOrNull(key: String): Bundle? {
+public fun Intent.getBundleExtraOrNull(key: String): Bundle? {
   return if (hasExtra(key)) {
     getBundleExtra(key)
   } else {
@@ -243,21 +243,21 @@ public fun Intent.getBundleOrNull(key: String): Bundle? {
   }
 }
 
-public fun Intent.getBundleOrDefault(key: String, value: Bundle): Bundle {
-  return getBundleOrNull(key) ?: value
+public fun Intent.getBundleExtraOrDefault(key: String, value: Bundle): Bundle {
+  return getBundleExtraOrNull(key) ?: value
 }
 
-public fun Intent.getBundleOrThrow(key: String): Bundle {
-  return getBundleOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getBundleExtraOrThrow(key: String): Bundle {
+  return getBundleExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putByteOrIgnore(key: String, value: Byte?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Byte?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getByteOrNull(key: String): Byte? {
+public fun Intent.getByteExtraOrNull(key: String): Byte? {
   return if (hasExtra(key)) {
     getByteExtra(key, 0)
   } else {
@@ -265,21 +265,21 @@ public fun Intent.getByteOrNull(key: String): Byte? {
   }
 }
 
-public fun Intent.getByteOrDefault(key: String, value: Byte): Byte {
-  return getByteOrNull(key) ?: value
+public fun Intent.getByteExtraOrDefault(key: String, value: Byte): Byte {
+  return getByteExtraOrNull(key) ?: value
 }
 
-public fun Intent.getByteOrThrow(key: String): Byte {
-  return getByteOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getByteExtraOrThrow(key: String): Byte {
+  return getByteExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putByteArrayOrIgnore(key: String, value: ByteArray?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: ByteArray?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getByteArrayOrNull(key: String): ByteArray? {
+public fun Intent.getByteArrayExtraOrNull(key: String): ByteArray? {
   return if (hasExtra(key)) {
     getByteArrayExtra(key)
   } else {
@@ -287,21 +287,21 @@ public fun Intent.getByteArrayOrNull(key: String): ByteArray? {
   }
 }
 
-public fun Intent.getByteArrayOrDefault(key: String, value: ByteArray): ByteArray {
-  return getByteArrayOrNull(key) ?: value
+public fun Intent.getByteArrayExtraOrDefault(key: String, value: ByteArray): ByteArray {
+  return getByteArrayExtraOrNull(key) ?: value
 }
 
-public fun Intent.getByteArrayOrThrow(key: String): ByteArray {
-  return getByteArrayOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getByteArrayExtraOrThrow(key: String): ByteArray {
+  return getByteArrayExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putCharOrIgnore(key: String, value: Char?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Char?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getCharOrNull(key: String): Char? {
+public fun Intent.getCharExtraOrNull(key: String): Char? {
   return if (hasExtra(key)) {
     getCharExtra(key, '0')
   } else {
@@ -309,21 +309,21 @@ public fun Intent.getCharOrNull(key: String): Char? {
   }
 }
 
-public fun Intent.getCharOrDefault(key: String, value: Char): Char {
-  return getCharOrNull(key) ?: value
+public fun Intent.getCharExtraOrDefault(key: String, value: Char): Char {
+  return getCharExtraOrNull(key) ?: value
 }
 
-public fun Intent.getCharOrThrow(key: String): Char {
-  return getCharOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getCharExtraOrThrow(key: String): Char {
+  return getCharExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putCharArrayOrIgnore(key: String, value: CharArray?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: CharArray?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getCharArrayOrNull(key: String): CharArray? {
+public fun Intent.getCharArrayExtraOrNull(key: String): CharArray? {
   return if (hasExtra(key)) {
     getCharArrayExtra(key)
   } else {
@@ -331,21 +331,21 @@ public fun Intent.getCharArrayOrNull(key: String): CharArray? {
   }
 }
 
-public fun Intent.getCharArrayOrDefault(key: String, value: CharArray): CharArray {
-  return getCharArrayOrNull(key) ?: value
+public fun Intent.getCharArrayExtraOrDefault(key: String, value: CharArray): CharArray {
+  return getCharArrayExtraOrNull(key) ?: value
 }
 
-public fun Intent.getCharArrayOrThrow(key: String): CharArray {
-  return getCharArrayOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getCharArrayExtraOrThrow(key: String): CharArray {
+  return getCharArrayExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putCharSequenceOrIgnore(key: String, value: CharSequence?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: CharSequence?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getCharSequenceOrNull(key: String): CharSequence? {
+public fun Intent.getCharSequenceExtraOrNull(key: String): CharSequence? {
   return if (hasExtra(key)) {
     getCharSequenceExtra(key)
   } else {
@@ -353,43 +353,21 @@ public fun Intent.getCharSequenceOrNull(key: String): CharSequence? {
   }
 }
 
-public fun Intent.getCharSequenceOrDefault(key: String, value: CharSequence): CharSequence {
-  return getCharSequenceOrNull(key) ?: value
+public fun Intent.getCharSequenceExtraOrDefault(key: String, value: CharSequence): CharSequence {
+  return getCharSequenceExtraOrNull(key) ?: value
 }
 
-public fun Intent.getCharSequenceOrThrow(key: String): CharSequence {
-  return getCharSequenceOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getCharSequenceExtraOrThrow(key: String): CharSequence {
+  return getCharSequenceExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putCharSequenceArrayListOrIgnore(key: String, value: ArrayList<CharSequence>?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Float?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getCharSequenceArrayListOrNull(key: String): ArrayList<CharSequence>? {
-  return if (hasExtra(key)) {
-    getCharSequenceArrayListExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getCharSequenceArrayListOrDefault(key: String, value: ArrayList<CharSequence>): ArrayList<CharSequence> {
-  return getCharSequenceArrayListOrNull(key) ?: value
-}
-
-public fun Intent.getCharSequenceArrayListOrThrow(key: String): ArrayList<CharSequence> {
-  return getCharSequenceArrayListOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
-}
-
-public fun Intent.putFloatOrIgnore(key: String, value: Float?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getFloatOrNull(key: String): Float? {
+public fun Intent.getFloatExtraOrNull(key: String): Float? {
   return if (hasExtra(key)) {
     getFloatExtra(key, 0.0f)
   } else {
@@ -397,21 +375,21 @@ public fun Intent.getFloatOrNull(key: String): Float? {
   }
 }
 
-public fun Intent.getFloatOrDefault(key: String, value: Float): Float {
-  return getFloatOrNull(key) ?: value
+public fun Intent.getFloatExtraOrDefault(key: String, value: Float): Float {
+  return getFloatExtraOrNull(key) ?: value
 }
 
-public fun Intent.getFloatOrThrow(key: String): Float {
-  return getFloatOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getFloatExtraOrThrow(key: String): Float {
+  return getFloatExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putFloatArrayOrIgnore(key: String, value: FloatArray?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: FloatArray?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getFloatArrayOrNull(key: String): FloatArray? {
+public fun Intent.getFloatArrayExtraOrNull(key: String): FloatArray? {
   return if (hasExtra(key)) {
     getFloatArrayExtra(key)
   } else {
@@ -419,43 +397,21 @@ public fun Intent.getFloatArrayOrNull(key: String): FloatArray? {
   }
 }
 
-public fun Intent.getFloatArrayOrDefault(key: String, value: FloatArray): FloatArray {
-  return getFloatArrayOrNull(key) ?: value
+public fun Intent.getFloatArrayExtraOrDefault(key: String, value: FloatArray): FloatArray {
+  return getFloatArrayExtraOrNull(key) ?: value
 }
 
-public fun Intent.getFloatArrayOrThrow(key: String): FloatArray {
-  return getFloatArrayOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getFloatArrayExtraOrThrow(key: String): FloatArray {
+  return getFloatArrayExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putIntegerArrayListOrIgnore(key: String, value: ArrayList<Int>?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Parcelable?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getIntegerArrayListOrNull(key: String): ArrayList<Int>? {
-  return if (hasExtra(key)) {
-    getIntegerArrayListExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getIntegerArrayListOrDefault(key: String, value: ArrayList<Int>): ArrayList<Int> {
-  return getIntegerArrayListOrNull(key) ?: value
-}
-
-public fun Intent.getIntegerArrayListOrThrow(key: String): ArrayList<Int> {
-  return getIntegerArrayListOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
-}
-
-public fun Intent.putParcelableOrIgnore(key: String, value: Parcelable?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getParcelableOrNull(key: String): Parcelable? {
+public fun Intent.getParcelableExtraOrNull(key: String): Parcelable? {
   return if (hasExtra(key)) {
     getParcelableExtra(key)
   } else {
@@ -463,21 +419,21 @@ public fun Intent.getParcelableOrNull(key: String): Parcelable? {
   }
 }
 
-public fun Intent.getParcelableOrDefault(key: String, value: Parcelable): Parcelable {
-  return getParcelableOrNull(key) ?: value
+public fun Intent.getParcelableExtraOrDefault(key: String, value: Parcelable): Parcelable {
+  return getParcelableExtraOrNull(key) ?: value
 }
 
-public fun Intent.getParcelableOrThrow(key: String): Parcelable {
-  return getParcelableOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getParcelableExtraOrThrow(key: String): Parcelable {
+  return getParcelableExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putParcelableArrayOrIgnore(key: String, value: Array<Parcelable>?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Array<Parcelable>?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getParcelableArrayOrNull(key: String): Array<Parcelable>? {
+public fun Intent.getParcelableArrayExtraOrNull(key: String): Array<Parcelable>? {
   return if (hasExtra(key)) {
     getParcelableArrayExtra(key)
   } else {
@@ -485,43 +441,21 @@ public fun Intent.getParcelableArrayOrNull(key: String): Array<Parcelable>? {
   }
 }
 
-public fun Intent.getParcelableArrayOrDefault(key: String, value: Array<Parcelable>): Array<Parcelable> {
-  return getParcelableArrayOrNull(key) ?: value
+public fun Intent.getParcelableArrayExtraOrDefault(key: String, value: Array<Parcelable>): Array<Parcelable> {
+  return getParcelableArrayExtraOrNull(key) ?: value
 }
 
-public fun Intent.getParcelableArrayOrThrow(key: String): Array<Parcelable> {
-  return getParcelableArrayOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getParcelableArrayExtraOrThrow(key: String): Array<Parcelable> {
+  return getParcelableArrayExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putParcelableArrayListOrIgnore(key: String, value: ArrayList<Parcelable>?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Serializable?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getParcelableArrayListOrNull(key: String): ArrayList<Parcelable>? {
-  return if (hasExtra(key)) {
-    getParcelableArrayListExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getParcelableArrayListOrDefault(key: String, value: ArrayList<Parcelable>): ArrayList<Parcelable> {
-  return getParcelableArrayListOrNull(key) ?: value
-}
-
-public fun Intent.getParcelableArrayListOrThrow(key: String): ArrayList<Parcelable> {
-  return getParcelableArrayListOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
-}
-
-public fun Intent.putSerializableOrIgnore(key: String, value: Serializable?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getSerializableOrNull(key: String): Serializable? {
+public fun Intent.getSerializableExtraOrNull(key: String): Serializable? {
   return if (hasExtra(key)) {
     getSerializableExtra(key)
   } else {
@@ -529,21 +463,21 @@ public fun Intent.getSerializableOrNull(key: String): Serializable? {
   }
 }
 
-public fun Intent.getSerializableOrDefault(key: String, value: Serializable): Serializable {
-  return getSerializableOrNull(key) ?: value
+public fun Intent.getSerializableExtraOrDefault(key: String, value: Serializable): Serializable {
+  return getSerializableExtraOrNull(key) ?: value
 }
 
-public fun Intent.getSerializableOrThrow(key: String): Serializable {
-  return getSerializableOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getSerializableExtraOrThrow(key: String): Serializable {
+  return getSerializableExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putShortOrIgnore(key: String, value: Short?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: Short?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getShortOrNull(key: String): Short? {
+public fun Intent.getShortExtraOrNull(key: String): Short? {
   return if (hasExtra(key)) {
     getShortExtra(key, 0)
   } else {
@@ -551,21 +485,21 @@ public fun Intent.getShortOrNull(key: String): Short? {
   }
 }
 
-public fun Intent.getShortOrDefault(key: String, value: Short): Short {
-  return getShortOrNull(key) ?: value
+public fun Intent.getShortExtraOrDefault(key: String, value: Short): Short {
+  return getShortExtraOrNull(key) ?: value
 }
 
-public fun Intent.getShortOrThrow(key: String): Short {
-  return getShortOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getShortExtraOrThrow(key: String): Short {
+  return getShortExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 
-public fun Intent.putShortArrayOrIgnore(key: String, value: ShortArray?): Unit {
+public fun Intent.putExtraOrIgnore(key: String, value: ShortArray?): Unit {
   if (value != null) {
     putExtra(key, value)
   }
 }
 
-public fun Intent.getShortArrayOrNull(key: String): ShortArray? {
+public fun Intent.getShortArrayExtraOrNull(key: String): ShortArray? {
   return if (hasExtra(key)) {
     getShortArrayExtra(key)
   } else {
@@ -573,11 +507,11 @@ public fun Intent.getShortArrayOrNull(key: String): ShortArray? {
   }
 }
 
-public fun Intent.getShortArrayOrDefault(key: String, value: ShortArray): ShortArray {
-  return getShortArrayOrNull(key) ?: value
+public fun Intent.getShortArrayExtraOrDefault(key: String, value: ShortArray): ShortArray {
+  return getShortArrayExtraOrNull(key) ?: value
 }
 
-public fun Intent.getShortArrayOrThrow(key: String): ShortArray {
-  return getShortArrayOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
+public fun Intent.getShortArrayExtraOrThrow(key: String): ShortArray {
+  return getShortArrayExtraOrNull(key) ?: throw IllegalStateException("Key ${key} is missed")
 }
 

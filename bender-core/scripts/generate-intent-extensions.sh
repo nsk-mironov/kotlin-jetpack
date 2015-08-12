@@ -12,7 +12,7 @@ import() {
 }
 
 putOrIgnore() {
-  println "public fun Intent.put${1}OrIgnore(key: String, value: ${2}?): Unit {"
+  println "public fun Intent.putExtraOrIgnore(key: String, value: ${2}?): Unit {"
   println "  if (value != null) {"
   println "    putExtra(key, value)"
   println "  }"
@@ -21,7 +21,7 @@ putOrIgnore() {
 }
 
 getOrNull() {
-  println "public fun Intent.get${1}OrNull(key: String): ${2}? {"
+  println "public fun Intent.get${1}ExtraOrNull(key: String): ${2}? {"
   println "  return if (hasExtra(key)) {"
   if [ -z "$3" ]; then
     println "    get${1}Extra(key)"
@@ -36,15 +36,15 @@ getOrNull() {
 }
 
 getOrThrow() {
-  println "public fun Intent.get${1}OrThrow(key: String): ${2} {"
-  println "  return get${1}OrNull(key) ?: throw IllegalStateException(\"Key \${key} is missed\")"
+  println "public fun Intent.get${1}ExtraOrThrow(key: String): ${2} {"
+  println "  return get${1}ExtraOrNull(key) ?: throw IllegalStateException(\"Key \${key} is missed\")"
   println "}"
   println ""
 }
 
 getOrDefault() {
-  println "public fun Intent.get${1}OrDefault(key: String, value: ${2}): ${2} {"
-  println "  return get${1}OrNull(key) ?: value"
+  println "public fun Intent.get${1}ExtraOrDefault(key: String, value: ${2}): ${2} {"
+  println "  return get${1}ExtraOrNull(key) ?: value"
   println "}"
   println ""
 }
@@ -86,13 +86,10 @@ generate "ByteArray" "ByteArray"
 generate "Char" "Char" "'0'"
 generate "CharArray" "CharArray"
 generate "CharSequence" "CharSequence"
-generate "CharSequenceArrayList" "ArrayList<CharSequence>"
 generate "Float" "Float" "0.0f"
 generate "FloatArray" "FloatArray"
-generate "IntegerArrayList" "ArrayList<Int>"
 generate "Parcelable" "Parcelable"
 generate "ParcelableArray" "Array<Parcelable>"
-generate "ParcelableArrayList" "ArrayList<Parcelable>"
 generate "Serializable" "Serializable"
 generate "Short" "Short" "0"
 generate "ShortArray" "ShortArray"
