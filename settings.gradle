@@ -1,3 +1,4 @@
-include ':bender-core'
-include ':bender-support'
-include ':bender-sample'
+include ':jetpack-core'
+include ':jetpack-intents'
+include ':jetpack-bundles'
+include ':jetpack-sample'
