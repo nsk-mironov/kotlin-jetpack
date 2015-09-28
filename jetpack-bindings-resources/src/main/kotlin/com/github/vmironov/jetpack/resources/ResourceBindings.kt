@@ -9,6 +9,7 @@ import android.content.res.XmlResourceParser
 import android.graphics.Movie
 import android.graphics.drawable.Drawable
 import android.view.View
+import com.github.vmironov.jetpack.core.LazyVal
 import kotlin.properties.ReadOnlyProperty
 
 public interface ResourcesAware {
@@ -79,36 +80,16 @@ public fun Any.bindTextArrayResource(resource: Int): ReadOnlyProperty<Any, Array
   it.getTextArray(resource)
 }
 
-private class ResourcesVal<T, V>(private val source: Any, private val initializer: (Resources) -> V) : ReadOnlyProperty<T, V> {
-  private var value: Any? = null
-
-  public override fun get(thisRef: T, property: PropertyMetadata): V {
-    if (value == null) {
-      value = escape(initializer(getResources(source)))
-    }
-
-    return unescape(value) as V
-  }
-
-  private fun getResources(target: Any): Resources = when (target) {
-    is Context -> target.resources
-    is Fragment -> target.activity.resources
-    is android.support.v4.app.Fragment -> target.activity.resources
-    is android.support.v7.widget.RecyclerView.ViewHolder -> target.itemView.resources
-    is View -> target.resources
-    is Dialog -> target.context.resources
-    is Resources -> target
-    is ResourcesAware -> target.resources
-    else -> throw IllegalArgumentException("Unable to find resources on type ${target.javaClass.simpleName}")
-  }
-}
-
-private object NULL_VALUE
-
-private fun escape(value: Any?): Any {
-  return value ?: NULL_VALUE
-}
-
-private fun unescape(value: Any?): Any? {
-  return if (value === NULL_VALUE) null else value
-}
+private class ResourcesVal<T, V>(private val source: Any, private val initializer: (Resources) -> V) : LazyVal<T, V>({ desc, property ->
+  initializer(when (source) {
+    is Context -> source.resources
+    is Fragment -> source.activity.resources
+    is android.support.v4.app.Fragment -> source.activity.resources
+    is android.support.v7.widget.RecyclerView.ViewHolder -> source.itemView.resources
+    is View -> source.resources
+    is Dialog -> source.context.resources
+    is Resources -> source
+    is ResourcesAware -> source.resources
+    else -> throw IllegalArgumentException("Unable to find resources on type ${source.javaClass.simpleName}")
+  })
+})
