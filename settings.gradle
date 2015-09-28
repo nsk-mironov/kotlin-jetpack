@@ -1,3 +1,4 @@
 include ':jetpack-core'
 include ':jetpack-intents'
 include ':jetpack-bundles'
+include ':jetpack-bindings-resources'
