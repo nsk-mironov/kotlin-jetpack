@@ -1,0 +1,28 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+android {
+  compileSdkVersion projectCompileSdkVersion
+  buildToolsVersion projectBuildToolsVersion
+
+  defaultConfig {
+    targetSdkVersion projectTargetSdkVersion
+    minSdkVersion projectMinSdkVersion
+  }
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    main.java.srcDirs += 'src/main/generated'
+  }
+}
+
+dependencies {
+  compile project(":jetpack-core")
+
+  provided "com.android.support:support-v4:$supportVersion"
+  provided "com.android.support:recyclerview-v7:$supportVersion"
+
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
