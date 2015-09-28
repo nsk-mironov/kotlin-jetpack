@@ -18,6 +18,10 @@ android {
 
 dependencies {
   compile project(":jetpack-core")
+
+  provided "com.android.support:support-v4:$supportVersion"
+  provided "com.android.support:recyclerview-v7:$supportVersion"
+
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 }
 
