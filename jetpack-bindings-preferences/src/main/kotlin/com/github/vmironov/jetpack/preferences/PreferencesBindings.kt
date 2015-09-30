@@ -27,7 +27,9 @@ public fun Any.bindLongPreference(name: String? = null, default: Long = 0L): Rea
 public fun Any.bindStringPreference(name: String? = null, default: String = ""): ReadWriteProperty<Any, String> = StringPreferenceVar(this, name, default)
 public fun Any.bindStringSetPreference(name: String? = null, default: Set<String> = emptySet()): ReadWriteProperty<Any, Set<String>> = StringSetPreferenceVar(this, name, default)
 
-private class BooleanPreferenceVar<T>(source: Any, name: String?, default: Boolean) : PreferencesVar<T, Boolean>(source, name, default) {
+public inline fun <reified E : Enum<E>> Any.bindEnumPreference(name: String? = null, default: E): ReadWriteProperty<Any, E> = EnumPreferenceVar(this, E::class.java, name, default)
+
+public class BooleanPreferenceVar<T>(source: Any, name: String?, default: Boolean) : PreferencesVar<T, Boolean>(source, name, default) {
   override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Boolean) {
     preferences.putBoolean(name, value)
   }
@@ -37,7 +39,7 @@ private class BooleanPreferenceVar<T>(source: Any, name: String?, default: Boole
   }
 }
 
-private class FloatPreferenceVar<T>(source: Any, name: String?, default: Float) : PreferencesVar<T, Float>(source, name, default) {
+public class FloatPreferenceVar<T>(source: Any, name: String?, default: Float) : PreferencesVar<T, Float>(source, name, default) {
   override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Float) {
     preferences.putFloat(name, value)
   }
@@ -47,7 +49,7 @@ private class FloatPreferenceVar<T>(source: Any, name: String?, default: Float) 
   }
 }
 
-private class IntPreferenceVar<T>(source: Any, name: String?, default: Int) : PreferencesVar<T, Int>(source, name, default) {
+public class IntPreferenceVar<T>(source: Any, name: String?, default: Int) : PreferencesVar<T, Int>(source, name, default) {
   override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Int) {
     preferences.putInt(name, value)
   }
@@ -57,7 +59,7 @@ private class IntPreferenceVar<T>(source: Any, name: String?, default: Int) : Pr
   }
 }
 
-private class LongPreferenceVar<T>(source: Any, name: String?, default: Long) : PreferencesVar<T, Long>(source, name, default) {
+public class LongPreferenceVar<T>(source: Any, name: String?, default: Long) : PreferencesVar<T, Long>(source, name, default) {
   override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Long) {
     preferences.putLong(name, value)
   }
@@ -67,7 +69,7 @@ private class LongPreferenceVar<T>(source: Any, name: String?, default: Long) : 
   }
 }
 
-private class StringPreferenceVar<T>(source: Any, name: String?, default: String) : PreferencesVar<T, String>(source, name, default) {
+public class StringPreferenceVar<T>(source: Any, name: String?, default: String) : PreferencesVar<T, String>(source, name, default) {
   override fun onSet(preferences: SharedPreferences.Editor, name: String, value: String) {
     preferences.putString(name, value)
   }
@@ -77,7 +79,7 @@ private class StringPreferenceVar<T>(source: Any, name: String?, default: String
   }
 }
 
-private class StringSetPreferenceVar<T>(source: Any, name: String?, default: Set<String>) : PreferencesVar<T, Set<String>>(source, name, default) {
+public class StringSetPreferenceVar<T>(source: Any, name: String?, default: Set<String>) : PreferencesVar<T, Set<String>>(source, name, default) {
   override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Set<String>) {
     preferences.putStringSet(name, value)
   }
@@ -87,7 +89,25 @@ private class StringSetPreferenceVar<T>(source: Any, name: String?, default: Set
   }
 }
 
-private abstract class PreferencesVar<T, V>(
+public class EnumPreferenceVar<T, E : Enum<E>>(source: Any, clazz: Class<E>, name: String?, default: E) : PreferencesVar<T, E>(source, name, default) {
+  private val values = clazz.enumConstants
+
+  override fun onSet(preferences: SharedPreferences.Editor, name: String, value: E) {
+    preferences.putInt(name, value.ordinal())
+  }
+
+  override fun onGet(preferences: SharedPreferences, name: String, default: E): E {
+    val ordinal = preferences.getInt(name, -1)
+
+    if (ordinal < 0 || ordinal >= values.size()) {
+      return default
+    }
+
+    return values[ordinal]
+  }
+}
+
+public abstract class PreferencesVar<T, V>(
     private val source: Any,
     private val name: String?,
     private val default: V
