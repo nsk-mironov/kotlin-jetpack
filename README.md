@@ -1,6 +1,10 @@
 # Kotlin Jetpack
 A collection of useful extension methods for Android
 
+* [Arguments Bindings](#arguments-bindings)
+* [Preferences Bindings](#preferences-bindings)
+* [Resources Bindings](#resources-bindings)
+
 # Arguments Bindings
 ```kotlin
 public class ArgumentsFragment : Fragment() {
@@ -63,7 +67,7 @@ public class PreferencesFragment : Fragment() {
 }
 ```
 
-The example above uses a defualt `SharedPreferences` instance. You can always provide a custom one by implementing an `PreferencesAware` interface:
+The example above uses a default `SharedPreferences` instance. You can always provide a custom one by implementing `PreferencesAware` interface:
 ```kotlin
 public class PreferencesFragment : Fragment() {
   val preferences = PreferencesAware {
