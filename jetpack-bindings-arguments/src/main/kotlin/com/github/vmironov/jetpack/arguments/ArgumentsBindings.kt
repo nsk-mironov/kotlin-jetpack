@@ -6,6 +6,16 @@ import android.os.Bundle
 import com.github.vmironov.jetpack.core.LazyVal
 
 public interface ArgumentsAware {
+  public companion object {
+    public fun invoke(factory: () -> Bundle?): ArgumentsAware {
+      return object : ArgumentsAware {
+        override val arguments: Bundle? by lazy(LazyThreadSafetyMode.NONE) {
+          factory()
+        }
+      }
+    }
+  }
+
   public val arguments: Bundle?
 }
 

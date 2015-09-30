@@ -9,6 +9,16 @@ import android.view.View
 import kotlin.properties.ReadWriteProperty
 
 public interface PreferencesAware {
+  public companion object {
+    public fun invoke(factory: () -> SharedPreferences): PreferencesAware {
+      return object : PreferencesAware {
+        override val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
+          factory()
+        }
+      }
+    }
+  }
+
   public val preferences: SharedPreferences
 }
 
