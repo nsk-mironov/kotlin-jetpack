@@ -2,7 +2,6 @@
 A collection of useful extension methods for Android
 
 # Arguments Bindings
-Example:
 ```kotlin
 public class ArgumentsFragment : Fragment() {
   public companion object {
@@ -42,7 +41,6 @@ compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.10.2"
 ```
 
 # Resources Bindings
-Example: 
 ```kotlin
 public class ResourcesFragment : Fragment() {
   // Boolean resource binding
