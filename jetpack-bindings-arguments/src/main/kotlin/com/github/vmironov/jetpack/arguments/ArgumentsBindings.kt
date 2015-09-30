@@ -16,10 +16,10 @@ internal class ArgumentsVal<T, V>(
     private val initializer: (String, Bundle) -> V?
 ) : LazyVal<T, V>({ desc, property ->
   val value = initializer(name ?: property.name, when (source) {
+    is ArgumentsAware -> source.arguments ?: Bundle.EMPTY
     is Activity -> source.intent.extras ?: Bundle.EMPTY
     is Fragment -> source.arguments ?: Bundle.EMPTY
     is android.support.v4.app.Fragment -> source.arguments ?: Bundle.EMPTY
-    is ArgumentsAware -> source.arguments ?: Bundle.EMPTY
     else -> throw IllegalArgumentException("Unable to find arguments on type ${source.javaClass.simpleName}")
   })
 
@@ -37,10 +37,10 @@ internal class OptionalArgumentsVal<T, V>(
     private val initializer: (String, Bundle) -> V?
 ) : LazyVal<T, V?>({ desc, property ->
   initializer(name ?: property.name, when (source) {
+    is ArgumentsAware -> source.arguments ?: Bundle.EMPTY
     is Activity -> source.intent.extras ?: Bundle.EMPTY
     is Fragment -> source.arguments ?: Bundle.EMPTY
     is android.support.v4.app.Fragment -> source.arguments ?: Bundle.EMPTY
-    is ArgumentsAware -> source.arguments ?: Bundle.EMPTY
     else -> throw IllegalArgumentException("Unable to find arguments on type ${source.javaClass.simpleName}")
   }) ?: default
 })

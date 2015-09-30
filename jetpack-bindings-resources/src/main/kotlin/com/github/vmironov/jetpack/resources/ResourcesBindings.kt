@@ -82,6 +82,7 @@ public fun Any.bindTextArrayResource(resource: Int): ReadOnlyProperty<Any, Array
 
 private class ResourcesVal<T, V>(private val source: Any, private val initializer: (Resources) -> V) : LazyVal<T, V>({ desc, property ->
   initializer(when (source) {
+    is ResourcesAware -> source.resources
     is Context -> source.resources
     is Fragment -> source.activity.resources
     is android.support.v4.app.Fragment -> source.activity.resources
@@ -89,7 +90,6 @@ private class ResourcesVal<T, V>(private val source: Any, private val initialize
     is View -> source.resources
     is Dialog -> source.context.resources
     is Resources -> source
-    is ResourcesAware -> source.resources
     else -> throw IllegalArgumentException("Unable to find resources on type ${source.javaClass.simpleName}")
   })
 })
