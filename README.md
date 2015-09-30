@@ -40,6 +40,34 @@ Gradle dependency:
 compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.10.2"
 ```
 
+# Preferences Bindings
+```kotlin
+public class PreferencesFragment : Fragment() {
+  // Boolean preference
+  var boolean: Boolean by bindBooleanPreference("boolean", false)
+
+  // Float preference
+  var float: Float by bindFloatPreference("float", 0.0f)
+
+  // Integer preference
+  var integer: Int by bindIntPreference("integer", 1)
+
+  // Long preference
+  var long: Long by bindLongPreference("long", 1L)
+
+  // String preference
+  var string: String by bindStringPreference("string", "default")
+
+  // String Set preference
+  var set: Set<String> by bindStringSetPreference("string set")
+}
+```
+
+Gradle dependency:
+```gradle
+compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.10.2"
+```
+
 # Resources Bindings
 ```kotlin
 public class ResourcesFragment : Fragment() {
