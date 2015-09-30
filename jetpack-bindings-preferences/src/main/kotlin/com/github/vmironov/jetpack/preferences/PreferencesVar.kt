@@ -12,12 +12,12 @@ public interface PreferencesAware {
   public val preferences: SharedPreferences
 }
 
-public fun <T : Any> T.bindBooleanPreference(name: String? = null, default: Boolean = false): ReadWriteProperty<T, Boolean> = BooleanPreferenceVar(this, name, default)
-public fun <T : Any> T.bindFloatPreference(name: String? = null, default: Float = 0.0f): ReadWriteProperty<T, Float> = FloatPreferenceVar(this, name, default)
-public fun <T : Any> T.bindIntPreference(name: String? = null, default: Int = 0): ReadWriteProperty<T, Int> = IntPreferenceVar(this, name, default)
-public fun <T : Any> T.bindLongPreference(name: String? = null, default: Long = 0L): ReadWriteProperty<T, Long> = LongPreferenceVar(this, name, default)
-public fun <T : Any> T.bindStringPreference(name: String? = null, default: String = ""): ReadWriteProperty<T, String> = StringPreferenceVar(this, name, default)
-public fun <T : Any> T.bindStringSetPreference(name: String? = null, default: Set<String> = emptySet()): ReadWriteProperty<T, Set<String>> = StringSetPreferenceVar(this, name, default)
+public fun Any.bindBooleanPreference(name: String? = null, default: Boolean = false): ReadWriteProperty<Any, Boolean> = BooleanPreferenceVar(this, name, default)
+public fun Any.bindFloatPreference(name: String? = null, default: Float = 0.0f): ReadWriteProperty<Any, Float> = FloatPreferenceVar(this, name, default)
+public fun Any.bindIntPreference(name: String? = null, default: Int = 0): ReadWriteProperty<Any, Int> = IntPreferenceVar(this, name, default)
+public fun Any.bindLongPreference(name: String? = null, default: Long = 0L): ReadWriteProperty<Any, Long> = LongPreferenceVar(this, name, default)
+public fun Any.bindStringPreference(name: String? = null, default: String = ""): ReadWriteProperty<Any, String> = StringPreferenceVar(this, name, default)
+public fun Any.bindStringSetPreference(name: String? = null, default: Set<String> = emptySet()): ReadWriteProperty<Any, Set<String>> = StringSetPreferenceVar(this, name, default)
 
 private class BooleanPreferenceVar<T>(source: Any, name: String?, default: Boolean) : PreferencesVar<T, Boolean>(source, name, default) {
   override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Boolean) {
