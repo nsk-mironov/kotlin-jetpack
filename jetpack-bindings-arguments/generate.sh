@@ -1,5 +1,5 @@
 DIRECTORY="src/main/generated/com/github/vmironov/jetpack/arguments"
-FILE="ArgumentGeneratedBindings.kt"
+FILE="ArgumentsGeneratedBindings.kt"
 TARGET="${DIRECTORY}/${FILE}"
 
 rm -rf $DIRECTORY
