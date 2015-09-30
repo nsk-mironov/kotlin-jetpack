@@ -63,6 +63,21 @@ public class PreferencesFragment : Fragment() {
 }
 ```
 
+The example above uses a defualt `SharedPreferences` instance. You can always provide a custom one by implementing an `PreferencesAware` interface:
+```kotlin
+public class PreferencesFragment : Fragment() {
+  val preferences = PreferencesAware {
+    activity.getSharedPreferences("CustomSharedPreferences", Context.MODE_PRIVATE)
+  }
+  
+  var boolean: Boolean by preferences.bindBooleanPreference("boolean", false)
+  var float: Float by preferences.bindFloatPreference("float", 0.0f)
+  var integer: Int by preferences.bindIntPreference("integer", 1)
+  var long: Long by preferences.bindLongPreference("long", 1L)
+  var string: String by preferences.bindStringPreference("string", "default")
+}
+```
+
 Gradle dependency:
 ```gradle
 compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.10.2"
