@@ -14,11 +14,9 @@ import kotlin.properties.ReadOnlyProperty
 
 public interface ResourcesAware {
   public companion object {
-    public fun invoke(factory: () -> Resources): ResourcesAware {
-      return object : ResourcesAware {
-        override val resources: Resources by lazy(LazyThreadSafetyMode.NONE) {
-          factory()
-        }
+    public fun invoke(factory: () -> Resources): ResourcesAware = object : ResourcesAware {
+      override val resources: Resources by lazy(LazyThreadSafetyMode.NONE) {
+        factory()
       }
     }
   }
