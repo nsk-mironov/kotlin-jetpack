@@ -86,13 +86,13 @@ private abstract class PreferencesVar<T, V>(
 ) : ReadWriteProperty<T, V> {
   private val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
     when (source) {
+      is PreferencesAware -> source.preferences
       is SharedPreferences -> source as SharedPreferences
       is Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
       is android.support.v4.app.Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
       is Context -> PreferenceManager.getDefaultSharedPreferences(source)
       is View -> PreferenceManager.getDefaultSharedPreferences(source.context)
       is RecyclerView.ViewHolder -> PreferenceManager.getDefaultSharedPreferences(source.itemView.context)
-      is PreferencesAware -> source.preferences
       else -> throw IllegalArgumentException("Unable to find preferences on type ${source.javaClass.simpleName}")
     }
   }
