@@ -30,28 +30,6 @@ public fun Bundle.getBooleanOrThrow(key: String): Boolean {
   return getBooleanOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Bundle.putBooleanArrayOrIgnore(key: String, value: BooleanArray?): Unit {
-  if (value != null) {
-    putBooleanArray(key, value)
-  }
-}
-
-public fun Bundle.getBooleanArrayOrNull(key: String): BooleanArray? {
-  return if (containsKey(key)) {
-    getBooleanArray(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getBooleanArrayOrDefault(key: String, value: BooleanArray): BooleanArray {
-  return getBooleanArrayOrNull(key) ?: value
-}
-
-public fun Bundle.getBooleanArrayOrThrow(key: String): BooleanArray {
-  return getBooleanArrayOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Bundle.putDoubleOrIgnore(key: String, value: Double?): Unit {
   if (value != null) {
     putDouble(key, value)
@@ -72,28 +50,6 @@ public fun Bundle.getDoubleOrDefault(key: String, value: Double): Double {
 
 public fun Bundle.getDoubleOrThrow(key: String): Double {
   return getDoubleOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Bundle.putDoubleArrayOrIgnore(key: String, value: DoubleArray?): Unit {
-  if (value != null) {
-    putDoubleArray(key, value)
-  }
-}
-
-public fun Bundle.getDoubleArrayOrNull(key: String): DoubleArray? {
-  return if (containsKey(key)) {
-    getDoubleArray(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getDoubleArrayOrDefault(key: String, value: DoubleArray): DoubleArray {
-  return getDoubleArrayOrNull(key) ?: value
-}
-
-public fun Bundle.getDoubleArrayOrThrow(key: String): DoubleArray {
-  return getDoubleArrayOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
 public fun Bundle.putIntOrIgnore(key: String, value: Int?): Unit {
@@ -118,28 +74,6 @@ public fun Bundle.getIntOrThrow(key: String): Int {
   return getIntOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Bundle.putIntArrayOrIgnore(key: String, value: IntArray?): Unit {
-  if (value != null) {
-    putIntArray(key, value)
-  }
-}
-
-public fun Bundle.getIntArrayOrNull(key: String): IntArray? {
-  return if (containsKey(key)) {
-    getIntArray(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getIntArrayOrDefault(key: String, value: IntArray): IntArray {
-  return getIntArrayOrNull(key) ?: value
-}
-
-public fun Bundle.getIntArrayOrThrow(key: String): IntArray {
-  return getIntArrayOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Bundle.putLongOrIgnore(key: String, value: Long?): Unit {
   if (value != null) {
     putLong(key, value)
@@ -162,28 +96,6 @@ public fun Bundle.getLongOrThrow(key: String): Long {
   return getLongOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Bundle.putLongArrayOrIgnore(key: String, value: LongArray?): Unit {
-  if (value != null) {
-    putLongArray(key, value)
-  }
-}
-
-public fun Bundle.getLongArrayOrNull(key: String): LongArray? {
-  return if (containsKey(key)) {
-    getLongArray(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getLongArrayOrDefault(key: String, value: LongArray): LongArray {
-  return getLongArrayOrNull(key) ?: value
-}
-
-public fun Bundle.getLongArrayOrThrow(key: String): LongArray {
-  return getLongArrayOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Bundle.putStringOrIgnore(key: String, value: String?): Unit {
   if (value != null) {
     putString(key, value)
@@ -204,28 +116,6 @@ public fun Bundle.getStringOrDefault(key: String, value: String): String {
 
 public fun Bundle.getStringOrThrow(key: String): String {
   return getStringOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Bundle.putStringArrayOrIgnore(key: String, value: Array<String>?): Unit {
-  if (value != null) {
-    putStringArray(key, value)
-  }
-}
-
-public fun Bundle.getStringArrayOrNull(key: String): Array<String>? {
-  return if (containsKey(key)) {
-    getStringArray(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getStringArrayOrDefault(key: String, value: Array<String>): Array<String> {
-  return getStringArrayOrNull(key) ?: value
-}
-
-public fun Bundle.getStringArrayOrThrow(key: String): Array<String> {
-  return getStringArrayOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
 public fun Bundle.putBundleOrIgnore(key: String, value: Bundle?): Unit {
@@ -272,28 +162,6 @@ public fun Bundle.getByteOrThrow(key: String): Byte {
   return getByteOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Bundle.putByteArrayOrIgnore(key: String, value: ByteArray?): Unit {
-  if (value != null) {
-    putByteArray(key, value)
-  }
-}
-
-public fun Bundle.getByteArrayOrNull(key: String): ByteArray? {
-  return if (containsKey(key)) {
-    getByteArray(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getByteArrayOrDefault(key: String, value: ByteArray): ByteArray {
-  return getByteArrayOrNull(key) ?: value
-}
-
-public fun Bundle.getByteArrayOrThrow(key: String): ByteArray {
-  return getByteArrayOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Bundle.putCharOrIgnore(key: String, value: Char?): Unit {
   if (value != null) {
     putChar(key, value)
@@ -314,28 +182,6 @@ public fun Bundle.getCharOrDefault(key: String, value: Char): Char {
 
 public fun Bundle.getCharOrThrow(key: String): Char {
   return getCharOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Bundle.putCharArrayOrIgnore(key: String, value: CharArray?): Unit {
-  if (value != null) {
-    putCharArray(key, value)
-  }
-}
-
-public fun Bundle.getCharArrayOrNull(key: String): CharArray? {
-  return if (containsKey(key)) {
-    getCharArray(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getCharArrayOrDefault(key: String, value: CharArray): CharArray {
-  return getCharArrayOrNull(key) ?: value
-}
-
-public fun Bundle.getCharArrayOrThrow(key: String): CharArray {
-  return getCharArrayOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
 public fun Bundle.putCharSequenceOrIgnore(key: String, value: CharSequence?): Unit {
@@ -360,28 +206,6 @@ public fun Bundle.getCharSequenceOrThrow(key: String): CharSequence {
   return getCharSequenceOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Bundle.putCharSequenceArrayListOrIgnore(key: String, value: ArrayList<CharSequence>?): Unit {
-  if (value != null) {
-    putCharSequenceArrayList(key, value)
-  }
-}
-
-public fun Bundle.getCharSequenceArrayListOrNull(key: String): ArrayList<CharSequence>? {
-  return if (containsKey(key)) {
-    getCharSequenceArrayList(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getCharSequenceArrayListOrDefault(key: String, value: ArrayList<CharSequence>): ArrayList<CharSequence> {
-  return getCharSequenceArrayListOrNull(key) ?: value
-}
-
-public fun Bundle.getCharSequenceArrayListOrThrow(key: String): ArrayList<CharSequence> {
-  return getCharSequenceArrayListOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Bundle.putFloatOrIgnore(key: String, value: Float?): Unit {
   if (value != null) {
     putFloat(key, value)
@@ -404,50 +228,6 @@ public fun Bundle.getFloatOrThrow(key: String): Float {
   return getFloatOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Bundle.putFloatArrayOrIgnore(key: String, value: FloatArray?): Unit {
-  if (value != null) {
-    putFloatArray(key, value)
-  }
-}
-
-public fun Bundle.getFloatArrayOrNull(key: String): FloatArray? {
-  return if (containsKey(key)) {
-    getFloatArray(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getFloatArrayOrDefault(key: String, value: FloatArray): FloatArray {
-  return getFloatArrayOrNull(key) ?: value
-}
-
-public fun Bundle.getFloatArrayOrThrow(key: String): FloatArray {
-  return getFloatArrayOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Bundle.putIntegerArrayListOrIgnore(key: String, value: ArrayList<Int>?): Unit {
-  if (value != null) {
-    putIntegerArrayList(key, value)
-  }
-}
-
-public fun Bundle.getIntegerArrayListOrNull(key: String): ArrayList<Int>? {
-  return if (containsKey(key)) {
-    getIntegerArrayList(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getIntegerArrayListOrDefault(key: String, value: ArrayList<Int>): ArrayList<Int> {
-  return getIntegerArrayListOrNull(key) ?: value
-}
-
-public fun Bundle.getIntegerArrayListOrThrow(key: String): ArrayList<Int> {
-  return getIntegerArrayListOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Bundle.putParcelableOrIgnore(key: String, value: Parcelable?): Unit {
   if (value != null) {
     putParcelable(key, value)
@@ -468,50 +248,6 @@ public fun Bundle.getParcelableOrDefault(key: String, value: Parcelable): Parcel
 
 public fun Bundle.getParcelableOrThrow(key: String): Parcelable {
   return getParcelableOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Bundle.putParcelableArrayOrIgnore(key: String, value: Array<Parcelable>?): Unit {
-  if (value != null) {
-    putParcelableArray(key, value)
-  }
-}
-
-public fun Bundle.getParcelableArrayOrNull(key: String): Array<Parcelable>? {
-  return if (containsKey(key)) {
-    getParcelableArray(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getParcelableArrayOrDefault(key: String, value: Array<Parcelable>): Array<Parcelable> {
-  return getParcelableArrayOrNull(key) ?: value
-}
-
-public fun Bundle.getParcelableArrayOrThrow(key: String): Array<Parcelable> {
-  return getParcelableArrayOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Bundle.putParcelableArrayListOrIgnore(key: String, value: ArrayList<Parcelable>?): Unit {
-  if (value != null) {
-    putParcelableArrayList(key, value)
-  }
-}
-
-public fun Bundle.getParcelableArrayListOrNull(key: String): ArrayList<Parcelable>? {
-  return if (containsKey(key)) {
-    getParcelableArrayList(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getParcelableArrayListOrDefault(key: String, value: ArrayList<Parcelable>): ArrayList<Parcelable> {
-  return getParcelableArrayListOrNull(key) ?: value
-}
-
-public fun Bundle.getParcelableArrayListOrThrow(key: String): ArrayList<Parcelable> {
-  return getParcelableArrayListOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
 public fun Bundle.putSerializableOrIgnore(key: String, value: Serializable?): Unit {
@@ -556,27 +292,5 @@ public fun Bundle.getShortOrDefault(key: String, value: Short): Short {
 
 public fun Bundle.getShortOrThrow(key: String): Short {
   return getShortOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Bundle.putShortArrayOrIgnore(key: String, value: ShortArray?): Unit {
-  if (value != null) {
-    putShortArray(key, value)
-  }
-}
-
-public fun Bundle.getShortArrayOrNull(key: String): ShortArray? {
-  return if (containsKey(key)) {
-    getShortArray(key)
-  } else {
-    null
-  }
-}
-
-public fun Bundle.getShortArrayOrDefault(key: String, value: ShortArray): ShortArray {
-  return getShortArrayOrNull(key) ?: value
-}
-
-public fun Bundle.getShortArrayOrThrow(key: String): ShortArray {
-  return getShortArrayOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
