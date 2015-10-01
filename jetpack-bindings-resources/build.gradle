@@ -17,8 +17,6 @@ android {
 }
 
 dependencies {
-  compile project(":jetpack-extensions-core")
-
   provided "com.android.support:support-v4:$supportVersion"
   provided "com.android.support:recyclerview-v7:$supportVersion"
 

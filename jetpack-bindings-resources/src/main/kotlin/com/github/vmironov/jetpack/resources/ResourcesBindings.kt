@@ -5,11 +5,8 @@ import android.app.Fragment
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
-import android.content.res.XmlResourceParser
-import android.graphics.Movie
 import android.graphics.drawable.Drawable
 import android.view.View
-import com.github.vmironov.jetpack.core.LazyVal
 import kotlin.properties.ReadOnlyProperty
 
 public interface ResourcesAware {
@@ -89,3 +86,16 @@ private class ResourcesVal<T, V>(private val source: Any, private val initialize
     else -> throw IllegalArgumentException("Unable to find resources on type ${source.javaClass.simpleName}")
   })
 })
+
+private open class LazyVal<T, V>(private val initializer : (T, PropertyMetadata) -> V) : ReadOnlyProperty<T, V> {
+  private object EMPTY
+  private var value: Any? = EMPTY
+
+  override fun get(thisRef: T, property: PropertyMetadata): V {
+    if (value === EMPTY) {
+      value = initializer(thisRef, property)
+    }
+    @Suppress("UNCHECKED_CAST")
+    return value as V
+  }
+}
