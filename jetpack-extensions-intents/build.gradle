@@ -17,7 +17,6 @@ android {
 }
 
 dependencies {
-  compile project(":jetpack-extensions-core")
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 }
 

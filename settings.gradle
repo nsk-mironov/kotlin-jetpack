@@ -1,4 +1,3 @@
-include ':jetpack-extensions-core'
 include ':jetpack-extensions-intents'
 include ':jetpack-extensions-bundles'
 include ':jetpack-bindings-arguments'
