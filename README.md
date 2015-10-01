@@ -41,7 +41,7 @@ These methods can be used with `Activity`, `Fragment`, and support library `Frag
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.11.0"
+compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.11.1"
 ```
 
 # Preferences Bindings
@@ -84,7 +84,7 @@ public class PreferencesFragment : Fragment() {
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.11.0"
+compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.11.1"
 ```
 
 # Resources Bindings
@@ -126,7 +126,7 @@ These methods can be used with `Activity`, `Context`, `Fragment`, support librar
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-resources:0.11.0"
+compile "com.github.vmironov.jetpack:jetpack-bindings-resources:0.11.1"
 ```
 
 # License
