@@ -3,10 +3,8 @@ package com.github.vmironov.jetpack.intents
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.IBinder
 import android.os.Parcelable
 
-import java.util.ArrayList
 import java.io.Serializable
 
 public fun Intent.putExtraOrIgnore(key: String, value: Boolean?): Unit {
@@ -31,28 +29,6 @@ public fun Intent.getBooleanExtraOrThrow(key: String): Boolean {
   return getBooleanExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Intent.putExtraOrIgnore(key: String, value: BooleanArray?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getBooleanArrayExtraOrNull(key: String): BooleanArray? {
-  return if (hasExtra(key)) {
-    getBooleanArrayExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getBooleanArrayExtraOrDefault(key: String, value: BooleanArray): BooleanArray {
-  return getBooleanArrayExtraOrNull(key) ?: value
-}
-
-public fun Intent.getBooleanArrayExtraOrThrow(key: String): BooleanArray {
-  return getBooleanArrayExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Intent.putExtraOrIgnore(key: String, value: Double?): Unit {
   if (value != null) {
     putExtra(key, value)
@@ -73,28 +49,6 @@ public fun Intent.getDoubleExtraOrDefault(key: String, value: Double): Double {
 
 public fun Intent.getDoubleExtraOrThrow(key: String): Double {
   return getDoubleExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Intent.putExtraOrIgnore(key: String, value: DoubleArray?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getDoubleArrayExtraOrNull(key: String): DoubleArray? {
-  return if (hasExtra(key)) {
-    getDoubleArrayExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getDoubleArrayExtraOrDefault(key: String, value: DoubleArray): DoubleArray {
-  return getDoubleArrayExtraOrNull(key) ?: value
-}
-
-public fun Intent.getDoubleArrayExtraOrThrow(key: String): DoubleArray {
-  return getDoubleArrayExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
 public fun Intent.putExtraOrIgnore(key: String, value: Int?): Unit {
@@ -119,28 +73,6 @@ public fun Intent.getIntExtraOrThrow(key: String): Int {
   return getIntExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Intent.putExtraOrIgnore(key: String, value: IntArray?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getIntArrayExtraOrNull(key: String): IntArray? {
-  return if (hasExtra(key)) {
-    getIntArrayExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getIntArrayExtraOrDefault(key: String, value: IntArray): IntArray {
-  return getIntArrayExtraOrNull(key) ?: value
-}
-
-public fun Intent.getIntArrayExtraOrThrow(key: String): IntArray {
-  return getIntArrayExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Intent.putExtraOrIgnore(key: String, value: Long?): Unit {
   if (value != null) {
     putExtra(key, value)
@@ -163,28 +95,6 @@ public fun Intent.getLongExtraOrThrow(key: String): Long {
   return getLongExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Intent.putExtraOrIgnore(key: String, value: LongArray?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getLongArrayExtraOrNull(key: String): LongArray? {
-  return if (hasExtra(key)) {
-    getLongArrayExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getLongArrayExtraOrDefault(key: String, value: LongArray): LongArray {
-  return getLongArrayExtraOrNull(key) ?: value
-}
-
-public fun Intent.getLongArrayExtraOrThrow(key: String): LongArray {
-  return getLongArrayExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Intent.putExtraOrIgnore(key: String, value: String?): Unit {
   if (value != null) {
     putExtra(key, value)
@@ -205,28 +115,6 @@ public fun Intent.getStringExtraOrDefault(key: String, value: String): String {
 
 public fun Intent.getStringExtraOrThrow(key: String): String {
   return getStringExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Intent.putExtraOrIgnore(key: String, value: Array<String>?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getStringArrayExtraOrNull(key: String): Array<String>? {
-  return if (hasExtra(key)) {
-    getStringArrayExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getStringArrayExtraOrDefault(key: String, value: Array<String>): Array<String> {
-  return getStringArrayExtraOrNull(key) ?: value
-}
-
-public fun Intent.getStringArrayExtraOrThrow(key: String): Array<String> {
-  return getStringArrayExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
 public fun Intent.putExtraOrIgnore(key: String, value: Bundle?): Unit {
@@ -273,28 +161,6 @@ public fun Intent.getByteExtraOrThrow(key: String): Byte {
   return getByteExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Intent.putExtraOrIgnore(key: String, value: ByteArray?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getByteArrayExtraOrNull(key: String): ByteArray? {
-  return if (hasExtra(key)) {
-    getByteArrayExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getByteArrayExtraOrDefault(key: String, value: ByteArray): ByteArray {
-  return getByteArrayExtraOrNull(key) ?: value
-}
-
-public fun Intent.getByteArrayExtraOrThrow(key: String): ByteArray {
-  return getByteArrayExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Intent.putExtraOrIgnore(key: String, value: Char?): Unit {
   if (value != null) {
     putExtra(key, value)
@@ -315,50 +181,6 @@ public fun Intent.getCharExtraOrDefault(key: String, value: Char): Char {
 
 public fun Intent.getCharExtraOrThrow(key: String): Char {
   return getCharExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Intent.putExtraOrIgnore(key: String, value: CharArray?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getCharArrayExtraOrNull(key: String): CharArray? {
-  return if (hasExtra(key)) {
-    getCharArrayExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getCharArrayExtraOrDefault(key: String, value: CharArray): CharArray {
-  return getCharArrayExtraOrNull(key) ?: value
-}
-
-public fun Intent.getCharArrayExtraOrThrow(key: String): CharArray {
-  return getCharArrayExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Intent.putExtraOrIgnore(key: String, value: CharSequence?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getCharSequenceExtraOrNull(key: String): CharSequence? {
-  return if (hasExtra(key)) {
-    getCharSequenceExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getCharSequenceExtraOrDefault(key: String, value: CharSequence): CharSequence {
-  return getCharSequenceExtraOrNull(key) ?: value
-}
-
-public fun Intent.getCharSequenceExtraOrThrow(key: String): CharSequence {
-  return getCharSequenceExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
 public fun Intent.putExtraOrIgnore(key: String, value: Float?): Unit {
@@ -383,28 +205,6 @@ public fun Intent.getFloatExtraOrThrow(key: String): Float {
   return getFloatExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
-public fun Intent.putExtraOrIgnore(key: String, value: FloatArray?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getFloatArrayExtraOrNull(key: String): FloatArray? {
-  return if (hasExtra(key)) {
-    getFloatArrayExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getFloatArrayExtraOrDefault(key: String, value: FloatArray): FloatArray {
-  return getFloatArrayExtraOrNull(key) ?: value
-}
-
-public fun Intent.getFloatArrayExtraOrThrow(key: String): FloatArray {
-  return getFloatArrayExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
 public fun Intent.putExtraOrIgnore(key: String, value: Parcelable?): Unit {
   if (value != null) {
     putExtra(key, value)
@@ -425,28 +225,6 @@ public fun Intent.getParcelableExtraOrDefault(key: String, value: Parcelable): P
 
 public fun Intent.getParcelableExtraOrThrow(key: String): Parcelable {
   return getParcelableExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Intent.putExtraOrIgnore(key: String, value: Array<Parcelable>?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getParcelableArrayExtraOrNull(key: String): Array<Parcelable>? {
-  return if (hasExtra(key)) {
-    getParcelableArrayExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getParcelableArrayExtraOrDefault(key: String, value: Array<Parcelable>): Array<Parcelable> {
-  return getParcelableArrayExtraOrNull(key) ?: value
-}
-
-public fun Intent.getParcelableArrayExtraOrThrow(key: String): Array<Parcelable> {
-  return getParcelableArrayExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
 public fun Intent.putExtraOrIgnore(key: String, value: Serializable?): Unit {
@@ -491,27 +269,5 @@ public fun Intent.getShortExtraOrDefault(key: String, value: Short): Short {
 
 public fun Intent.getShortExtraOrThrow(key: String): Short {
   return getShortExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
-}
-
-public fun Intent.putExtraOrIgnore(key: String, value: ShortArray?): Unit {
-  if (value != null) {
-    putExtra(key, value)
-  }
-}
-
-public fun Intent.getShortArrayExtraOrNull(key: String): ShortArray? {
-  return if (hasExtra(key)) {
-    getShortArrayExtra(key)
-  } else {
-    null
-  }
-}
-
-public fun Intent.getShortArrayExtraOrDefault(key: String, value: ShortArray): ShortArray {
-  return getShortArrayExtraOrNull(key) ?: value
-}
-
-public fun Intent.getShortArrayExtraOrThrow(key: String): ShortArray {
-  return getShortArrayExtraOrNull(key) ?: throw IllegalStateException("Key $key is missed")
 }
 
