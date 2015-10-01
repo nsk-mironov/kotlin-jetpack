@@ -4,109 +4,212 @@ package com.github.vmironov.jetpack.arguments
 import android.os.Bundle
 import android.os.Parcelable
 import java.io.Serializable
-import com.github.vmironov.jetpack.bundles.*
 import kotlin.properties.ReadOnlyProperty
 
 public fun Any.bindBooleanArgument(name: String? = null, default: Boolean? = null): ReadOnlyProperty<Any, Boolean> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getBooleanOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getBoolean(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalBooleanArgument(name: String? = null, default: Boolean? = null): ReadOnlyProperty<Any, Boolean?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getBooleanOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getBoolean(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindDoubleArgument(name: String? = null, default: Double? = null): ReadOnlyProperty<Any, Double> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getDoubleOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getDouble(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalDoubleArgument(name: String? = null, default: Double? = null): ReadOnlyProperty<Any, Double?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getDoubleOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getDouble(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindIntArgument(name: String? = null, default: Int? = null): ReadOnlyProperty<Any, Int> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getIntOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getInt(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalIntArgument(name: String? = null, default: Int? = null): ReadOnlyProperty<Any, Int?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getIntOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getInt(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindLongArgument(name: String? = null, default: Long? = null): ReadOnlyProperty<Any, Long> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getLongOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getLong(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalLongArgument(name: String? = null, default: Long? = null): ReadOnlyProperty<Any, Long?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getLongOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getLong(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindStringArgument(name: String? = null, default: String? = null): ReadOnlyProperty<Any, String> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getStringOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getString(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalStringArgument(name: String? = null, default: String? = null): ReadOnlyProperty<Any, String?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getStringOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getString(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindBundleArgument(name: String? = null, default: Bundle? = null): ReadOnlyProperty<Any, Bundle> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getBundleOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getBundle(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalBundleArgument(name: String? = null, default: Bundle? = null): ReadOnlyProperty<Any, Bundle?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getBundleOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getBundle(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindByteArgument(name: String? = null, default: Byte? = null): ReadOnlyProperty<Any, Byte> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getByteOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getByte(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalByteArgument(name: String? = null, default: Byte? = null): ReadOnlyProperty<Any, Byte?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getByteOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getByte(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindCharArgument(name: String? = null, default: Char? = null): ReadOnlyProperty<Any, Char> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getCharOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getChar(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalCharArgument(name: String? = null, default: Char? = null): ReadOnlyProperty<Any, Char?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getCharOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getChar(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindCharSequenceArgument(name: String? = null, default: CharSequence? = null): ReadOnlyProperty<Any, CharSequence> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getCharSequenceOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getCharSequence(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalCharSequenceArgument(name: String? = null, default: CharSequence? = null): ReadOnlyProperty<Any, CharSequence?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getCharSequenceOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getCharSequence(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindFloatArgument(name: String? = null, default: Float? = null): ReadOnlyProperty<Any, Float> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getFloatOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getFloat(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalFloatArgument(name: String? = null, default: Float? = null): ReadOnlyProperty<Any, Float?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getFloatOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getFloat(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindParcelableArgument(name: String? = null, default: Parcelable? = null): ReadOnlyProperty<Any, Parcelable> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getParcelableOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getParcelable(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalParcelableArgument(name: String? = null, default: Parcelable? = null): ReadOnlyProperty<Any, Parcelable?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getParcelableOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getParcelable(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindSerializableArgument(name: String? = null, default: Serializable? = null): ReadOnlyProperty<Any, Serializable> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getSerializableOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getSerializable(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalSerializableArgument(name: String? = null, default: Serializable? = null): ReadOnlyProperty<Any, Serializable?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getSerializableOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getSerializable(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindShortArgument(name: String? = null, default: Short? = null): ReadOnlyProperty<Any, Short> = ArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getShortOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getShort(name)
+  } else {
+    null
+  }
 }
 
 public fun Any.bindOptionalShortArgument(name: String? = null, default: Short? = null): ReadOnlyProperty<Any, Short?> = OptionalArgumentsVal(this, name, default) { name, bundle ->
-  bundle.getShortOrNull(name)
+  if (bundle.containsKey(name)) {
+    bundle.getShort(name)
+  } else {
+    null
+  }
 }

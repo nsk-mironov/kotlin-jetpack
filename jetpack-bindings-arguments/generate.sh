@@ -21,18 +21,25 @@ println
 import "android.os.Bundle"
 import "android.os.Parcelable"
 import "java.io.Serializable"
-import "com.github.vmironov.jetpack.bundles.*"
 import "kotlin.properties.ReadOnlyProperty"
 
 generate() {
   println ""
   println "public fun Any.bind${1}Argument(name: String? = null, default: ${1}? = null): ReadOnlyProperty<Any, ${1}> = ArgumentsVal(this, name, default) { name, bundle ->"
-  println "  bundle.get${1}OrNull(name)"
+  println "  if (bundle.containsKey(name)) {"
+  println "    bundle.get${1}(name)"
+  println "  } else {"
+  println "    null"
+  println "  }"
   println "}"
 
   println ""
   println "public fun Any.bindOptional${1}Argument(name: String? = null, default: ${1}? = null): ReadOnlyProperty<Any, ${1}?> = OptionalArgumentsVal(this, name, default) { name, bundle ->"
-  println "  bundle.get${1}OrNull(name)"
+  println "  if (bundle.containsKey(name)) {"
+  println "    bundle.get${1}(name)"
+  println "  } else {"
+  println "    null"
+  println "  }"
   println "}"
 }
 

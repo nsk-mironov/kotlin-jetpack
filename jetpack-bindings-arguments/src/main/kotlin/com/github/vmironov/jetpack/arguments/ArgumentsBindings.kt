@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
-import com.github.vmironov.jetpack.core.LazyVal
+import kotlin.properties.ReadOnlyProperty
 
 public interface ArgumentsAware {
   public companion object {
@@ -57,3 +57,16 @@ internal class OptionalArgumentsVal<T, V>(
     else -> throw IllegalArgumentException("Unable to find arguments on type ${source.javaClass.simpleName}")
   }) ?: default
 })
+
+private open class LazyVal<T, V>(private val initializer : (T, PropertyMetadata) -> V) : ReadOnlyProperty<T, V> {
+  private object EMPTY
+  private var value: Any? = EMPTY
+
+  override fun get(thisRef: T, property: PropertyMetadata): V {
+    if (value === EMPTY) {
+      value = initializer(thisRef, property)
+    }
+    @Suppress("UNCHECKED_CAST")
+    return value as V
+  }
+}
