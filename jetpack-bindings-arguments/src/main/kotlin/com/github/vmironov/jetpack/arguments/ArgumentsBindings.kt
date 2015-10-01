@@ -2,6 +2,7 @@ package com.github.vmironov.jetpack.arguments
 
 import android.app.Activity
 import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import com.github.vmironov.jetpack.core.LazyVal
 
@@ -24,6 +25,8 @@ internal class ArgumentsVal<T, V>(
     private val initializer: (String, Bundle) -> V?
 ) : LazyVal<T, V>({ desc, property ->
   val value = initializer(name ?: property.name, when (source) {
+    is Bundle -> source
+    is Intent -> source.extras ?: Bundle.EMPTY
     is ArgumentsAware -> source.arguments ?: Bundle.EMPTY
     is Activity -> source.intent.extras ?: Bundle.EMPTY
     is Fragment -> source.arguments ?: Bundle.EMPTY
@@ -45,6 +48,8 @@ internal class OptionalArgumentsVal<T, V>(
     private val initializer: (String, Bundle) -> V?
 ) : LazyVal<T, V?>({ desc, property ->
   initializer(name ?: property.name, when (source) {
+    is Bundle -> source
+    is Intent -> source.extras ?: Bundle.EMPTY
     is ArgumentsAware -> source.arguments ?: Bundle.EMPTY
     is Activity -> source.intent.extras ?: Bundle.EMPTY
     is Fragment -> source.arguments ?: Bundle.EMPTY
