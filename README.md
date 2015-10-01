@@ -26,7 +26,7 @@ public class ArgumentsFragment : Fragment() {
   val booleanOrNull: Boolean? by bindOptionalBooleanArgument("extra_boolean")
 }
 ```
-Full list of supported bindings:
+These methods can be used with `Activity`, `Fragment`, and support library `Fragment` subclasses. You can also implement `ArgumentsAware` interface to provide a custom arguments source. Full list of supported bindings:
 - `bindBooleanArgument` / `bindOptionalBooleanArgument`
 - `bindDoubleArgument` / `bindOptionalDoubleArgument`
 - `bindIntArgument` / `bindOptionalIntArgument`
@@ -41,7 +41,7 @@ Full list of supported bindings:
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.10.2"
+compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.11.0"
 ```
 
 # Preferences Bindings
@@ -67,7 +67,7 @@ public class PreferencesFragment : Fragment() {
 }
 ```
 
-The example above uses a default `SharedPreferences` instance. You can always provide a custom one by implementing `PreferencesAware` interface:
+These methods can be used with `Context`, `Fragment`,support library `Fragment`, `View`, and `ViewHolder` subclasses. The example above uses a default `SharedPreferences` instance. You can always provide a custom one by implementing `PreferencesAware` interface:
 ```kotlin
 public class PreferencesFragment : Fragment() {
   val preferences = PreferencesAware {
@@ -84,7 +84,7 @@ public class PreferencesFragment : Fragment() {
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.10.2"
+compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.11.0"
 ```
 
 # Resources Bindings
@@ -109,7 +109,7 @@ public class ResourcesFragment : Fragment() {
   val string: String by bindStringResource(R.string.string_resource)
 }
 ```
-Full list of supported bindings:
+These methods can be used with `Activity`, `Context`, `Fragment`, support library `Fragment`, `View`, and `ViewHolder` subclasses. You can also implement `ResourcesAware` interface to provide a custom resources source. Full list of supported bindings:
 - `bindBooleanResource`
 - `bingColorResource`
 - `bindColorStateListResource`
@@ -126,7 +126,7 @@ Full list of supported bindings:
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-resources:0.10.2"
+compile "com.github.vmironov.jetpack:jetpack-bindings-resources:0.11.0"
 ```
 
 # License
