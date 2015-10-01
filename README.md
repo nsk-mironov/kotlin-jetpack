@@ -110,7 +110,6 @@ public class ResourcesFragment : Fragment() {
 }
 ```
 Full list of supported bindings:
-- `bindAnimationResource`
 - `bindBooleanResource`
 - `bingColorResource`
 - `bindColorStateListResource`
@@ -120,8 +119,6 @@ Full list of supported bindings:
 - `bindDrawableResource`
 - `bindIntArrayResource`
 - `bindIntegerResource`
-- `bindLayoutResource`
-- `bindMovieResource`
 - `bindStringResource`
 - `bindStringArrayResource`
 - `bindTextResource`

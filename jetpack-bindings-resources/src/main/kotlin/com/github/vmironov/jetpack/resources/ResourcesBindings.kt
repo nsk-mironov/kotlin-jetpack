@@ -24,10 +24,6 @@ public interface ResourcesAware {
   public val resources: Resources
 }
 
-public fun Any.bindAnimationResource(resource: Int): ReadOnlyProperty<Any, XmlResourceParser> = ResourcesVal(this) {
-  it.getAnimation(resource)
-}
-
 public fun Any.bindBooleanResource(resource: Int): ReadOnlyProperty<Any, Boolean> = ResourcesVal(this) {
   it.getBoolean(resource)
 }
@@ -62,14 +58,6 @@ public fun Any.bindIntArrayResource(resource: Int): ReadOnlyProperty<Any, IntArr
 
 public fun Any.bindIntegerResource(resource: Int): ReadOnlyProperty<Any, Int> = ResourcesVal(this) {
   it.getInteger(resource)
-}
-
-public fun Any.bindLayoutResource(resource: Int): ReadOnlyProperty<Any, XmlResourceParser> = ResourcesVal(this) {
-  it.getLayout(resource)
-}
-
-public fun Any.bindMovieResource(resource: Int): ReadOnlyProperty<Any, Movie> = ResourcesVal(this) {
-  it.getMovie(resource)
 }
 
 public fun Any.bindStringResource(resource: Int): ReadOnlyProperty<Any, String> = ResourcesVal(this) {
