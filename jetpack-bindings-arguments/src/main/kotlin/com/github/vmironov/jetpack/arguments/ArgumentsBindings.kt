@@ -4,69 +4,105 @@ import android.app.Activity
 import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
-import kotlin.properties.ReadOnlyProperty
+import kotlin.properties.ReadWriteProperty
 
 public interface ArgumentsAware {
-  public companion object {
-    public fun invoke(factory: () -> Bundle?): ArgumentsAware = object : ArgumentsAware {
-      override val arguments: Bundle? by lazy(LazyThreadSafetyMode.NONE) {
-        factory()
-      }
-    }
-  }
-
-  public val arguments: Bundle?
+  public var arguments: Bundle?
 }
 
-internal class ArgumentsVal<T, V>(
+@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
+internal class ArgumentsVar<T, V>(
     private val source: Any,
     private val name: String?,
     private val default: V?,
-    private val initializer: (String, Bundle) -> V?
-) : LazyVal<T, V>({ desc, property ->
-  val value = initializer(name ?: property.name, when (source) {
-    is Bundle -> source
-    is Intent -> source.extras ?: Bundle.EMPTY
-    is ArgumentsAware -> source.arguments ?: Bundle.EMPTY
-    is Activity -> source.intent.extras ?: Bundle.EMPTY
-    is Fragment -> source.arguments ?: Bundle.EMPTY
-    is android.support.v4.app.Fragment -> source.arguments ?: Bundle.EMPTY
-    else -> throw IllegalArgumentException("Unable to find arguments on type ${source.javaClass.simpleName}")
-  })
+    private val getter: (String, Bundle) -> V?,
+    private val setter: (String, Bundle, V?) -> Unit
+) : ReadWriteProperty<T, V> {
+  private var value: Any? = null
+  private var dirty = true
 
-  if (value == null && default == null) {
-    throw IllegalArgumentException("Key ${name ?: property.name} is missed")
-  }
-
-  value ?: default!!
-})
-
-internal class OptionalArgumentsVal<T, V>(
-    private val source: Any,
-    private val name: String?,
-    private val default: V?,
-    private val initializer: (String, Bundle) -> V?
-) : LazyVal<T, V?>({ desc, property ->
-  initializer(name ?: property.name, when (source) {
-    is Bundle -> source
-    is Intent -> source.extras ?: Bundle.EMPTY
-    is ArgumentsAware -> source.arguments ?: Bundle.EMPTY
-    is Activity -> source.intent.extras ?: Bundle.EMPTY
-    is Fragment -> source.arguments ?: Bundle.EMPTY
-    is android.support.v4.app.Fragment -> source.arguments ?: Bundle.EMPTY
-    else -> throw IllegalArgumentException("Unable to find arguments on type ${source.javaClass.simpleName}")
-  }) ?: default
-})
-
-private open class LazyVal<T, V>(private val initializer : (T, PropertyMetadata) -> V) : ReadOnlyProperty<T, V> {
-  private object EMPTY
-  private var value: Any? = EMPTY
-
-  override fun get(thisRef: T, property: PropertyMetadata): V {
-    if (value === EMPTY) {
-      value = initializer(thisRef, property)
+  override operator fun get(thisRef: T, property: PropertyMetadata): V {
+    if (dirty) {
+      value = getter(name ?: property.name, getArgumentsFromSource(source) ?: Bundle.EMPTY)
+      dirty = false
     }
+
     @Suppress("UNCHECKED_CAST")
-    return value as V
+    return (value ?: default) as V? ?: throw IllegalArgumentException("Key ${name ?: property.name} is missed")
   }
+
+  override operator fun set(thisRef: T, property: PropertyMetadata, value: V) {
+    val bundle = getArgumentsFromSource(source)
+    val result = bundle ?: Bundle()
+
+    if (bundle == null) {
+      setArgumentsToSource(source, result)
+    }
+
+    setter(name ?: property.name, result, value)
+    dirty = true
+  }
+}
+
+@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
+internal class OptionalArgumentsVar<T, V>(
+    private val source: Any,
+    private val name: String?,
+    private val default: V?,
+    private val getter: (String, Bundle) -> V?,
+    private val setter: (String, Bundle, V?) -> Unit
+) : ReadWriteProperty<T, V?> {
+  private var value: Any? = null
+  private var dirty = true
+
+  override operator fun get(thisRef: T, property: PropertyMetadata): V? {
+    if (dirty) {
+      value = getter(name ?: property.name, getArgumentsFromSource(source) ?: Bundle.EMPTY)
+      dirty = false
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    return (value ?: default) as V?
+  }
+
+  override operator fun set(thisRef: T, property: PropertyMetadata, value: V?) {
+    val bundle = getArgumentsFromSource(source)
+    val target = bundle ?: Bundle()
+
+    if (bundle == null) {
+      setArgumentsToSource(source, target)
+    }
+
+    setter(name ?: property.name, target, value)
+    dirty = true
+  }
+}
+
+private fun getArgumentsFromSource(source: Any): Bundle? {
+  return when (source) {
+    is Bundle -> source
+    is Intent -> source.extras
+    is ArgumentsAware -> source.arguments
+    is Activity -> source.intent.extras
+    is Fragment -> source.arguments
+    is android.support.v4.app.Fragment -> source.arguments
+    else -> throw IllegalArgumentException("Unable to get arguments on type ${source.javaClass.simpleName}")
+  }
+}
+
+private fun setArgumentsToSource(source: Any, bundle: Bundle) {
+  when (source) {
+    is Bundle -> source.replaceExtras(bundle)
+    is Intent -> source.replaceExtras(bundle)
+    is ArgumentsAware -> source.arguments = bundle
+    is Activity -> source.intent.replaceExtras(bundle)
+    is Fragment -> source.arguments = bundle
+    is android.support.v4.app.Fragment -> source.arguments = bundle
+    else -> throw IllegalArgumentException("Unable to set arguments on type ${source.javaClass.simpleName}")
+  }
+}
+
+private fun Bundle.replaceExtras(extras: Bundle) {
+  clear()
+  putAll(extras)
 }

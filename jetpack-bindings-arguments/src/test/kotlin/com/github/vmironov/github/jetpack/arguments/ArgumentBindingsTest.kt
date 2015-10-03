@@ -9,23 +9,21 @@ import junit.framework.Assert
 public class ArgumentBindingsTest : AndroidTestCase() {
   public fun testExplicitRequiredBindings() {
     class ArgumentsFragment : Fragment() {
-      val integer by bindIntArgument("integer")
-      val boolean by bindBooleanArgument("boolean")
-      val string by bindStringArgument("string")
-      val long by bindLongArgument("long")
-      val double by bindDoubleArgument("double")
-      val float by bindFloatArgument("float")
+      var integer by bindIntArgument(default = 12)
+      var boolean by bindBooleanArgument()
+      var string by bindStringArgument()
+      var long by bindLongArgument()
+      var double by bindDoubleArgument()
+      var float by bindFloatArgument()
     }
 
     val fragment = ArgumentsFragment().apply {
-      arguments = Bundle().apply {
-        putInt("integer", 12)
-        putBoolean("boolean", true)
-        putString("string", "rainbow dash")
-        putLong("long", 37L)
-        putDouble("double", 1.25)
-        putFloat("float", 2.5f)
-      }
+      integer = 12
+      boolean = true
+      string = "rainbow dash"
+      long = 37L
+      double = 1.25
+      float = 2.5f
     }
 
     Assert.assertEquals(12, fragment.integer)
