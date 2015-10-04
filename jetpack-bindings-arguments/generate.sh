@@ -21,6 +21,7 @@ println
 import "android.os.Bundle"
 import "android.os.Parcelable"
 import "java.io.Serializable"
+import "java.util.ArrayList"
 import "kotlin.properties.ReadWriteProperty"
 println
 
@@ -37,15 +38,15 @@ asSetterName() {
 }
 
 generateBinding() {
-  println "public fun Any.bind${1}Argument(name: String? = null, default: ${1}? = null): ReadWriteProperty<Any, ${1}> = ArgumentsVar(this, name, default, $(asGetterName $1), $(asSetterName $1))"
+  println "public fun Any.bind${1}Argument(name: String? = null, default: ${2}? = null): ReadWriteProperty<Any, ${2}> = ArgumentsVar(this, name, default, $(asGetterName $1), $(asSetterName $1))"
 }
 
 generateOptionalBinding() {
-  println "public fun Any.bindOptional${1}Argument(name: String? = null, default: ${1}? = null): ReadWriteProperty<Any, ${1}?> = OptionalArgumentsVar(this, name, default, $(asGetterName $1), $(asSetterName $1))"
+  println "public fun Any.bindOptional${1}Argument(name: String? = null, default: ${2}? = null): ReadWriteProperty<Any, ${2}?> = OptionalArgumentsVar(this, name, default, $(asGetterName $1), $(asSetterName $1))"
 }
 
 generateGetter() {
-  println "private val $(asGetterName $1): (String, Bundle) -> ${1}? = { name, bundle ->"
+  println "private val $(asGetterName $1): (String, Bundle) -> ${2}? = { name, bundle ->"
   println "  if (bundle.containsKey(name)) {"
   println "    bundle.get${1}(name)"
   println "  } else {"
@@ -56,7 +57,7 @@ generateGetter() {
 }
 
 generateSetter() {
-  println "private val $(asSetterName $1): (String, Bundle, ${1}?) -> Unit = { name, bundle, value ->"
+  println "private val $(asSetterName $1): (String, Bundle, ${2}?) -> Unit = { name, bundle, value ->"
   println "  if (value != null) {"
   println "    bundle.put${1}(name, value)"
   println "  } else {"
@@ -66,25 +67,39 @@ generateSetter() {
   println ""
 }
 
-TYPES=(Boolean Double Int Long String Bundle Byte Char CharSequence Float Parcelable Serializable Short)
+TYPES=(Boolean Double Int Long String CharSequence Float Parcelable Serializable)
 
 for TYPE in "${TYPES[@]}"; do
-  generateBinding $TYPE
+  generateBinding $TYPE $TYPE
 done
 
+generateBinding "StringArrayList" "ArrayList<String>"
+generateBinding "IntegerArrayList" "ArrayList<Int>"
+generateBinding "ParcelableArrayList" "ArrayList<Parcelable>"
 println
 
 for TYPE in "${TYPES[@]}"; do
-  generateOptionalBinding $TYPE
+  generateOptionalBinding $TYPE $TYPE
 done
 
+generateOptionalBinding "StringArrayList" "ArrayList<String>"
+generateOptionalBinding "IntegerArrayList" "ArrayList<Int>"
+generateOptionalBinding "ParcelableArrayList" "ArrayList<Parcelable>"
 println
 
 for TYPE in "${TYPES[@]}"; do
-  generateGetter $TYPE
+  generateGetter $TYPE $TYPE
 done
 
+generateGetter "StringArrayList" "ArrayList<String>"
+generateGetter "IntegerArrayList" "ArrayList<Int>"
+generateGetter "ParcelableArrayList" "ArrayList<Parcelable>"
+
 for TYPE in "${TYPES[@]}"; do
-  generateSetter $TYPE
+  generateSetter $TYPE $TYPE
 done
+
+generateSetter "StringArrayList" "ArrayList<String>"
+generateSetter "IntegerArrayList" "ArrayList<Int>"
+generateSetter "ParcelableArrayList" "ArrayList<Parcelable>"
 
