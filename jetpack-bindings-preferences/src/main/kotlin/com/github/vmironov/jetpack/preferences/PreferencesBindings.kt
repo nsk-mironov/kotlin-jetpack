@@ -10,7 +10,7 @@ import kotlin.properties.ReadWriteProperty
 
 public interface PreferencesAware {
   public companion object {
-    public fun invoke(factory: () -> SharedPreferences): PreferencesAware = object : PreferencesAware {
+    public operator fun invoke(factory: () -> SharedPreferences): PreferencesAware = object : PreferencesAware {
       override val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
         factory()
       }
@@ -113,6 +113,7 @@ public abstract class PreferencesVar<T, V>(
     private val default: V
 ) : ReadWriteProperty<T, V> {
   private val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
+    @Suppress("USELESS_CAST")
     when (source) {
       is PreferencesAware -> source.preferences
       is SharedPreferences -> source as SharedPreferences
@@ -125,11 +126,11 @@ public abstract class PreferencesVar<T, V>(
     }
   }
 
-  override final fun get(thisRef: T, property: PropertyMetadata): V {
+  override final operator fun get(thisRef: T, property: PropertyMetadata): V {
     return onGet(preferences, name ?: property.name, default)
   }
 
-  override final fun set(thisRef: T, property: PropertyMetadata, value: V) {
+  override final operator fun set(thisRef: T, property: PropertyMetadata, value: V) {
     preferences.edit().apply {
       onSet(this, name ?: property.name, value)
       apply()

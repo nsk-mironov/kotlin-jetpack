@@ -11,7 +11,7 @@ import kotlin.properties.ReadOnlyProperty
 
 public interface ResourcesAware {
   public companion object {
-    public fun invoke(factory: () -> Resources): ResourcesAware = object : ResourcesAware {
+    public operator fun invoke(factory: () -> Resources): ResourcesAware = object : ResourcesAware {
       override val resources: Resources by lazy(LazyThreadSafetyMode.NONE) {
         factory()
       }
@@ -45,6 +45,7 @@ public fun Any.bindDimensionPixelSizeResource(resource: Int): ReadOnlyProperty<A
   it.getDimensionPixelSize(resource)
 }
 
+@Suppress("UNCHECKED_CAST")
 public fun <D : Drawable> Any.bindDrawableResource(resource: Int): ReadOnlyProperty<Any, D> = ResourcesVal(this) {
   it.getDrawable(resource) as D
 }
@@ -91,7 +92,7 @@ private open class LazyVal<T, V>(private val initializer : (T, PropertyMetadata)
   private object EMPTY
   private var value: Any? = EMPTY
 
-  override fun get(thisRef: T, property: PropertyMetadata): V {
+  override operator fun get(thisRef: T, property: PropertyMetadata): V {
     if (value === EMPTY) {
       value = initializer(thisRef, property)
     }

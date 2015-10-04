@@ -21,38 +21,85 @@ println
 import "android.os.Bundle"
 import "android.os.Parcelable"
 import "java.io.Serializable"
-import "kotlin.properties.ReadOnlyProperty"
+import "java.util.ArrayList"
+import "kotlin.properties.ReadWriteProperty"
+println
 
-generate() {
-  println ""
-  println "public fun Any.bind${1}Argument(name: String? = null, default: ${1}? = null): ReadOnlyProperty<Any, ${1}> = ArgumentsVal(this, name, default) { name, bundle ->"
-  println "  if (bundle.containsKey(name)) {"
-  println "    bundle.get${1}(name)"
-  println "  } else {"
-  println "    null"
-  println "  }"
-  println "}"
-
-  println ""
-  println "public fun Any.bindOptional${1}Argument(name: String? = null, default: ${1}? = null): ReadOnlyProperty<Any, ${1}?> = OptionalArgumentsVal(this, name, default) { name, bundle ->"
-  println "  if (bundle.containsKey(name)) {"
-  println "    bundle.get${1}(name)"
-  println "  } else {"
-  println "    null"
-  println "  }"
-  println "}"
+capitalize() {
+  echo $(echo ${1} | tr '[:lower:]' '[:upper:]')
 }
 
-generate "Boolean"
-generate "Double"
-generate "Int"
-generate "Long"
-generate "String"
-generate "Bundle"
-generate "Byte"
-generate "Char"
-generate "CharSequence"
-generate "Float"
-generate "Parcelable"
-generate "Serializable"
-generate "Short"
+asGetterName() {
+  echo GETTER_$(echo ${1} | tr '[:lower:]' '[:upper:]')
+}
+
+asSetterName() {
+  echo SETTER_$(echo ${1} | tr '[:lower:]' '[:upper:]')
+}
+
+generateBinding() {
+  println "public fun Any.bind${1}Argument(name: String? = null, default: ${2}? = null): ReadWriteProperty<Any, ${2}> = ArgumentsVar(this, name, default, $(asGetterName $1), $(asSetterName $1))"
+}
+
+generateOptionalBinding() {
+  println "public fun Any.bindOptional${1}Argument(name: String? = null, default: ${2}? = null): ReadWriteProperty<Any, ${2}?> = OptionalArgumentsVar(this, name, default, $(asGetterName $1), $(asSetterName $1))"
+}
+
+generateGetter() {
+  println "private val $(asGetterName $1): (String, Bundle) -> ${2}? = { name, bundle ->"
+  println "  if (bundle.containsKey(name)) {"
+  println "    bundle.get${1}(name)"
+  println "  } else {"
+  println "    null"
+  println "  }"
+  println "}"
+  println ""
+}
+
+generateSetter() {
+  println "private val $(asSetterName $1): (String, Bundle, ${2}?) -> Unit = { name, bundle, value ->"
+  println "  if (value != null) {"
+  println "    bundle.put${1}(name, value)"
+  println "  } else {"
+  println "    bundle.remove(name)"
+  println "  }"
+  println "}"
+  println ""
+}
+
+TYPES=(Boolean Double Int Long String CharSequence Float Parcelable Serializable)
+
+for TYPE in "${TYPES[@]}"; do
+  generateBinding $TYPE $TYPE
+done
+
+generateBinding "StringArrayList" "ArrayList<String>"
+generateBinding "IntegerArrayList" "ArrayList<Int>"
+generateBinding "ParcelableArrayList" "ArrayList<Parcelable>"
+println
+
+for TYPE in "${TYPES[@]}"; do
+  generateOptionalBinding $TYPE $TYPE
+done
+
+generateOptionalBinding "StringArrayList" "ArrayList<String>"
+generateOptionalBinding "IntegerArrayList" "ArrayList<Int>"
+generateOptionalBinding "ParcelableArrayList" "ArrayList<Parcelable>"
+println
+
+for TYPE in "${TYPES[@]}"; do
+  generateGetter $TYPE $TYPE
+done
+
+generateGetter "StringArrayList" "ArrayList<String>"
+generateGetter "IntegerArrayList" "ArrayList<Int>"
+generateGetter "ParcelableArrayList" "ArrayList<Parcelable>"
+
+for TYPE in "${TYPES[@]}"; do
+  generateSetter $TYPE $TYPE
+done
+
+generateSetter "StringArrayList" "ArrayList<String>"
+generateSetter "IntegerArrayList" "ArrayList<Int>"
+generateSetter "ParcelableArrayList" "ArrayList<Parcelable>"
+

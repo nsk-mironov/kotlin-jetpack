@@ -32,16 +32,17 @@ These methods can be used with `Activity`, `Fragment`, and support library `Frag
 - `bindIntArgument` / `bindOptionalIntArgument`
 - `bindLongArgument` / `bindOptionalLongArgument`
 - `bindStringArgument` / `bindOptionalStringArgument`
-- `bindByteArgument` / `bindOptionalByteArgument`
-- `bindCharArgument` / `bindOptionalCharArgument`
+- `bindCharSequenceArgument` / `bindOptionalCharSequenceArgument`
 - `bindFloatArgument` / `bindOptionalFloatArgument`
 - `bindParcelableArgument` / `bindOptionalParcelableArgument`
 - `bindSerializableArgument` / `bindOptionalSerializableArgument`
-- `bindShortArgument` / `bindOptionalShortArgument`
+- `bindStringArrayListArgument` / `bindOptionalStringArrayListArgument`
+- `bindIntegerArrayListArgument` / `bindOptionalIntegerArrayListArgument`
+- `bindParcelableArrayListArgument` / `bindOptionalParcelableArrayListArgument`
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.11.1"
+compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.12.0"
 ```
 
 # Preferences Bindings
@@ -84,7 +85,7 @@ public class PreferencesFragment : Fragment() {
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.11.1"
+compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.12.0"
 ```
 
 # Resources Bindings
@@ -126,7 +127,7 @@ These methods can be used with `Activity`, `Context`, `Fragment`, support librar
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-resources:0.11.1"
+compile "com.github.vmironov.jetpack:jetpack-bindings-resources:0.12.0"
 ```
 
 # License
