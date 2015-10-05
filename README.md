@@ -40,6 +40,24 @@ These methods can be used with `Activity`, `Fragment`, and support library `Frag
 - `bindIntegerArrayListArgument` / `bindOptionalIntegerArrayListArgument`
 - `bindParcelableArrayListArgument` / `bindOptionalParcelableArrayListArgument`
 
+Every `bindXXXArgument` returns a `ReadWriteProperty` so they can be used with `var`'s as well. In this case you don't have to deal with `Bundle` at all. No explicit `Bundle` creation, no silly `EXTRA_XXX` constants, no annoying `Bundle.putXXX` and `Bundle.getXXX` calls. Everything just works:
+```kotlin
+public class UserProfileFragment : Fragment() {
+  public companion object {
+    public fun newInstance(): UserProfileFragment = UserProfileFragment().apply {
+      this.firstName = "Vladimir"
+      this.lastName = "Mironov"
+    }
+  }
+  
+  // extra name is automatically inferred from property name ("firstName" in this case)
+  var firstName by bindStringArgument()
+
+  // you can also provide a default value using "default" named argument
+  var lastName by bindStringArgument(default = "")
+}
+```
+
 Gradle dependency:
 ```gradle
 compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.12.0"
