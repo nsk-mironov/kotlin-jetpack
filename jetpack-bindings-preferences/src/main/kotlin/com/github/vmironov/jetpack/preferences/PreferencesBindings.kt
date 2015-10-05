@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import kotlin.properties.ReadWriteProperty
 
@@ -106,7 +107,11 @@ public class PreferencesVar<T : Any, V : Any>(
   }
 
   override final operator fun get(thisRef: T, property: PropertyMetadata): V {
-    return onGet(preferences, name ?: property.name, default)
+    if (!preferences.contains(name ?: property.name)) {
+      set(thisRef, property, default())
+    }
+
+    return onGet(preferences, name ?: property.name)
   }
 
   override final operator fun set(thisRef: T, property: PropertyMetadata, value: V) {
@@ -152,34 +157,34 @@ public class PreferencesVar<T : Any, V : Any>(
   }
 
   @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST", "IMPLICIT_CAST_TO_UNIT_OR_ANY")
-  private fun onGet(preferences: SharedPreferences, name: String, default: () -> V): V {
+  private fun onGet(preferences: SharedPreferences, name: String): V {
     return when {
       clazz === kotlin.Boolean::class.java, clazz === java.lang.Boolean::class.java -> {
-        preferences.getBoolean(name, default() as Boolean)
+        preferences.getBoolean(name, false)
       }
 
       clazz === kotlin.Float::class.java, clazz === java.lang.Float::class.java -> {
-        preferences.getFloat(name, default() as Float)
+        preferences.getFloat(name, 0.0f)
       }
 
       clazz === kotlin.Int::class.java, clazz === java.lang.Integer::class.java -> {
-        preferences.getInt(name, default() as Int)
+        preferences.getInt(name, 0)
       }
 
       clazz === kotlin.Long::class.java, clazz === java.lang.Long::class.java -> {
-        preferences.getLong(name, default() as Long)
+        preferences.getLong(name, 0L)
       }
 
       clazz === kotlin.String::class.java, clazz === java.lang.String::class.java -> {
-        preferences.getString(name, default() as String)
+        preferences.getString(name, "")
       }
 
       kotlin.Set::class.java.isAssignableFrom(clazz), java.util.Set::class.java.isAssignableFrom(clazz) -> {
-        preferences.getStringSet(name, default() as Set<String>)
+        preferences.getStringSet(name, emptySet())
       }
 
       kotlin.Enum::class.java.isAssignableFrom(clazz), java.lang.Enum::class.java.isAssignableFrom(clazz) -> {
-        preferences.getEnum(clazz, name, default())
+        preferences.getEnum(clazz, name, clazz.enumConstants[0])
       }
 
       else -> throw UnsupportedOperationException("Unsupported preference (name = $name, type = $clazz)")
@@ -187,17 +192,18 @@ public class PreferencesVar<T : Any, V : Any>(
   }
 
   private fun <E : Any> SharedPreferences.getEnum(clazz: Class<E>, name: String, default: E): E {
-    val values = clazz.enumConstants
-    val ordinal = getInt(name, -1)
+    val string = getString(name, "")
 
-    if (ordinal < 0 || ordinal >= values.size()) {
-      return default
+    if (!TextUtils.isEmpty(string)) {
+      return clazz.enumConstants.firstOrNull {
+        string == (it as Enum<*>).name()
+      } ?: default
     }
 
-    return values[ordinal]
+    return default
   }
 
   private fun SharedPreferences.Editor.putEnum(name: String, value: Enum<*>) {
-    putInt(name, value.ordinal())
+    putString(name, value.name())
   }
 }
