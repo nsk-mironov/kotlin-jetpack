@@ -22,31 +22,31 @@ public interface ResourcesAware {
   public val resources: Resources
 }
 
-public inline fun <reified T : Any> ResourcesAware.resource(id: Int): ReadOnlyProperty<Any, T> {
+public inline fun <reified T : Any> ResourcesAware.bindResource(id: Int): ReadOnlyProperty<Any, T> {
   return ResourcesVal(T::class.java, this, id)
 }
 
-public inline fun <reified T : Any> Context.resource(id: Int): ReadOnlyProperty<Any, T> {
+public inline fun <reified T : Any> Context.bindResource(id: Int): ReadOnlyProperty<Any, T> {
   return ResourcesVal(T::class.java, this, id)
 }
 
-public inline fun <reified T : Any> Fragment.resource(id: Int): ReadOnlyProperty<Any, T> {
+public inline fun <reified T : Any> Fragment.bindResource(id: Int): ReadOnlyProperty<Any, T> {
   return ResourcesVal(T::class.java, this, id)
 }
 
-public inline fun <reified T : Any> android.support.v4.app.Fragment.resource(id: Int): ReadOnlyProperty<Any, T> {
+public inline fun <reified T : Any> android.support.v4.app.Fragment.bindResource(id: Int): ReadOnlyProperty<Any, T> {
   return ResourcesVal(T::class.java, this, id)
 }
 
-public inline fun <reified T : Any> RecyclerView.ViewHolder.resource(id: Int): ReadOnlyProperty<Any, T> {
+public inline fun <reified T : Any> RecyclerView.ViewHolder.bindResource(id: Int): ReadOnlyProperty<Any, T> {
   return ResourcesVal(T::class.java, this, id)
 }
 
-public inline fun <reified T : Any> View.resource(id: Int): ReadOnlyProperty<Any, T> {
+public inline fun <reified T : Any> View.bindResource(id: Int): ReadOnlyProperty<Any, T> {
   return ResourcesVal(T::class.java, this, id)
 }
 
-public inline fun <reified T : Any> Resources.resource(id: Int): ReadOnlyProperty<Any, T> {
+public inline fun <reified T : Any> Resources.bindResource(id: Int): ReadOnlyProperty<Any, T> {
   return ResourcesVal(T::class.java, this, id)
 }
 

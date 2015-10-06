@@ -22,67 +22,67 @@ public interface PreferencesAware {
   public val preferences: SharedPreferences
 }
 
-public inline fun <reified T : Any> PreferencesAware.preference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> PreferencesAware.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public inline fun <reified T : Any> SharedPreferences.preference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> SharedPreferences.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public inline fun <reified T : Any> Fragment.preference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> Fragment.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public inline fun <reified T : Any> android.support.v4.app.Fragment.preference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> android.support.v4.app.Fragment.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public inline fun <reified T : Any> RecyclerView.ViewHolder.preference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> RecyclerView.ViewHolder.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public inline fun <reified T : Any> Context.preference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> Context.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public inline fun <reified T : Any> View.preference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> View.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public inline fun <reified T : Any> Dialog.preference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> Dialog.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public inline fun <reified T : Any> PreferencesAware.preference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> PreferencesAware.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, default)
 }
 
-public inline fun <reified T : Any> SharedPreferences.preference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> SharedPreferences.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, default)
 }
 
-public inline fun <reified T : Any> Fragment.preference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> Fragment.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, default)
 }
 
-public inline fun <reified T : Any> android.support.v4.app.Fragment.preference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> android.support.v4.app.Fragment.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, default)
 }
 
-public inline fun <reified T : Any> RecyclerView.ViewHolder.preference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> RecyclerView.ViewHolder.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, default)
 }
 
-public inline fun <reified T : Any> Context.preference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> Context.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, default)
 }
 
-public inline fun <reified T : Any> View.preference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> View.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, default)
 }
 
-public inline fun <reified T : Any> Dialog.preference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> Dialog.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, default)
 }
 
