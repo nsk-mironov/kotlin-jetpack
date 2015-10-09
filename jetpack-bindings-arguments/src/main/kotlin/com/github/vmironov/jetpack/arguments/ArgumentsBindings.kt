@@ -37,48 +37,36 @@ public class ArgumentsVar<T, V>(
     private val name: String?,
     private val default: V?
 ) : ReadWriteProperty<T, V> {
-  private var value: Any? = null
-  private var dirty = true
+  private val delegate = ArgumentsVarDelegate<T, V>(clazz, source, name, default)
 
   override operator fun get(thisRef: T, property: PropertyMetadata): V {
-    if (dirty) {
-      val extra = name ?: property.name
-      val bundle = onGetArgumentsFromSource(source) ?: Bundle.EMPTY
-
-      value = if (bundle.containsKey(extra)) {
-        onGetExtraFromBundle(bundle, extra, clazz)
-      } else {
-        null
-      }
-
-      dirty = false
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    return (value ?: default) as V? ?: throw IllegalArgumentException("Key ${name ?: property.name} is missed")
+    return delegate.get(thisRef, property) ?: throw IllegalArgumentException("Key ${name ?: property.name} is missed")
   }
 
   override operator fun set(thisRef: T, property: PropertyMetadata, value: V) {
-    val bundle = onGetArgumentsFromSource(source)
-    val target = bundle ?: Bundle()
-    val extra = name ?: property.name
-
-    if (bundle == null) {
-      onSetArgumentsToSource(source, target)
-    }
-
-    if (value != null) {
-      onSetExtraToBundle(target, extra, clazz, value)
-    } else {
-      target.remove(extra)
-    }
-
-    dirty = true
+    delegate.set(thisRef, property, value)
   }
 }
 
 @Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
 public class OptionalArgumentsVar<T, V>(
+    private val clazz: Class<V>,
+    private val source: Any,
+    private val name: String?,
+    private val default: V?
+) : ReadWriteProperty<T, V?> {
+  private val delegate = ArgumentsVarDelegate<T, V>(clazz, source, name, default)
+
+  override operator fun get(thisRef: T, property: PropertyMetadata): V? {
+    return delegate.get(thisRef, property)
+  }
+
+  override operator fun set(thisRef: T, property: PropertyMetadata, value: V?) {
+    delegate.set(thisRef, property, value)
+  }
+}
+
+private class ArgumentsVarDelegate<T, V>(
     private val clazz: Class<V>,
     private val source: Any,
     private val name: String?,
@@ -122,89 +110,89 @@ public class OptionalArgumentsVar<T, V>(
 
     dirty = true
   }
-}
 
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
-private fun <T> onGetExtraFromBundle(bundle: Bundle, extra: String, clazz: Class<T>): Any? {
-  return when {
-    clazz == kotlin.Boolean::class.java -> bundle.getBoolean(extra)
-    clazz == kotlin.Double::class.java -> bundle.getDouble(extra)
-    clazz == kotlin.Int::class.java -> bundle.getInt(extra)
-    clazz == kotlin.Long::class.java -> bundle.getLong(extra)
-    clazz == kotlin.String::class.java -> bundle.getString(extra)
-    clazz == kotlin.CharSequence::class.java -> bundle.getCharSequence(extra)
-    clazz == kotlin.Float::class.java -> bundle.getFloat(extra)
+  @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+  private fun <T> onGetExtraFromBundle(bundle: Bundle, extra: String, clazz: Class<T>): Any? {
+    return when {
+      clazz == kotlin.Boolean::class.java -> bundle.getBoolean(extra)
+      clazz == kotlin.Double::class.java -> bundle.getDouble(extra)
+      clazz == kotlin.Int::class.java -> bundle.getInt(extra)
+      clazz == kotlin.Long::class.java -> bundle.getLong(extra)
+      clazz == kotlin.String::class.java -> bundle.getString(extra)
+      clazz == kotlin.CharSequence::class.java -> bundle.getCharSequence(extra)
+      clazz == kotlin.Float::class.java -> bundle.getFloat(extra)
 
-    clazz == java.lang.Boolean::class.java -> bundle.getBoolean(extra)
-    clazz == java.lang.Double::class.java -> bundle.getDouble(extra)
-    clazz == java.lang.Integer::class.java -> bundle.getInt(extra)
-    clazz == java.lang.Long::class.java -> bundle.getLong(extra)
-    clazz == java.lang.String::class.java -> bundle.getString(extra)
-    clazz == java.lang.CharSequence::class.java -> bundle.getCharSequence(extra)
-    clazz == java.lang.Float::class.java -> bundle.getFloat(extra)
+      clazz == java.lang.Boolean::class.java -> bundle.getBoolean(extra)
+      clazz == java.lang.Double::class.java -> bundle.getDouble(extra)
+      clazz == java.lang.Integer::class.java -> bundle.getInt(extra)
+      clazz == java.lang.Long::class.java -> bundle.getLong(extra)
+      clazz == java.lang.String::class.java -> bundle.getString(extra)
+      clazz == java.lang.CharSequence::class.java -> bundle.getCharSequence(extra)
+      clazz == java.lang.Float::class.java -> bundle.getFloat(extra)
 
-    clazz == Parcelable::class.java -> bundle.getParcelable(extra)
-    clazz == Serializable::class.java -> bundle.getSerializable(extra)
+      clazz == Parcelable::class.java -> bundle.getParcelable(extra)
+      clazz == Serializable::class.java -> bundle.getSerializable(extra)
 
-    kotlin.Enum::class.java.isAssignableFrom(clazz) -> bundle.getEnum(extra, clazz)
-    java.lang.Enum::class.java.isAssignableFrom(clazz) -> bundle.getEnum(extra, clazz)
+      kotlin.Enum::class.java.isAssignableFrom(clazz) -> bundle.getEnum(extra, clazz)
+      java.lang.Enum::class.java.isAssignableFrom(clazz) -> bundle.getEnum(extra, clazz)
 
-    else -> throw UnsupportedOperationException()
+      else -> throw UnsupportedOperationException()
+    }
   }
-}
 
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
-private fun <T> onSetExtraToBundle(bundle: Bundle, extra: String, clazz: Class<T>, value: T) {
-  when {
-    clazz == kotlin.Boolean::class.java -> bundle.putBoolean(extra, value as Boolean)
-    clazz == kotlin.Double::class.java -> bundle.putDouble(extra, value as Double)
-    clazz == kotlin.Int::class.java -> bundle.putInt(extra, value as Int)
-    clazz == kotlin.Long::class.java -> bundle.putLong(extra, value as Long)
-    clazz == kotlin.String::class.java -> bundle.putString(extra, value as String)
-    clazz == kotlin.CharSequence::class.java -> bundle.putCharSequence(extra, value as CharSequence)
-    clazz == kotlin.Float::class.java -> bundle.putFloat(extra, value as Float)
-    clazz == kotlin.Enum::class.java -> bundle.putEnum(extra, value as Enum<*>)
+  @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+  private fun <T> onSetExtraToBundle(bundle: Bundle, extra: String, clazz: Class<T>, value: T) {
+    when {
+      clazz == kotlin.Boolean::class.java -> bundle.putBoolean(extra, value as Boolean)
+      clazz == kotlin.Double::class.java -> bundle.putDouble(extra, value as Double)
+      clazz == kotlin.Int::class.java -> bundle.putInt(extra, value as Int)
+      clazz == kotlin.Long::class.java -> bundle.putLong(extra, value as Long)
+      clazz == kotlin.String::class.java -> bundle.putString(extra, value as String)
+      clazz == kotlin.CharSequence::class.java -> bundle.putCharSequence(extra, value as CharSequence)
+      clazz == kotlin.Float::class.java -> bundle.putFloat(extra, value as Float)
+      clazz == kotlin.Enum::class.java -> bundle.putEnum(extra, value as Enum<*>)
 
-    clazz == java.lang.Boolean::class.java -> bundle.putBoolean(extra, value as Boolean)
-    clazz == java.lang.Double::class.java -> bundle.putDouble(extra, value as Double)
-    clazz == java.lang.Integer::class.java -> bundle.putInt(extra, value as Int)
-    clazz == java.lang.Long::class.java -> bundle.putLong(extra, value as Long)
-    clazz == java.lang.String::class.java -> bundle.putString(extra, value as String)
-    clazz == java.lang.CharSequence::class.java -> bundle.putCharSequence(extra, value as CharSequence)
-    clazz == java.lang.Float::class.java -> bundle.putFloat(extra, value as Float)
-    clazz == java.lang.Enum::class.java -> bundle.putEnum(extra, value as Enum<*>)
+      clazz == java.lang.Boolean::class.java -> bundle.putBoolean(extra, value as Boolean)
+      clazz == java.lang.Double::class.java -> bundle.putDouble(extra, value as Double)
+      clazz == java.lang.Integer::class.java -> bundle.putInt(extra, value as Int)
+      clazz == java.lang.Long::class.java -> bundle.putLong(extra, value as Long)
+      clazz == java.lang.String::class.java -> bundle.putString(extra, value as String)
+      clazz == java.lang.CharSequence::class.java -> bundle.putCharSequence(extra, value as CharSequence)
+      clazz == java.lang.Float::class.java -> bundle.putFloat(extra, value as Float)
+      clazz == java.lang.Enum::class.java -> bundle.putEnum(extra, value as Enum<*>)
 
-    clazz == Parcelable::class.java -> bundle.putParcelable(extra, value as Parcelable)
-    clazz == Serializable::class.java -> bundle.putSerializable(extra, value as Serializable)
+      clazz == Parcelable::class.java -> bundle.putParcelable(extra, value as Parcelable)
+      clazz == Serializable::class.java -> bundle.putSerializable(extra, value as Serializable)
 
-    kotlin.Enum::class.java.isAssignableFrom(clazz) -> bundle.putEnum(extra, value as Enum<*>)
-    java.lang.Enum::class.java.isAssignableFrom(clazz) -> bundle.putEnum(extra, value as Enum<*>)
+      kotlin.Enum::class.java.isAssignableFrom(clazz) -> bundle.putEnum(extra, value as Enum<*>)
+      java.lang.Enum::class.java.isAssignableFrom(clazz) -> bundle.putEnum(extra, value as Enum<*>)
 
-    else -> throw UnsupportedOperationException()
+      else -> throw UnsupportedOperationException()
+    }
   }
-}
 
-private fun onGetArgumentsFromSource(source: Any): Bundle? {
-  return when (source) {
-    is Bundle -> source
-    is Intent -> source.extras
-    is ArgumentsAware -> source.arguments
-    is Activity -> source.intent.extras
-    is Fragment -> source.arguments
-    is android.support.v4.app.Fragment -> source.arguments
-    else -> throw IllegalArgumentException("Unable to get arguments on type ${source.javaClass.simpleName}")
+  private fun onGetArgumentsFromSource(source: Any): Bundle? {
+    return when (source) {
+      is Bundle -> source
+      is Intent -> source.extras
+      is ArgumentsAware -> source.arguments
+      is Activity -> source.intent.extras
+      is Fragment -> source.arguments
+      is android.support.v4.app.Fragment -> source.arguments
+      else -> throw IllegalArgumentException("Unable to get arguments on type ${source.javaClass.simpleName}")
+    }
   }
-}
 
-private fun onSetArgumentsToSource(source: Any, bundle: Bundle) {
-  when (source) {
-    is Bundle -> source.replaceExtras(bundle)
-    is Intent -> source.replaceExtras(bundle)
-    is ArgumentsAware -> source.arguments = bundle
-    is Activity -> source.intent.replaceExtras(bundle)
-    is Fragment -> source.arguments = bundle
-    is android.support.v4.app.Fragment -> source.arguments = bundle
-    else -> throw IllegalArgumentException("Unable to set arguments on type ${source.javaClass.simpleName}")
+  private fun onSetArgumentsToSource(source: Any, bundle: Bundle) {
+    when (source) {
+      is Bundle -> source.replaceExtras(bundle)
+      is Intent -> source.replaceExtras(bundle)
+      is ArgumentsAware -> source.arguments = bundle
+      is Activity -> source.intent.replaceExtras(bundle)
+      is Fragment -> source.arguments = bundle
+      is android.support.v4.app.Fragment -> source.arguments = bundle
+      else -> throw IllegalArgumentException("Unable to set arguments on type ${source.javaClass.simpleName}")
+    }
   }
 }
 
