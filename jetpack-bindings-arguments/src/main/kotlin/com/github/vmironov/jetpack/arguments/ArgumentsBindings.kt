@@ -57,6 +57,7 @@ public class OptionalArgumentsVar<T, V>(
   }
 }
 
+@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
 private class ArgumentsVarDelegate<T, V>(
     private val clazz: Class<V>,
     private val source: Any,
