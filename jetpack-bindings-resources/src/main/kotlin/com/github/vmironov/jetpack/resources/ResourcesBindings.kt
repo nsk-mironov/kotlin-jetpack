@@ -137,11 +137,10 @@ public class ResourcesVal<T : Any, V : Any>(
 })
 
 private open class LazyVal<T, V>(private val initializer : (T, PropertyMetadata) -> V) : ReadOnlyProperty<T, V> {
-  private object EMPTY
-  private var value: Any? = EMPTY
+  private var value: Any? = Unit
 
   override operator fun get(thisRef: T, property: PropertyMetadata): V {
-    if (value === EMPTY) {
+    if (value === Unit) {
       value = initializer(thisRef, property)
     }
     @Suppress("UNCHECKED_CAST")
