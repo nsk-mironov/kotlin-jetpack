@@ -1,10 +1,12 @@
 package com.github.vmironov.jetpack.preferences
 
+import android.app.Dialog
 import android.app.Fragment
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import kotlin.properties.ReadWriteProperty
 
@@ -20,97 +22,75 @@ public interface PreferencesAware {
   public val preferences: SharedPreferences
 }
 
-public fun Any.bindBooleanPreference(name: String? = null, default: Boolean = false): ReadWriteProperty<Any, Boolean> = BooleanPreferenceVar(this, name, default)
-public fun Any.bindFloatPreference(name: String? = null, default: Float = 0.0f): ReadWriteProperty<Any, Float> = FloatPreferenceVar(this, name, default)
-public fun Any.bindIntPreference(name: String? = null, default: Int = 0): ReadWriteProperty<Any, Int> = IntPreferenceVar(this, name, default)
-public fun Any.bindLongPreference(name: String? = null, default: Long = 0L): ReadWriteProperty<Any, Long> = LongPreferenceVar(this, name, default)
-public fun Any.bindStringPreference(name: String? = null, default: String = ""): ReadWriteProperty<Any, String> = StringPreferenceVar(this, name, default)
-public fun Any.bindStringSetPreference(name: String? = null, default: Set<String> = emptySet()): ReadWriteProperty<Any, Set<String>> = StringSetPreferenceVar(this, name, default)
-
-public inline fun <reified E : Enum<E>> Any.bindEnumPreference(name: String? = null, default: E): ReadWriteProperty<Any, E> = EnumPreferenceVar(this, E::class.java, name, default)
-
-public class BooleanPreferenceVar<T>(source: Any, name: String?, default: Boolean) : PreferencesVar<T, Boolean>(source, name, default) {
-  override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Boolean) {
-    preferences.putBoolean(name, value)
-  }
-
-  override fun onGet(preferences: SharedPreferences, name: String, default: Boolean): Boolean {
-    return preferences.getBoolean(name, default)
-  }
+public inline fun <reified T : Any> PreferencesAware.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public class FloatPreferenceVar<T>(source: Any, name: String?, default: Float) : PreferencesVar<T, Float>(source, name, default) {
-  override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Float) {
-    preferences.putFloat(name, value)
-  }
-
-  override fun onGet(preferences: SharedPreferences, name: String, default: Float): Float {
-    return preferences.getFloat(name, default)
-  }
+public inline fun <reified T : Any> SharedPreferences.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public class IntPreferenceVar<T>(source: Any, name: String?, default: Int) : PreferencesVar<T, Int>(source, name, default) {
-  override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Int) {
-    preferences.putInt(name, value)
-  }
-
-  override fun onGet(preferences: SharedPreferences, name: String, default: Int): Int {
-    return preferences.getInt(name, default)
-  }
+public inline fun <reified T : Any> Fragment.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public class LongPreferenceVar<T>(source: Any, name: String?, default: Long) : PreferencesVar<T, Long>(source, name, default) {
-  override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Long) {
-    preferences.putLong(name, value)
-  }
-
-  override fun onGet(preferences: SharedPreferences, name: String, default: Long): Long {
-    return preferences.getLong(name, default)
-  }
+public inline fun <reified T : Any> android.support.v4.app.Fragment.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public class StringPreferenceVar<T>(source: Any, name: String?, default: String) : PreferencesVar<T, String>(source, name, default) {
-  override fun onSet(preferences: SharedPreferences.Editor, name: String, value: String) {
-    preferences.putString(name, value)
-  }
-
-  override fun onGet(preferences: SharedPreferences, name: String, default: String): String {
-    return preferences.getString(name, default)
-  }
+public inline fun <reified T : Any> RecyclerView.ViewHolder.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public class StringSetPreferenceVar<T>(source: Any, name: String?, default: Set<String>) : PreferencesVar<T, Set<String>>(source, name, default) {
-  override fun onSet(preferences: SharedPreferences.Editor, name: String, value: Set<String>) {
-    preferences.putStringSet(name, value)
-  }
-
-  override fun onGet(preferences: SharedPreferences, name: String, default: Set<String>): Set<String> {
-    return preferences.getStringSet(name, default)
-  }
+public inline fun <reified T : Any> Context.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public class EnumPreferenceVar<T, E : Enum<E>>(source: Any, clazz: Class<E>, name: String?, default: E) : PreferencesVar<T, E>(source, name, default) {
-  private val values = clazz.enumConstants
-
-  override fun onSet(preferences: SharedPreferences.Editor, name: String, value: E) {
-    preferences.putInt(name, value.ordinal())
-  }
-
-  override fun onGet(preferences: SharedPreferences, name: String, default: E): E {
-    val ordinal = preferences.getInt(name, -1)
-
-    if (ordinal < 0 || ordinal >= values.size()) {
-      return default
-    }
-
-    return values[ordinal]
-  }
+public inline fun <reified T : Any> View.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public abstract class PreferencesVar<T, V>(
+public inline fun <reified T : Any> Dialog.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, { default })
+}
+
+public inline fun <reified T : Any> PreferencesAware.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, default)
+}
+
+public inline fun <reified T : Any> SharedPreferences.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, default)
+}
+
+public inline fun <reified T : Any> Fragment.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, default)
+}
+
+public inline fun <reified T : Any> android.support.v4.app.Fragment.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, default)
+}
+
+public inline fun <reified T : Any> RecyclerView.ViewHolder.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, default)
+}
+
+public inline fun <reified T : Any> Context.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, default)
+}
+
+public inline fun <reified T : Any> View.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, default)
+}
+
+public inline fun <reified T : Any> Dialog.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+  return PreferencesVar(T::class.java, this, name, default)
+}
+
+public class PreferencesVar<T : Any, V : Any>(
+    private val clazz: Class<V>,
     private val source: Any,
     private val name: String?,
-    private val default: V
+    private val default: () -> V
 ) : ReadWriteProperty<T, V> {
   private val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
     @Suppress("USELESS_CAST")
@@ -127,7 +107,11 @@ public abstract class PreferencesVar<T, V>(
   }
 
   override final operator fun get(thisRef: T, property: PropertyMetadata): V {
-    return onGet(preferences, name ?: property.name, default)
+    if (!preferences.contains(name ?: property.name)) {
+      set(thisRef, property, default())
+    }
+
+    return onGet(preferences, name ?: property.name)
   }
 
   override final operator fun set(thisRef: T, property: PropertyMetadata, value: V) {
@@ -137,6 +121,89 @@ public abstract class PreferencesVar<T, V>(
     }
   }
 
-  public abstract fun onSet(preferences: SharedPreferences.Editor, name: String, value: V)
-  public abstract fun onGet(preferences: SharedPreferences, name: String, default: V): V
+  @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
+  private fun onSet(preferences: SharedPreferences.Editor, name: String, value: V) {
+    when {
+      clazz === kotlin.Boolean::class.java, clazz === java.lang.Boolean::class.java -> {
+        preferences.putBoolean(name, value as Boolean)
+      }
+
+      clazz === kotlin.Float::class.java, clazz === java.lang.Float::class.java -> {
+        preferences.putFloat(name, value as Float)
+      }
+
+      clazz === kotlin.Int::class.java, clazz === java.lang.Integer::class.java -> {
+        preferences.putInt(name, value as Int)
+      }
+
+      clazz === kotlin.Long::class.java, clazz === java.lang.Long::class.java -> {
+        preferences.putLong(name, value as Long)
+      }
+
+      clazz === kotlin.String::class.java, clazz === java.lang.String::class.java -> {
+        preferences.putString(name, value as String)
+      }
+
+      kotlin.Set::class.java.isAssignableFrom(clazz), java.util.Set::class.java.isAssignableFrom(clazz) -> {
+        preferences.putStringSet(name, value as Set<String>)
+      }
+
+      kotlin.Enum::class.java.isAssignableFrom(clazz), java.lang.Enum::class.java.isAssignableFrom(clazz) -> {
+        preferences.putEnum(name, value as Enum<*>)
+      }
+
+      else -> throw UnsupportedOperationException("Unsupported preference (name = $name, type = $clazz)")
+    }
+  }
+
+  @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST", "IMPLICIT_CAST_TO_UNIT_OR_ANY")
+  private fun onGet(preferences: SharedPreferences, name: String): V {
+    return when {
+      clazz === kotlin.Boolean::class.java, clazz === java.lang.Boolean::class.java -> {
+        preferences.getBoolean(name, false)
+      }
+
+      clazz === kotlin.Float::class.java, clazz === java.lang.Float::class.java -> {
+        preferences.getFloat(name, 0.0f)
+      }
+
+      clazz === kotlin.Int::class.java, clazz === java.lang.Integer::class.java -> {
+        preferences.getInt(name, 0)
+      }
+
+      clazz === kotlin.Long::class.java, clazz === java.lang.Long::class.java -> {
+        preferences.getLong(name, 0L)
+      }
+
+      clazz === kotlin.String::class.java, clazz === java.lang.String::class.java -> {
+        preferences.getString(name, "")
+      }
+
+      kotlin.Set::class.java.isAssignableFrom(clazz), java.util.Set::class.java.isAssignableFrom(clazz) -> {
+        preferences.getStringSet(name, emptySet())
+      }
+
+      kotlin.Enum::class.java.isAssignableFrom(clazz), java.lang.Enum::class.java.isAssignableFrom(clazz) -> {
+        preferences.getEnum(clazz, name, clazz.enumConstants[0])
+      }
+
+      else -> throw UnsupportedOperationException("Unsupported preference (name = $name, type = $clazz)")
+    } as V
+  }
+
+  private fun <E : Any> SharedPreferences.getEnum(clazz: Class<E>, name: String, default: E): E {
+    val string = getString(name, "")
+
+    if (!TextUtils.isEmpty(string)) {
+      return clazz.enumConstants.firstOrNull {
+        string == (it as Enum<*>).name()
+      } ?: default
+    }
+
+    return default
+  }
+
+  private fun SharedPreferences.Editor.putEnum(name: String, value: Enum<*>) {
+    putString(name, value.name())
+  }
 }
