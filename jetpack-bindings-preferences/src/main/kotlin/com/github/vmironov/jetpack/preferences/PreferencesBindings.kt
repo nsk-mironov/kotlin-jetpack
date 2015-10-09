@@ -5,7 +5,6 @@ import android.app.Fragment
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import kotlin.properties.ReadWriteProperty
@@ -38,15 +37,15 @@ public class PreferencesVar<T : Any, V : Any>(
 ) : ReadWriteProperty<T, V> {
   private val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
     @Suppress("USELESS_CAST")
-    when (source) {
-      is PreferencesAware -> source.preferences
-      is SharedPreferences -> source as SharedPreferences
-      is Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
-      is android.support.v4.app.Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
-      is Context -> PreferenceManager.getDefaultSharedPreferences(source)
-      is View -> PreferenceManager.getDefaultSharedPreferences(source.context)
-      is Dialog -> PreferenceManager.getDefaultSharedPreferences(source.context)
-      is RecyclerView.ViewHolder -> PreferenceManager.getDefaultSharedPreferences(source.itemView.context)
+    when {
+      source is PreferencesAware -> source.preferences
+      source is SharedPreferences -> source as SharedPreferences
+      source is Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
+      source is Context -> PreferenceManager.getDefaultSharedPreferences(source)
+      SupportHelper.isFragment(source) -> SupportFragmentHelper.getPreferences(source)
+      SupportHelper.isHolder(source) -> SupportRecyclerHelper.getPreferences(source)
+      source is View -> PreferenceManager.getDefaultSharedPreferences(source.context)
+      source is Dialog -> PreferenceManager.getDefaultSharedPreferences(source.context)
       else -> throw IllegalArgumentException("Unable to find preferences on type ${source.javaClass.simpleName}")
     }
   }

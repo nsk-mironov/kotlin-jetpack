@@ -31,15 +31,15 @@ public class ResourcesVal<T : Any, V : Any>(
     private val source: Any,
     private val id: Int
 ) : LazyVal<T, V>({ desc, property ->
-  val resources = when (source) {
-    is ResourcesAware -> source.resources
-    is Resources -> source as Resources
-    is Context -> source.resources
-    is Fragment -> source.activity.resources
-    is android.support.v4.app.Fragment -> source.activity.resources
-    is android.support.v7.widget.RecyclerView.ViewHolder -> source.itemView.resources
-    is View -> source.resources
-    is Dialog -> source.context.resources
+  val resources = when {
+    source is ResourcesAware -> source.resources
+    source is Context -> source.resources
+    source is Fragment -> source.activity.resources
+    source is Resources -> source as Resources
+    source is View -> source.resources
+    SupportHelper.isFragment(source) -> SupportFragmentHelper.getResources(source)
+    SupportHelper.isHolder(source) -> SupportRecyclerHelper.getResources(source)
+    source is Dialog -> source.context.resources
     else -> throw IllegalArgumentException("Unable to find resources on type ${source.javaClass.simpleName}")
   }
 

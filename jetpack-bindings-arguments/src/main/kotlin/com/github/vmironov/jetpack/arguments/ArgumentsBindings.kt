@@ -127,7 +127,7 @@ private class ArgumentsVarDelegate<T, V>(
       kotlin.Enum::class.java.isAssignableFrom(clazz) -> bundle.getEnum(extra, clazz)
       java.lang.Enum::class.java.isAssignableFrom(clazz) -> bundle.getEnum(extra, clazz)
 
-      else -> throw UnsupportedOperationException()
+      else -> throw UnsupportedOperationException("Type ${clazz.name} is not supported")
     }
   }
 
@@ -158,30 +158,30 @@ private class ArgumentsVarDelegate<T, V>(
       kotlin.Enum::class.java.isAssignableFrom(clazz) -> bundle.putEnum(extra, value as Enum<*>)
       java.lang.Enum::class.java.isAssignableFrom(clazz) -> bundle.putEnum(extra, value as Enum<*>)
 
-      else -> throw UnsupportedOperationException()
+      else -> throw UnsupportedOperationException("Type ${clazz.name} is not supported")
     }
   }
 
   private fun onGetArgumentsFromSource(source: Any): Bundle? {
-    return when (source) {
-      is Bundle -> source
-      is Intent -> source.extras
-      is ArgumentsAware -> source.arguments
-      is Activity -> source.intent.extras
-      is Fragment -> source.arguments
-      is android.support.v4.app.Fragment -> source.arguments
+    return when {
+      source is ArgumentsAware -> source.arguments
+      SupportHelper.isFragment(source) -> SupportFragmentHelper.getArguments(source)
+      source is Activity -> source.intent.extras
+      source is Bundle -> source
+      source is Intent -> source.extras
+      source is Fragment -> source.arguments
       else -> throw IllegalArgumentException("Unable to get arguments on type ${source.javaClass.simpleName}")
     }
   }
 
   private fun onSetArgumentsToSource(source: Any, bundle: Bundle) {
-    when (source) {
-      is Bundle -> source.replaceExtras(bundle)
-      is Intent -> source.replaceExtras(bundle)
-      is ArgumentsAware -> source.arguments = bundle
-      is Activity -> source.intent.replaceExtras(bundle)
-      is Fragment -> source.arguments = bundle
-      is android.support.v4.app.Fragment -> source.arguments = bundle
+    when {
+      source is ArgumentsAware -> source.arguments = bundle
+      SupportHelper.isFragment(source) -> SupportFragmentHelper.setArguments(source, bundle)
+      source is Activity -> source.intent.replaceExtras(bundle)
+      source is Bundle -> source.replaceExtras(bundle)
+      source is Intent -> source.replaceExtras(bundle)
+      source is Fragment -> source.arguments = bundle
       else -> throw IllegalArgumentException("Unable to set arguments on type ${source.javaClass.simpleName}")
     }
   }
