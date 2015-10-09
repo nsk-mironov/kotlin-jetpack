@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlin.properties.ReadOnlyProperty
 
@@ -22,13 +21,9 @@ public interface ResourcesAware {
   public val resources: Resources
 }
 
-public inline fun <reified T : Any> ResourcesAware.bindResource(id: Int): ReadOnlyProperty<Any, T> = ResourcesVal(T::class.java, this, id)
-public inline fun <reified T : Any> Context.bindResource(id: Int): ReadOnlyProperty<Any, T> = ResourcesVal(T::class.java, this, id)
-public inline fun <reified T : Any> Fragment.bindResource(id: Int): ReadOnlyProperty<Any, T> = ResourcesVal(T::class.java, this, id)
-public inline fun <reified T : Any> android.support.v4.app.Fragment.bindResource(id: Int): ReadOnlyProperty<Any, T> = ResourcesVal(T::class.java, this, id)
-public inline fun <reified T : Any> RecyclerView.ViewHolder.bindResource(id: Int): ReadOnlyProperty<Any, T> = ResourcesVal(T::class.java, this, id)
-public inline fun <reified T : Any> View.bindResource(id: Int): ReadOnlyProperty<Any, T> = ResourcesVal(T::class.java, this, id)
-public inline fun <reified T : Any> Resources.bindResource(id: Int): ReadOnlyProperty<Any, T> = ResourcesVal(T::class.java, this, id)
+public inline fun <reified T : Any> Any.bindResource(id: Int): ReadOnlyProperty<Any, T> {
+  return ResourcesVal(T::class.java, this, id)
+}
 
 @Suppress("UNCHECKED_CAST")
 public class ResourcesVal<T : Any, V : Any>(

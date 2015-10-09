@@ -5,7 +5,6 @@ import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
@@ -14,21 +13,13 @@ public interface ArgumentsAware {
   public var arguments: Bundle?
 }
 
-public inline fun <reified T : Any> Bundle.bindArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T> = ArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> Intent.bindArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T> = ArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> ArgumentsAware.bindArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T> = ArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> Activity.bindArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T> = ArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> Fragment.bindArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T> = ArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> android.support.v4.app.Fragment.bindArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T> = ArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> RecyclerView.ViewHolder.bindArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T> = ArgumentsVar(T::class.java, this, name, default)
+public inline fun <reified T : Any> Any.bindArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T> {
+  return ArgumentsVar(T::class.java, this, name, default)
+}
 
-public inline fun <reified T : Any> Bundle.bindOptionalArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T?> = OptionalArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> Intent.bindOptionalArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T?> = OptionalArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> ArgumentsAware.bindOptionalArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T?> = OptionalArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> Activity.bindOptionalArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T?> = OptionalArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> Fragment.bindOptionalArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T?> = OptionalArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> android.support.v4.app.Fragment.bindOptionalArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T?> = OptionalArgumentsVar(T::class.java, this, name, default)
-public inline fun <reified T : Any> RecyclerView.ViewHolder.bindOptionalArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T?> = OptionalArgumentsVar(T::class.java, this, name, default)
+public inline fun <reified T : Any> Any.bindOptionalArgument(name: String? = null, default: T? = null): ReadWriteProperty<Any, T?> {
+  return OptionalArgumentsVar(T::class.java, this, name, default)
+}
 
 @Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
 public class ArgumentsVar<T, V>(

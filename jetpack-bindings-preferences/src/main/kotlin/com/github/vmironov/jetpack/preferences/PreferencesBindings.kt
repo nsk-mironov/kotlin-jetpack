@@ -22,67 +22,11 @@ public interface PreferencesAware {
   public val preferences: SharedPreferences
 }
 
-public inline fun <reified T : Any> PreferencesAware.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> Any.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, { default })
 }
 
-public inline fun <reified T : Any> SharedPreferences.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, { default })
-}
-
-public inline fun <reified T : Any> Fragment.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, { default })
-}
-
-public inline fun <reified T : Any> android.support.v4.app.Fragment.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, { default })
-}
-
-public inline fun <reified T : Any> RecyclerView.ViewHolder.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, { default })
-}
-
-public inline fun <reified T : Any> Context.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, { default })
-}
-
-public inline fun <reified T : Any> View.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, { default })
-}
-
-public inline fun <reified T : Any> Dialog.bindPreference(default: T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, { default })
-}
-
-public inline fun <reified T : Any> PreferencesAware.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, default)
-}
-
-public inline fun <reified T : Any> SharedPreferences.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, default)
-}
-
-public inline fun <reified T : Any> Fragment.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, default)
-}
-
-public inline fun <reified T : Any> android.support.v4.app.Fragment.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, default)
-}
-
-public inline fun <reified T : Any> RecyclerView.ViewHolder.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, default)
-}
-
-public inline fun <reified T : Any> Context.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, default)
-}
-
-public inline fun <reified T : Any> View.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
-  return PreferencesVar(T::class.java, this, name, default)
-}
-
-public inline fun <reified T : Any> Dialog.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
+public inline fun <reified T : Any> Any.bindPreference(noinline default: () -> T, name: String? = null): ReadWriteProperty<Any, T> {
   return PreferencesVar(T::class.java, this, name, default)
 }
 
@@ -101,6 +45,7 @@ public class PreferencesVar<T : Any, V : Any>(
       is android.support.v4.app.Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
       is Context -> PreferenceManager.getDefaultSharedPreferences(source)
       is View -> PreferenceManager.getDefaultSharedPreferences(source.context)
+      is Dialog -> PreferenceManager.getDefaultSharedPreferences(source.context)
       is RecyclerView.ViewHolder -> PreferenceManager.getDefaultSharedPreferences(source.itemView.context)
       else -> throw IllegalArgumentException("Unable to find preferences on type ${source.javaClass.simpleName}")
     }
