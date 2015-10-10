@@ -32,6 +32,18 @@ public inline fun <reified E : Enum<E>> Any.bindEnumPreference(noinline default:
   return PreferencesVar(EnumConverter(E::class.java), this, key, default)
 }
 
+public inline fun <reified V : Any> Any.bindOptionalPreference(key: String? = null): ReadWriteProperty<Any, V?> {
+  return OptionalPreferencesVar(IdentityConverter(V::class.java), this, key)
+}
+
+public inline fun <reified V : Any, reified P : Any> Any.bindOptionalPreference(converter: Converter<V, P>, key: String? = null): ReadWriteProperty<Any, V?> {
+  return OptionalPreferencesVar(converter, this, key)
+}
+
+public inline fun <reified E : Enum<E>> Any.bindOptionalEnumPreference(key: String? = null): ReadWriteProperty<Any, E?> {
+  return OptionalPreferencesVar(EnumConverter(E::class.java), this, key)
+}
+
 public interface PreferencesAware {
   public companion object {
     public operator fun invoke(factory: () -> SharedPreferences): PreferencesAware = object : PreferencesAware {
@@ -50,95 +62,128 @@ public interface Converter<V, P> {
   public fun toPreference(value: V): P
 }
 
-public class EnumConverter<E : Enum<E>>(val clazz: Class<E>) : Converter<E, String> {
-  override fun type(): Class<String> = String::class.java
-  override fun fromPreference(preference: String): E = java.lang.Enum.valueOf(clazz, preference)
-  override fun toPreference(value: E): String = value.name()
-}
-
 public class IdentityConverter<T>(val clazz: Class<T>) : Converter<T, T> {
   override fun type(): Class<T> = clazz
   override fun fromPreference(preference: T): T = preference
   override fun toPreference(value: T): T = value
 }
 
+public class EnumConverter<E : Enum<E>>(val clazz: Class<E>) : Converter<E, String> {
+  override fun type(): Class<String> = String::class.java
+  override fun fromPreference(preference: String): E = java.lang.Enum.valueOf(clazz, preference)
+  override fun toPreference(value: E): String = value.name()
+}
+
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
-public open class PreferencesVar<T : Any, V : Any, P : Any>(
+public class PreferencesVar<T : Any, V : Any, P : Any>(
     private val converter: Converter<V, P>,
     private val source: Any,
     private val key: String?,
     private val default: () -> V
 ) : ReadWriteProperty<T, V> {
-  private val property = onGetPropertyFromClass(converter.type())
+  private val preference = onGetPropertyFromClass(converter.type())
+
   private val preferences by lazy(LazyThreadSafetyMode.NONE) {
     onGetPreferencesFromSource(source)
   }
 
   override final operator fun get(thisRef: T, property: PropertyMetadata): V {
-    if (!preferences.contains(key ?: property.name)) {
+    val name = key ?: property.name
+
+    if (!preferences.contains(name)) {
       set(thisRef, property, default())
     }
 
-    return onGet(preferences, key ?: property.name)
+    return converter.fromPreference(preference.get(preferences, name) as P)
   }
 
   override final operator fun set(thisRef: T, property: PropertyMetadata, value: V) {
     preferences.edit().apply {
-      onSet(this, key ?: property.name, value)
+      preference.set(this, key ?: property.name, converter.toPreference(value))
       apply()
-    }
-  }
-
-  private fun onSet(editor: SharedPreferences.Editor, name: String, value: V) {
-    property.set(editor, name, converter.toPreference(value))
-  }
-
-  private fun onGet(preferences: SharedPreferences, name: String): V {
-    return converter.fromPreference(property.get(preferences, name) as P)
-  }
-
-  protected open fun onGetPropertyFromClass(clazz: Class<*>): PreferenceProperty<Any> {
-    return when (clazz) {
-      kotlin.Boolean::class.java -> BooleanProperty
-      kotlin.Float::class.java -> FloatProperty
-      kotlin.Int::class.java -> IntProperty
-      kotlin.Long::class.java -> LongProperty
-      kotlin.String::class.java -> StringProperty
-
-      java.lang.Boolean::class.java -> BooleanProperty
-      java.lang.Float::class.java -> FloatProperty
-      java.lang.Integer::class.java -> IntProperty
-      java.lang.Long::class.java -> LongProperty
-      java.lang.String::class.java -> StringProperty
-
-      else -> throw UnsupportedOperationException("Unsupported preference type \"${clazz.canonicalName}\"")
-    } as PreferenceProperty<Any>
-  }
-
-  protected open fun onGetPreferencesFromSource(source: Any): SharedPreferences {
-    return when {
-      source is SharedPreferences -> source
-      source is PreferencesAware -> source.preferences
-      source is Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
-      source is Context -> PreferenceManager.getDefaultSharedPreferences(source)
-
-      SupportHelper.isFragment(source) -> SupportFragmentHelper.getPreferences(source)
-      SupportHelper.isHolder(source) -> SupportRecyclerHelper.getPreferences(source)
-
-      source is View -> PreferenceManager.getDefaultSharedPreferences(source.context)
-      source is Dialog -> PreferenceManager.getDefaultSharedPreferences(source.context)
-
-      else -> throw IllegalArgumentException("Unable to find \"SharedPreferences\" instance on type \"${source.javaClass.simpleName}\"")
     }
   }
 }
 
-private interface PreferenceProperty<T> {
+@Suppress("UNCHECKED_CAST")
+public class OptionalPreferencesVar<T : Any, V : Any, P : Any>(
+    private val converter: Converter<V, P>,
+    private val source: Any,
+    private val key: String?
+) : ReadWriteProperty<T, V?> {
+  private val preference = onGetPropertyFromClass(converter.type())
+
+  private val preferences by lazy(LazyThreadSafetyMode.NONE) {
+    onGetPreferencesFromSource(source)
+  }
+
+  override operator fun get(thisRef: T, property: PropertyMetadata): V? {
+    val name = key ?: property.name
+
+    return if (preferences.contains(name)) {
+      converter.fromPreference(preference.get(preferences, name) as P)
+    } else {
+      null
+    }
+  }
+
+  override operator fun set(thisRef: T, property: PropertyMetadata, value: V?) {
+    preferences.edit().apply {
+      val name = key ?: property.name
+
+      if (value != null) {
+        preference.set(this, name, converter.toPreference(value))
+      } else {
+        remove(name)
+      }
+
+      apply()
+    }
+  }
+}
+
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
+private fun onGetPropertyFromClass(clazz: Class<*>): Preference<Any> {
+  return when (clazz) {
+    kotlin.Boolean::class.java -> BooleanPreference
+    kotlin.Float::class.java -> FloatPreference
+    kotlin.Int::class.java -> IntPreference
+    kotlin.Long::class.java -> LongPreference
+    kotlin.String::class.java -> StringPreference
+
+    java.lang.Boolean::class.java -> BooleanPreference
+    java.lang.Float::class.java -> FloatPreference
+    java.lang.Integer::class.java -> IntPreference
+    java.lang.Long::class.java -> LongPreference
+    java.lang.String::class.java -> StringPreference
+
+    else -> throw UnsupportedOperationException("Unsupported preference type \"${clazz.canonicalName}\"")
+  } as Preference<Any>
+}
+
+private fun onGetPreferencesFromSource(source: Any): SharedPreferences {
+  return when {
+    source is SharedPreferences -> source
+    source is PreferencesAware -> source.preferences
+    source is Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
+    source is Context -> PreferenceManager.getDefaultSharedPreferences(source)
+
+    SupportHelper.isFragment(source) -> SupportFragmentHelper.getPreferences(source)
+    SupportHelper.isHolder(source) -> SupportRecyclerHelper.getPreferences(source)
+
+    source is View -> PreferenceManager.getDefaultSharedPreferences(source.context)
+    source is Dialog -> PreferenceManager.getDefaultSharedPreferences(source.context)
+
+    else -> throw IllegalArgumentException("Unable to find \"SharedPreferences\" instance on type \"${source.javaClass.simpleName}\"")
+  }
+}
+
+private interface Preference<T> {
   public operator fun set(editor: SharedPreferences.Editor, name: String, value: T): Unit
   public operator fun get(preferences: SharedPreferences, name: String): T
 }
 
-private object BooleanProperty : PreferenceProperty<Boolean> {
+private object BooleanPreference : Preference<Boolean> {
   override fun set(editor: SharedPreferences.Editor, name: String, value: Boolean): Unit {
     editor.putBoolean(name, value)
   }
@@ -148,7 +193,7 @@ private object BooleanProperty : PreferenceProperty<Boolean> {
   }
 }
 
-private object FloatProperty : PreferenceProperty<Float> {
+private object FloatPreference : Preference<Float> {
   override fun set(editor: SharedPreferences.Editor, name: String, value: Float): Unit {
     editor.putFloat(name, value)
   }
@@ -158,7 +203,7 @@ private object FloatProperty : PreferenceProperty<Float> {
   }
 }
 
-private object IntProperty : PreferenceProperty<Int> {
+private object IntPreference : Preference<Int> {
   override fun set(editor: SharedPreferences.Editor, name: String, value: Int): Unit {
     editor.putInt(name, value)
   }
@@ -168,7 +213,7 @@ private object IntProperty : PreferenceProperty<Int> {
   }
 }
 
-private object LongProperty : PreferenceProperty<Long> {
+private object LongPreference : Preference<Long> {
   override fun set(editor: SharedPreferences.Editor, name: String, value: Long): Unit {
     editor.putLong(name, value)
   }
@@ -178,7 +223,7 @@ private object LongProperty : PreferenceProperty<Long> {
   }
 }
 
-private object StringProperty : PreferenceProperty<String> {
+private object StringPreference : Preference<String> {
   override fun set(editor: SharedPreferences.Editor, name: String, value: String): Unit {
     editor.putString(name, value)
   }
