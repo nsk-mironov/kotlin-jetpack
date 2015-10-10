@@ -8,28 +8,28 @@ import android.preference.PreferenceManager
 import android.view.View
 import kotlin.properties.ReadWriteProperty
 
-public inline fun <reified V : Any> Any.bindPreference(default: V, name: String? = null): ReadWriteProperty<Any, V> {
-  return PreferencesVar(IdentityConverter(V::class.java), this, name, { default })
+public inline fun <reified V : Any> Any.bindPreference(default: V, key: String? = null): ReadWriteProperty<Any, V> {
+  return PreferencesVar(IdentityConverter(V::class.java), this, key, { default })
 }
 
-public inline fun <reified V : Any> Any.bindPreference(noinline default: () -> V, name: String? = null): ReadWriteProperty<Any, V> {
-  return PreferencesVar(IdentityConverter(V::class.java), this, name, default)
+public inline fun <reified V : Any> Any.bindPreference(noinline default: () -> V, key: String? = null): ReadWriteProperty<Any, V> {
+  return PreferencesVar(IdentityConverter(V::class.java), this, key, default)
 }
 
-public inline fun <reified V : Any, reified P : Any> Any.bindPreference(default: V, converter: Converter<V, P>, name: String? = null): ReadWriteProperty<Any, V> {
-  return PreferencesVar(converter, this, name, { default })
+public inline fun <reified V : Any, reified P : Any> Any.bindPreference(default: V, converter: Converter<V, P>, key: String? = null): ReadWriteProperty<Any, V> {
+  return PreferencesVar(converter, this, key, { default })
 }
 
-public inline fun <reified V : Any, reified P : Any> Any.bindPreference(noinline default: () -> V, converter: Converter<V, P>, name: String? = null): ReadWriteProperty<Any, V> {
-  return PreferencesVar(converter, this, name, default)
+public inline fun <reified V : Any, reified P : Any> Any.bindPreference(noinline default: () -> V, converter: Converter<V, P>, key: String? = null): ReadWriteProperty<Any, V> {
+  return PreferencesVar(converter, this, key, default)
 }
 
-public inline fun <reified E : Enum<E>> Any.bindEnumPreference(default: E, name: String? = null): ReadWriteProperty<Any, E> {
-  return PreferencesVar(EnumConverter(E::class.java), this, name, { default })
+public inline fun <reified E : Enum<E>> Any.bindEnumPreference(default: E, key: String? = null): ReadWriteProperty<Any, E> {
+  return PreferencesVar(EnumConverter(E::class.java), this, key, { default })
 }
 
-public inline fun <reified E : Enum<E>> Any.bindEnumPreference(noinline default: () -> E, name: String? = null): ReadWriteProperty<Any, E> {
-  return PreferencesVar(EnumConverter(E::class.java), this, name, default)
+public inline fun <reified E : Enum<E>> Any.bindEnumPreference(noinline default: () -> E, key: String? = null): ReadWriteProperty<Any, E> {
+  return PreferencesVar(EnumConverter(E::class.java), this, key, default)
 }
 
 public interface PreferencesAware {
@@ -66,7 +66,7 @@ public class IdentityConverter<T>(val clazz: Class<T>) : Converter<T, T> {
 public open class PreferencesVar<T : Any, V : Any, P : Any>(
     private val converter: Converter<V, P>,
     private val source: Any,
-    private val name: String?,
+    private val key: String?,
     private val default: () -> V
 ) : ReadWriteProperty<T, V> {
   private val property = onGetPropertyFromClass(converter.type())
@@ -75,16 +75,16 @@ public open class PreferencesVar<T : Any, V : Any, P : Any>(
   }
 
   override final operator fun get(thisRef: T, property: PropertyMetadata): V {
-    if (!preferences.contains(name ?: property.name)) {
+    if (!preferences.contains(key ?: property.name)) {
       set(thisRef, property, default())
     }
 
-    return onGet(preferences, name ?: property.name)
+    return onGet(preferences, key ?: property.name)
   }
 
   override final operator fun set(thisRef: T, property: PropertyMetadata, value: V) {
     preferences.edit().apply {
-      onSet(this, name ?: property.name, value)
+      onSet(this, key ?: property.name, value)
       apply()
     }
   }
