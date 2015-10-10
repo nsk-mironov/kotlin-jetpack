@@ -9,39 +9,39 @@ import android.view.View
 import kotlin.properties.ReadWriteProperty
 
 public inline fun <reified V : Any> Any.bindPreference(default: V, key: String? = null): ReadWriteProperty<Any, V> {
-  return PreferencesVar(IdentityConverter(V::class.java), this, key, { default })
+  return PreferencesVar(IdentityAdapter(V::class.java), this, key, { default })
 }
 
 public inline fun <reified V : Any> Any.bindPreference(noinline default: () -> V, key: String? = null): ReadWriteProperty<Any, V> {
-  return PreferencesVar(IdentityConverter(V::class.java), this, key, default)
+  return PreferencesVar(IdentityAdapter(V::class.java), this, key, default)
 }
 
-public inline fun <reified V : Any, reified P : Any> Any.bindPreference(default: V, converter: Converter<V, P>, key: String? = null): ReadWriteProperty<Any, V> {
-  return PreferencesVar(converter, this, key, { default })
+public inline fun <reified V : Any, reified P : Any> Any.bindPreference(default: V, adapter: Adapter<V, P>, key: String? = null): ReadWriteProperty<Any, V> {
+  return PreferencesVar(adapter, this, key, { default })
 }
 
-public inline fun <reified V : Any, reified P : Any> Any.bindPreference(noinline default: () -> V, converter: Converter<V, P>, key: String? = null): ReadWriteProperty<Any, V> {
-  return PreferencesVar(converter, this, key, default)
+public inline fun <reified V : Any, reified P : Any> Any.bindPreference(noinline default: () -> V, adapter: Adapter<V, P>, key: String? = null): ReadWriteProperty<Any, V> {
+  return PreferencesVar(adapter, this, key, default)
 }
 
 public inline fun <reified E : Enum<E>> Any.bindEnumPreference(default: E, key: String? = null): ReadWriteProperty<Any, E> {
-  return PreferencesVar(EnumConverter(E::class.java), this, key, { default })
+  return PreferencesVar(EnumAdapter(E::class.java), this, key, { default })
 }
 
 public inline fun <reified E : Enum<E>> Any.bindEnumPreference(noinline default: () -> E, key: String? = null): ReadWriteProperty<Any, E> {
-  return PreferencesVar(EnumConverter(E::class.java), this, key, default)
+  return PreferencesVar(EnumAdapter(E::class.java), this, key, default)
 }
 
 public inline fun <reified V : Any> Any.bindOptionalPreference(key: String? = null): ReadWriteProperty<Any, V?> {
-  return OptionalPreferencesVar(IdentityConverter(V::class.java), this, key)
+  return OptionalPreferencesVar(IdentityAdapter(V::class.java), this, key)
 }
 
-public inline fun <reified V : Any, reified P : Any> Any.bindOptionalPreference(converter: Converter<V, P>, key: String? = null): ReadWriteProperty<Any, V?> {
-  return OptionalPreferencesVar(converter, this, key)
+public inline fun <reified V : Any, reified P : Any> Any.bindOptionalPreference(adapter: Adapter<V, P>, key: String? = null): ReadWriteProperty<Any, V?> {
+  return OptionalPreferencesVar(adapter, this, key)
 }
 
 public inline fun <reified E : Enum<E>> Any.bindOptionalEnumPreference(key: String? = null): ReadWriteProperty<Any, E?> {
-  return OptionalPreferencesVar(EnumConverter(E::class.java), this, key)
+  return OptionalPreferencesVar(EnumAdapter(E::class.java), this, key)
 }
 
 public interface PreferencesAware {
@@ -56,19 +56,19 @@ public interface PreferencesAware {
   public val preferences: SharedPreferences
 }
 
-public interface Converter<V, P> {
+public interface Adapter<V, P> {
   public fun type(): Class<P>
   public fun fromPreference(preference: P): V
   public fun toPreference(value: V): P
 }
 
-public class IdentityConverter<T>(val clazz: Class<T>) : Converter<T, T> {
+public class IdentityAdapter<T>(val clazz: Class<T>) : Adapter<T, T> {
   override fun type(): Class<T> = clazz
   override fun fromPreference(preference: T): T = preference
   override fun toPreference(value: T): T = value
 }
 
-public class EnumConverter<E : Enum<E>>(val clazz: Class<E>) : Converter<E, String> {
+public class EnumAdapter<E : Enum<E>>(val clazz: Class<E>) : Adapter<E, String> {
   override fun type(): Class<String> = String::class.java
   override fun fromPreference(preference: String): E = java.lang.Enum.valueOf(clazz, preference)
   override fun toPreference(value: E): String = value.name()
@@ -76,12 +76,12 @@ public class EnumConverter<E : Enum<E>>(val clazz: Class<E>) : Converter<E, Stri
 
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
 public class PreferencesVar<T : Any, V : Any, P : Any>(
-    private val converter: Converter<V, P>,
+    private val adapter: Adapter<V, P>,
     private val source: Any,
     private val key: String?,
     private val default: () -> V
 ) : ReadWriteProperty<T, V> {
-  private val preference = onGetPropertyFromClass(converter.type())
+  private val preference = onGetPropertyFromClass(adapter.type())
 
   private val preferences by lazy(LazyThreadSafetyMode.NONE) {
     onGetPreferencesFromSource(source)
@@ -94,12 +94,12 @@ public class PreferencesVar<T : Any, V : Any, P : Any>(
       set(thisRef, property, default())
     }
 
-    return converter.fromPreference(preference.get(preferences, name) as P)
+    return adapter.fromPreference(preference.get(preferences, name) as P)
   }
 
   override final operator fun set(thisRef: T, property: PropertyMetadata, value: V) {
     preferences.edit().apply {
-      preference.set(this, key ?: property.name, converter.toPreference(value))
+      preference.set(this, key ?: property.name, adapter.toPreference(value))
       apply()
     }
   }
@@ -107,11 +107,11 @@ public class PreferencesVar<T : Any, V : Any, P : Any>(
 
 @Suppress("UNCHECKED_CAST")
 public class OptionalPreferencesVar<T : Any, V : Any, P : Any>(
-    private val converter: Converter<V, P>,
+    private val adapter: Adapter<V, P>,
     private val source: Any,
     private val key: String?
 ) : ReadWriteProperty<T, V?> {
-  private val preference = onGetPropertyFromClass(converter.type())
+  private val preference = onGetPropertyFromClass(adapter.type())
 
   private val preferences by lazy(LazyThreadSafetyMode.NONE) {
     onGetPreferencesFromSource(source)
@@ -121,7 +121,7 @@ public class OptionalPreferencesVar<T : Any, V : Any, P : Any>(
     val name = key ?: property.name
 
     return if (preferences.contains(name)) {
-      converter.fromPreference(preference.get(preferences, name) as P)
+      adapter.fromPreference(preference.get(preferences, name) as P)
     } else {
       null
     }
@@ -132,7 +132,7 @@ public class OptionalPreferencesVar<T : Any, V : Any, P : Any>(
       val name = key ?: property.name
 
       if (value != null) {
-        preference.set(this, name, converter.toPreference(value))
+        preference.set(this, name, adapter.toPreference(value))
       } else {
         remove(name)
       }
