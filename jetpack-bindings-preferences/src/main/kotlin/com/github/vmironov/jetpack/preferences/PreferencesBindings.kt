@@ -104,14 +104,12 @@ public open class PreferencesVar<T : Any, V : Any, P : Any>(
       kotlin.Int::class.java -> IntProperty
       kotlin.Long::class.java -> LongProperty
       kotlin.String::class.java -> StringProperty
-      kotlin.Set::class.java -> SetProperty
 
       java.lang.Boolean::class.java -> BooleanProperty
       java.lang.Float::class.java -> FloatProperty
       java.lang.Integer::class.java -> IntProperty
       java.lang.Long::class.java -> LongProperty
       java.lang.String::class.java -> StringProperty
-      java.util.Set::class.java -> SetProperty
 
       else -> throw UnsupportedOperationException("Unsupported preference type \"${clazz.canonicalName}\"")
     } as PreferenceProperty<Any>
@@ -187,16 +185,5 @@ private object StringProperty : PreferenceProperty<String> {
 
   override fun get(preferences: SharedPreferences, name: String): String {
     return preferences.getString(name, "")
-  }
-}
-
-@Suppress("UNCHECKED_CAST")
-private object SetProperty : PreferenceProperty<Set<*>> {
-  override fun set(editor: SharedPreferences.Editor, name: String, value: Set<*>): Unit {
-    editor.putStringSet(name, value as Set<String>)
-  }
-
-  override fun get(preferences: SharedPreferences, name: String): Set<*> {
-    return preferences.getStringSet(name, emptySet())
   }
 }
