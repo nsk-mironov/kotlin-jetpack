@@ -9,7 +9,7 @@ import junit.framework.Assert
 public class ArgumentBindingsTest : AndroidTestCase() {
   public fun testExplicitRequiredBindings() {
     class ArgumentsFragment : Fragment() {
-      var integer by bindArgument<Int>(default = 12)
+      var integer by bindArgument(default = 12)
       var boolean by bindArgument<Boolean>()
       var string by bindArgument<String>()
       var long by bindArgument<Long>()
@@ -65,12 +65,12 @@ public class ArgumentBindingsTest : AndroidTestCase() {
 
   public fun testRequiredBindingsWithDefaultsWhenArgumentsMissedWithoutBundle() {
     class ArgumentsFragment : Fragment() {
-      val integer by bindArgument<Int>("integer", 4)
-      val boolean by bindArgument<Boolean>("boolean", true)
-      val string by bindArgument<String>("string", "flutter shy")
-      val long by bindArgument<Long>("long", 7L)
-      val double by bindArgument<Double>("double", 1.23)
-      val float by bindArgument<Float>("float", 4.56f)
+      val integer by bindArgument("integer", 4)
+      val boolean by bindArgument("boolean", true)
+      val string by bindArgument("string", "flutter shy")
+      val long by bindArgument("long", 7L)
+      val double by bindArgument("double", 1.23)
+      val float by bindArgument("float", 4.56f)
     }
 
     val fragment = ArgumentsFragment().apply {
@@ -87,12 +87,12 @@ public class ArgumentBindingsTest : AndroidTestCase() {
 
   public fun testRequiredBindingsWithDefaultsWhenArgumentsMissedWithEmptyBundle() {
     class ArgumentsFragment : Fragment() {
-      val integer by bindArgument<Int>("integer", 4)
-      val boolean by bindArgument<Boolean>("boolean", true)
-      val string by bindArgument<String>("string", "flutter shy")
-      val long by bindArgument<Long>("long", 7L)
-      val double by bindArgument<Double>("double", 1.23)
-      val float by bindArgument<Float>("float", 4.56f)
+      val integer by bindArgument("integer", 4)
+      val boolean by bindArgument("boolean", true)
+      val string by bindArgument("string", "flutter shy")
+      val long by bindArgument("long", 7L)
+      val double by bindArgument("double", 1.23)
+      val float by bindArgument("float", 4.56f)
     }
 
     val fragment = ArgumentsFragment().apply {
@@ -109,12 +109,12 @@ public class ArgumentBindingsTest : AndroidTestCase() {
 
   public fun testRequiredBindingsWithDefaultsWhenArgumentsSet() {
     class ArgumentsFragment : Fragment() {
-      val integer by bindArgument<Int>("integer", 4)
-      val boolean by bindArgument<Boolean>("boolean", true)
-      val string by bindArgument<String>("string", "flutter shy")
-      val long by bindArgument<Long>("long", 7L)
-      val double by bindArgument<Double>("double", 1.23)
-      val float by bindArgument<Float>("float", 4.56f)
+      val integer by bindArgument("integer", 4)
+      val boolean by bindArgument("boolean", true)
+      val string by bindArgument("string", "flutter shy")
+      val long by bindArgument("long", 7L)
+      val double by bindArgument("double", 1.23)
+      val float by bindArgument("float", 4.56f)
     }
 
     val fragment = ArgumentsFragment().apply {
