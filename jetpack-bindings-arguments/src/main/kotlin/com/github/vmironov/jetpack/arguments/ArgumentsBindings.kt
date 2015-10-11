@@ -157,6 +157,7 @@ private fun <T> createTypeAdapterFor(clazz: Class<T>): Adapter<T> {
     typed(java.lang.String::class.java) -> StringAdapter
     typed(java.lang.CharSequence::class.java) -> CharSequenceAdapter
     typed(java.lang.Float::class.java) -> FloatAdapter
+    typed(java.lang.Enum::class.java) -> EnumAdapter(clazz as Class<Enum<*>>)
 
     typed(Parcelable::class.java) -> ParcelableAdapter
     typed(Serializable::class.java) -> SerializableAdapter
