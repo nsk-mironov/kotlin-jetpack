@@ -65,25 +65,18 @@ private class ArgumentsVarDelegate<T, V>(
     private val name: String?,
     private val default: V?
 ) : ReadWriteProperty<T, V?> {
-  private var value: Any? = null
-  private var dirty = true
-
   override operator fun get(thisRef: T, property: PropertyMetadata): V? {
-    if (dirty) {
-      val extra = name ?: property.name
-      val bundle = getArgumentsFromSource(source) ?: Bundle.EMPTY
+    val extra = name ?: property.name
+    val bundle = getArgumentsFromSource(source) ?: Bundle.EMPTY
 
-      value = if (bundle.containsKey(extra)) {
-        adapter.get(bundle, extra)
-      } else {
-        null
-      }
-
-      dirty = false
+    val value = if (bundle.containsKey(extra)) {
+      adapter.get(bundle, extra)
+    } else {
+      null
     }
 
     @Suppress("UNCHECKED_CAST")
-    return (value ?: default) as V?
+    return value ?: default
   }
 
   override operator fun set(thisRef: T, property: PropertyMetadata, value: V?) {
@@ -100,8 +93,6 @@ private class ArgumentsVarDelegate<T, V>(
     } else {
       target.remove(extra)
     }
-
-    dirty = true
   }
 
   private fun getArgumentsFromSource(source: Any): Bundle? {
