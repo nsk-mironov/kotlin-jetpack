@@ -21,7 +21,7 @@ ext {
   projectCompileSdkVersion = 23
   projectBuildToolsVersion = "23.0.1"
 
-  projectMinSdkVersion = 16
+  projectMinSdkVersion = 14
   projectTargetSdkVersion = 23
 
   supportVersion = "23.0.1"
