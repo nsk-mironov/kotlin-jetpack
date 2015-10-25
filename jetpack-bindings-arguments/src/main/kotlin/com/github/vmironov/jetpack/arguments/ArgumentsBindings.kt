@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 public interface ArgumentsAware {
   public var arguments: Bundle?
@@ -30,12 +31,12 @@ public class ArgumentsVar<T, V>(
 ) : ReadWriteProperty<T, V> {
   private val delegate = ArgumentsVarDelegate<T, V>(adapter ?: createTypeAdapterFor(clazz), source, name, default)
 
-  override operator fun get(thisRef: T, property: PropertyMetadata): V {
-    return delegate.get(thisRef, property) ?: throw IllegalArgumentException("Key ${name ?: property.name} is missed")
+  override operator fun getValue(thisRef: T, property: KProperty<*>): V {
+    return delegate.getValue(thisRef, property) ?: throw IllegalArgumentException("Key ${name ?: property.name} is missed")
   }
 
-  override operator fun set(thisRef: T, property: PropertyMetadata, value: V) {
-    delegate.set(thisRef, property, value)
+  override operator fun setValue(thisRef: T, property: KProperty<*>, value: V) {
+    delegate.setValue(thisRef, property, value)
   }
 }
 
@@ -49,12 +50,12 @@ public class OptionalArgumentsVar<T, V>(
 ) : ReadWriteProperty<T, V?> {
   private val delegate = ArgumentsVarDelegate<T, V>(adapter ?: createTypeAdapterFor(clazz), source, name, default)
 
-  override operator fun get(thisRef: T, property: PropertyMetadata): V? {
-    return delegate.get(thisRef, property)
+  override operator fun getValue(thisRef: T, property: KProperty<*>): V? {
+    return delegate.getValue(thisRef, property)
   }
 
-  override operator fun set(thisRef: T, property: PropertyMetadata, value: V?) {
-    delegate.set(thisRef, property, value)
+  override operator fun setValue(thisRef: T, property: KProperty<*>, value: V?) {
+    delegate.setValue(thisRef, property, value)
   }
 }
 
@@ -65,12 +66,13 @@ private class ArgumentsVarDelegate<T, V>(
     private val name: String?,
     private val default: V?
 ) : ReadWriteProperty<T, V?> {
-  override operator fun get(thisRef: T, property: PropertyMetadata): V? {
+
+  override operator fun getValue(thisRef: T, property: KProperty<*>): V? {
     val extra = name ?: property.name
     val bundle = getArgumentsFromSource(source) ?: Bundle.EMPTY
 
     val value = if (bundle.containsKey(extra)) {
-      adapter.get(bundle, extra)
+      adapter[bundle, extra]
     } else {
       null
     }
@@ -79,7 +81,7 @@ private class ArgumentsVarDelegate<T, V>(
     return value ?: default
   }
 
-  override operator fun set(thisRef: T, property: PropertyMetadata, value: V?) {
+  override operator fun setValue(thisRef: T, property: KProperty<*>, value: V?) {
     val bundle = getArgumentsFromSource(source)
     val target = bundle ?: Bundle()
     val extra = name ?: property.name
@@ -157,7 +159,7 @@ private fun <T> createTypeAdapterFor(clazz: Class<T>): Adapter<T> {
   } as Adapter<T>
 }
 
-private interface Adapter<T> {
+public interface Adapter<T> {
   public operator fun set(bundle: Bundle, name: String, value: T): Unit
   public operator fun get(bundle: Bundle, name: String): T
 }
@@ -234,12 +236,12 @@ private object FloatAdapter : Adapter<Float> {
 
 private class EnumAdapter(val clazz: Class<Enum<*>>) : Adapter<Enum<*>> {
   override operator fun set(bundle: Bundle, name: String, value: Enum<*>) {
-    bundle.putString(name, value.name())
+    bundle.putString(name, value.name)
   }
 
   override operator fun get(bundle: Bundle, name: String): Enum<*> {
     return clazz.enumConstants.firstOrNull {
-      it.name() == bundle.getString(name)
+      it.name == bundle.getString(name)
     } ?: throw IllegalArgumentException("\"$name\" is not a constant in \"${clazz.name}\"")
   }
 }

@@ -8,6 +8,7 @@ import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.view.View
 import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 public inline fun <reified T : Any> Any.bindResource(id: Int): ReadOnlyProperty<Any, T> {
   return ResourcesVal(T::class.java, this, id)
@@ -33,7 +34,7 @@ public class ResourcesVal<T : Any, V : Any>(
 ) : ReadOnlyProperty<T, V> {
   private var value: Any? = Unit
 
-  override operator fun get(thisRef: T, property: PropertyMetadata): V {
+  override operator fun getValue(thisRef: T, property: KProperty<*>): V {
     if (value === Unit) {
       value = onLazyGetValue(when {
         source is ResourcesAware -> source.resources

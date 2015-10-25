@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.view.View
 import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 public inline fun <reified V : Any> Any.bindPreference(default: V, key: String? = null): ReadWriteProperty<Any, V> {
   return PreferencesVar(IdentityAdapter(V::class.java), this, key, { default })
@@ -71,7 +72,7 @@ public class IdentityAdapter<T>(val clazz: Class<T>) : Adapter<T, T> {
 public class EnumAdapter<E : Enum<E>>(val clazz: Class<E>) : Adapter<E, String> {
   override fun type(): Class<String> = String::class.java
   override fun fromPreference(preference: String): E = java.lang.Enum.valueOf(clazz, preference)
-  override fun toPreference(value: E): String = value.name()
+  override fun toPreference(value: E): String = value.name
 }
 
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
@@ -87,17 +88,17 @@ public class PreferencesVar<T : Any, V : Any, P : Any>(
     onGetPreferencesFromSource(source)
   }
 
-  override final operator fun get(thisRef: T, property: PropertyMetadata): V {
+  override final operator fun getValue(thisRef: T, property: KProperty<*>): V {
     val name = key ?: property.name
 
     if (!preferences.contains(name)) {
-      set(thisRef, property, default())
+      setValue(thisRef, property, default())
     }
 
-    return adapter.fromPreference(preference.get(preferences, name) as P)
+    return adapter.fromPreference(preference[preferences, name] as P)
   }
 
-  override final operator fun set(thisRef: T, property: PropertyMetadata, value: V) {
+  override final operator fun setValue(thisRef: T, property: KProperty<*>, value: V) {
     preferences.edit().apply {
       preference.set(this, key ?: property.name, adapter.toPreference(value))
       apply()
@@ -117,17 +118,17 @@ public class OptionalPreferencesVar<T : Any, V : Any, P : Any>(
     onGetPreferencesFromSource(source)
   }
 
-  override operator fun get(thisRef: T, property: PropertyMetadata): V? {
+  override operator fun getValue(thisRef: T, property: KProperty<*>): V? {
     val name = key ?: property.name
 
     return if (preferences.contains(name)) {
-      adapter.fromPreference(preference.get(preferences, name) as P)
+      adapter.fromPreference(preference[preferences, name] as P)
     } else {
       null
     }
   }
 
-  override operator fun set(thisRef: T, property: PropertyMetadata, value: V?) {
+  override operator fun setValue(thisRef: T, property: KProperty<*>, value: V?) {
     preferences.edit().apply {
       val name = key ?: property.name
 
