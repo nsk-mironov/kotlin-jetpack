@@ -27,6 +27,4 @@ dependencies {
   compile project(":jetpack-bindings-arguments")
   compile project(":jetpack-bindings-preferences")
   compile project(":jetpack-bindings-resources")
-
-  compile "com.google.code.gson:gson:$gsonVersion"
 }
