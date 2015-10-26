@@ -12,6 +12,12 @@ buildscript {
 }
 
 allprojects {
+  buildscript {
+    repositories {
+      jcenter()
+    }
+  }
+
   repositories {
     jcenter()
   }
@@ -25,4 +31,5 @@ ext {
   projectTargetSdkVersion = 23
 
   supportVersion = "23.0.1"
+  gsonVersion = "2.4"
 }

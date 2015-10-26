@@ -1,3 +1,4 @@
 include ':jetpack-bindings-arguments'
 include ':jetpack-bindings-preferences'
 include ':jetpack-bindings-resources'
+include ':jetpack-bindings-sample'

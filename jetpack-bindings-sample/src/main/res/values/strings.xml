@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Jetpack Sample</string>
+
+  <string name="first_name_label">First name:</string>
+  <string name="first_name_hint">Enter your first name</string>
+
+  <string name="last_name_label">Last name:</string>
+  <string name="last_name_hint">Enter your last name</string>
+
+  <string name="action_done">Done</string>
+</resources>
