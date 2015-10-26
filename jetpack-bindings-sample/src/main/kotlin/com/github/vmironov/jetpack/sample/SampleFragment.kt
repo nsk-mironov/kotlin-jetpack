@@ -78,8 +78,8 @@ public class SampleFragment : Fragment() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
       R.id.menu_done -> {
-        firstNameValue = first_name_input.text.toString()
-        lastNameValue = last_name_input.text.toString()
+        firstNameValue = first_name_input.text?.toString()
+        lastNameValue = last_name_input.text?.toString()
       }
     }
 
