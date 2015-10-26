@@ -1,5 +1,3 @@
-include ':jetpack-extensions-intents'
-include ':jetpack-extensions-bundles'
 include ':jetpack-bindings-arguments'
-include ':jetpack-bindings-resources'
 include ':jetpack-bindings-preferences'
+include ':jetpack-bindings-resources'
