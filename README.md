@@ -141,13 +141,13 @@ public class ResourcesFragment : Fragment() {
   val boolean by bindResource<Boolean>(R.boolean.boolean_resource)
 
   // Color resource binding
-  val color by bingColorResource<Int>(R.color.color_resource)
+  val color by bindResource<Int>(R.color.color_resource)
 
   // Drawable resource binding #1
-  val bitmap by bindDrawableResource<BitmapDrawable>(R.drawable.drawable_bitmap)
+  val bitmap by bindResource<BitmapDrawable>(R.drawable.drawable_bitmap)
   
   // Drawable resource binding #2
-  val vector by bindDrawableResource<VectorDrawable>(R.drawable.drawable_vector)
+  val vector by bindResource<VectorDrawable>(R.drawable.drawable_vector)
 
   // Dimension resource binding
   val dimension by bindResource<Int>(R.dimen.dimen_resource)
