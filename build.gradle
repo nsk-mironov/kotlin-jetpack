@@ -30,5 +30,5 @@ ext {
   projectMinSdkVersion = 14
   projectTargetSdkVersion = 23
 
-  supportVersion = "23.0.1"
+  supportVersion = "23.1.1"
 }
