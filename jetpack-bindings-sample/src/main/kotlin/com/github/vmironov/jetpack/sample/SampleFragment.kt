@@ -8,7 +8,7 @@ import android.view.*
 import com.github.vmironov.jetpack.preferences.bindOptionalPreference
 import com.github.vmironov.jetpack.resources.bindResource
 
-import kotlinx.android.synthetic.fragment_sample.*
+import kotlinx.android.synthetic.main.fragment_sample.*
 
 public class SampleFragment : Fragment() {
   private var firstNameValue by bindOptionalPreference<String>()
