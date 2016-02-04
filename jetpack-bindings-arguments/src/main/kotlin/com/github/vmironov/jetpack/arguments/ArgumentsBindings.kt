@@ -9,20 +9,19 @@ import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-public interface ArgumentsAware {
-  public var arguments: Bundle?
+interface ArgumentsAware {
+  var arguments: Bundle?
 }
 
-public inline fun <reified T : Any> Any.bindArgument(name: String? = null, default: T? = null, adapter: Adapter<T>? = null): ReadWriteProperty<Any, T> {
+inline fun <reified T : Any> Any.bindArgument(name: String? = null, default: T? = null, adapter: Adapter<T>? = null): ReadWriteProperty<Any, T> {
   return ArgumentsVar(T::class.java, adapter, this, name, default)
 }
 
-public inline fun <reified T : Any> Any.bindOptionalArgument(name: String? = null, default: T? = null, adapter: Adapter<T>? = null): ReadWriteProperty<Any, T?> {
+inline fun <reified T : Any> Any.bindOptionalArgument(name: String? = null, default: T? = null, adapter: Adapter<T>? = null): ReadWriteProperty<Any, T?> {
   return OptionalArgumentsVar(T::class.java, adapter, this, name, default)
 }
 
-@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
-public class ArgumentsVar<T, V>(
+@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND") class ArgumentsVar<T, V>(
     private val clazz: Class<V>,
     private val adapter: Adapter<V>?,
     private val source: Any,
@@ -40,8 +39,7 @@ public class ArgumentsVar<T, V>(
   }
 }
 
-@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
-public class OptionalArgumentsVar<T, V>(
+@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND") class OptionalArgumentsVar<T, V>(
     private val clazz: Class<V>,
     private val adapter: Adapter<V>?,
     private val source: Any,
@@ -159,9 +157,9 @@ private fun <T> createTypeAdapterFor(clazz: Class<T>): Adapter<T> {
   } as Adapter<T>
 }
 
-public interface Adapter<T> {
-  public operator fun set(bundle: Bundle, name: String, value: T): Unit
-  public operator fun get(bundle: Bundle, name: String): T
+interface Adapter<T> {
+  operator fun set(bundle: Bundle, name: String, value: T): Unit
+  operator fun get(bundle: Bundle, name: String): T
 }
 
 private object BooleanAdapter : Adapter<Boolean> {

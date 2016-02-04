@@ -44,5 +44,3 @@ internal object SupportRecyclerHelper {
     return PreferenceManager.getDefaultSharedPreferences((target as android.support.v7.widget.RecyclerView.ViewHolder).itemView.context)
   }
 }
-
-

@@ -9,74 +9,73 @@ import android.view.View
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-public inline fun <reified V : Any> Any.bindPreference(default: V, key: String? = null): ReadWriteProperty<Any, V> {
+inline fun <reified V : Any> Any.bindPreference(default: V, key: String? = null): ReadWriteProperty<Any, V> {
   return PreferencesVar(IdentityAdapter(V::class.java), this, key, { default })
 }
 
-public inline fun <reified V : Any> Any.bindPreference(noinline default: () -> V, key: String? = null): ReadWriteProperty<Any, V> {
+inline fun <reified V : Any> Any.bindPreference(noinline default: () -> V, key: String? = null): ReadWriteProperty<Any, V> {
   return PreferencesVar(IdentityAdapter(V::class.java), this, key, default)
 }
 
-public inline fun <reified V : Any, reified P : Any> Any.bindPreference(default: V, adapter: Adapter<V, P>, key: String? = null): ReadWriteProperty<Any, V> {
+inline fun <reified V : Any, reified P : Any> Any.bindPreference(default: V, adapter: Adapter<V, P>, key: String? = null): ReadWriteProperty<Any, V> {
   return PreferencesVar(adapter, this, key, { default })
 }
 
-public inline fun <reified V : Any, reified P : Any> Any.bindPreference(noinline default: () -> V, adapter: Adapter<V, P>, key: String? = null): ReadWriteProperty<Any, V> {
+inline fun <reified V : Any, reified P : Any> Any.bindPreference(noinline default: () -> V, adapter: Adapter<V, P>, key: String? = null): ReadWriteProperty<Any, V> {
   return PreferencesVar(adapter, this, key, default)
 }
 
-public inline fun <reified E : Enum<E>> Any.bindEnumPreference(default: E, key: String? = null): ReadWriteProperty<Any, E> {
+inline fun <reified E : Enum<E>> Any.bindEnumPreference(default: E, key: String? = null): ReadWriteProperty<Any, E> {
   return PreferencesVar(EnumAdapter(E::class.java), this, key, { default })
 }
 
-public inline fun <reified E : Enum<E>> Any.bindEnumPreference(noinline default: () -> E, key: String? = null): ReadWriteProperty<Any, E> {
+inline fun <reified E : Enum<E>> Any.bindEnumPreference(noinline default: () -> E, key: String? = null): ReadWriteProperty<Any, E> {
   return PreferencesVar(EnumAdapter(E::class.java), this, key, default)
 }
 
-public inline fun <reified V : Any> Any.bindOptionalPreference(key: String? = null): ReadWriteProperty<Any, V?> {
+inline fun <reified V : Any> Any.bindOptionalPreference(key: String? = null): ReadWriteProperty<Any, V?> {
   return OptionalPreferencesVar(IdentityAdapter(V::class.java), this, key)
 }
 
-public inline fun <reified V : Any, reified P : Any> Any.bindOptionalPreference(adapter: Adapter<V, P>, key: String? = null): ReadWriteProperty<Any, V?> {
+inline fun <reified V : Any, reified P : Any> Any.bindOptionalPreference(adapter: Adapter<V, P>, key: String? = null): ReadWriteProperty<Any, V?> {
   return OptionalPreferencesVar(adapter, this, key)
 }
 
-public inline fun <reified E : Enum<E>> Any.bindOptionalEnumPreference(key: String? = null): ReadWriteProperty<Any, E?> {
+inline fun <reified E : Enum<E>> Any.bindOptionalEnumPreference(key: String? = null): ReadWriteProperty<Any, E?> {
   return OptionalPreferencesVar(EnumAdapter(E::class.java), this, key)
 }
 
-public interface PreferencesAware {
-  public companion object {
-    public operator fun invoke(factory: () -> SharedPreferences): PreferencesAware = object : PreferencesAware {
+interface PreferencesAware {
+  companion object {
+    operator fun invoke(factory: () -> SharedPreferences): PreferencesAware = object : PreferencesAware {
       override val preferences: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
         factory()
       }
     }
   }
 
-  public val preferences: SharedPreferences
+  val preferences: SharedPreferences
 }
 
-public interface Adapter<V, P> {
-  public fun type(): Class<P>
-  public fun fromPreference(preference: P): V
-  public fun toPreference(value: V): P
+interface Adapter<V, P> {
+  fun type(): Class<P>
+  fun fromPreference(preference: P): V
+  fun toPreference(value: V): P
 }
 
-public class IdentityAdapter<T>(val clazz: Class<T>) : Adapter<T, T> {
+class IdentityAdapter<T>(val clazz: Class<T>) : Adapter<T, T> {
   override fun type(): Class<T> = clazz
   override fun fromPreference(preference: T): T = preference
   override fun toPreference(value: T): T = value
 }
 
-public class EnumAdapter<E : Enum<E>>(val clazz: Class<E>) : Adapter<E, String> {
+class EnumAdapter<E : Enum<E>>(val clazz: Class<E>) : Adapter<E, String> {
   override fun type(): Class<String> = String::class.java
   override fun fromPreference(preference: String): E = java.lang.Enum.valueOf(clazz, preference)
   override fun toPreference(value: E): String = value.name
 }
 
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
-public class PreferencesVar<T : Any, V : Any, P : Any>(
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST") class PreferencesVar<T : Any, V : Any, P : Any>(
     private val adapter: Adapter<V, P>,
     private val source: Any,
     private val key: String?,
@@ -106,8 +105,7 @@ public class PreferencesVar<T : Any, V : Any, P : Any>(
   }
 }
 
-@Suppress("UNCHECKED_CAST")
-public class OptionalPreferencesVar<T : Any, V : Any, P : Any>(
+@Suppress("UNCHECKED_CAST") class OptionalPreferencesVar<T : Any, V : Any, P : Any>(
     private val adapter: Adapter<V, P>,
     private val source: Any,
     private val key: String?
@@ -180,8 +178,8 @@ private fun onGetPreferencesFromSource(source: Any): SharedPreferences {
 }
 
 private interface Preference<T> {
-  public operator fun set(editor: SharedPreferences.Editor, name: String, value: T): Unit
-  public operator fun get(preferences: SharedPreferences, name: String): T
+  operator fun set(editor: SharedPreferences.Editor, name: String, value: T): Unit
+  operator fun get(preferences: SharedPreferences, name: String): T
 }
 
 private object BooleanPreference : Preference<Boolean> {

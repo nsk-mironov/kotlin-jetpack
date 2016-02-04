@@ -10,7 +10,7 @@ import com.github.vmironov.jetpack.resources.bindResource
 
 import kotlinx.android.synthetic.main.fragment_sample.*
 
-public class SampleFragment : Fragment() {
+class SampleFragment : Fragment() {
   private var firstNameValue by bindOptionalPreference<String>()
   private var lastNameValue by bindOptionalPreference<String>()
 

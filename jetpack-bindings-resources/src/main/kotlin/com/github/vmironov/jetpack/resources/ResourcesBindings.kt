@@ -10,24 +10,23 @@ import android.view.View
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-public inline fun <reified T : Any> Any.bindResource(id: Int): ReadOnlyProperty<Any, T> {
+inline fun <reified T : Any> Any.bindResource(id: Int): ReadOnlyProperty<Any, T> {
   return ResourcesVal(T::class.java, this, id)
 }
 
-public interface ResourcesAware {
-  public companion object {
-    public operator fun invoke(factory: () -> Resources): ResourcesAware = object : ResourcesAware {
+interface ResourcesAware {
+  companion object {
+    operator fun invoke(factory: () -> Resources): ResourcesAware = object : ResourcesAware {
       override val resources: Resources by lazy(LazyThreadSafetyMode.NONE) {
         factory()
       }
     }
   }
 
-  public val resources: Resources
+  val resources: Resources
 }
 
-@Suppress("UNCHECKED_CAST", "USELESS_CAST")
-public class ResourcesVal<T : Any, V : Any>(
+@Suppress("UNCHECKED_CAST", "USELESS_CAST") class ResourcesVal<T : Any, V : Any>(
     private val clazz: Class<V>,
     private val source: Any,
     private val id: Int
@@ -52,7 +51,7 @@ public class ResourcesVal<T : Any, V : Any>(
     return value as V
   }
 
-  @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "DEPRECATED_SYMBOL_WITH_MESSAGE", "IMPLICIT_CAST_TO_UNIT_OR_ANY")
+  @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "DEPRECATED_SYMBOL_WITH_MESSAGE", "IMPLICIT_CAST_TO_ANY", "DEPRECATION")
   private fun onLazyGetValue(resources: Resources): V {
     val type = resources.getResourceTypeName(id)
     val typed = { desiredType: String, desiredClass: Class<*> ->

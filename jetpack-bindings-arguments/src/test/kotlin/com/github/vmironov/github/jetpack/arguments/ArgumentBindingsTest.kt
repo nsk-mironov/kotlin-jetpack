@@ -6,8 +6,8 @@ import android.test.AndroidTestCase
 import com.github.vmironov.jetpack.arguments.*
 import junit.framework.Assert
 
-public class ArgumentBindingsTest : AndroidTestCase() {
-  public fun testExplicitRequiredBindings() {
+class ArgumentBindingsTest : AndroidTestCase() {
+  fun testExplicitRequiredBindings() {
     class ArgumentsFragment : Fragment() {
       var integer by bindArgument(default = 12)
       var boolean by bindArgument<Boolean>()
@@ -34,7 +34,7 @@ public class ArgumentBindingsTest : AndroidTestCase() {
     Assert.assertEquals(2.5f, fragment.float)
   }
 
-  public fun testImplicitRequiredBindings() {
+  fun testImplicitRequiredBindings() {
     class ArgumentsFragment : Fragment() {
       val integer by bindArgument<Int>()
       val boolean by bindArgument<Boolean>()
@@ -63,7 +63,7 @@ public class ArgumentBindingsTest : AndroidTestCase() {
     Assert.assertEquals(2.71f, fragment.float)
   }
 
-  public fun testRequiredBindingsWithDefaultsWhenArgumentsMissedWithoutBundle() {
+  fun testRequiredBindingsWithDefaultsWhenArgumentsMissedWithoutBundle() {
     class ArgumentsFragment : Fragment() {
       val integer by bindArgument("integer", 4)
       val boolean by bindArgument("boolean", true)
@@ -85,7 +85,7 @@ public class ArgumentBindingsTest : AndroidTestCase() {
     Assert.assertEquals(4.56f, fragment.float)
   }
 
-  public fun testRequiredBindingsWithDefaultsWhenArgumentsMissedWithEmptyBundle() {
+  fun testRequiredBindingsWithDefaultsWhenArgumentsMissedWithEmptyBundle() {
     class ArgumentsFragment : Fragment() {
       val integer by bindArgument("integer", 4)
       val boolean by bindArgument("boolean", true)
@@ -107,7 +107,7 @@ public class ArgumentBindingsTest : AndroidTestCase() {
     Assert.assertEquals(4.56f, fragment.float)
   }
 
-  public fun testRequiredBindingsWithDefaultsWhenArgumentsSet() {
+  fun testRequiredBindingsWithDefaultsWhenArgumentsSet() {
     class ArgumentsFragment : Fragment() {
       val integer by bindArgument("integer", 4)
       val boolean by bindArgument("boolean", true)
@@ -136,7 +136,7 @@ public class ArgumentBindingsTest : AndroidTestCase() {
     Assert.assertEquals(2.71f, fragment.float)
   }
 
-  public fun testOptionalBindingsWithoutArguments() {
+  fun testOptionalBindingsWithoutArguments() {
     class ArgumentsFragment : Fragment() {
       val integer by bindOptionalArgument<Int>("integer")
       val boolean by bindOptionalArgument<Boolean>("boolean")
@@ -158,7 +158,7 @@ public class ArgumentBindingsTest : AndroidTestCase() {
     Assert.assertEquals(null, fragment.float)
   }
 
-  public fun testOptionalBindingsWithArguments() {
+  fun testOptionalBindingsWithArguments() {
     class ArgumentsFragment : Fragment() {
       val integer by bindOptionalArgument<Int>("integer")
       val boolean by bindOptionalArgument<Boolean>("boolean")
