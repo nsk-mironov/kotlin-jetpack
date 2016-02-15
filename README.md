@@ -58,7 +58,7 @@ public class UserProfileFragment : Fragment() {
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.14.1"
+compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.14.2"
 ```
 
 # Preferences Bindings
@@ -131,7 +131,7 @@ public class ProfileManager(val context: Context) {
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.14.1"
+compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.14.2"
 ```
 
 # Resources Bindings
@@ -172,7 +172,7 @@ These methods can be used with `Activity`, `Context`, `Fragment`, support librar
 
 Gradle dependency:
 ```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-resources:0.14.1"
+compile "com.github.vmironov.jetpack:jetpack-bindings-resources:0.14.2"
 ```
 
 # License
