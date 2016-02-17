@@ -22,7 +22,8 @@ inline fun <reified T : Any> Any.bindOptionalArgument(name: String? = null, defa
   return OptionalArgumentsVar(T::class.java, adapter, this, name, default)
 }
 
-@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND") class ArgumentsVar<T, V>(
+@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
+class ArgumentsVar<T, V>(
     private val clazz: Class<V>,
     private val adapter: Adapter<V>?,
     private val source: Any,
@@ -40,7 +41,8 @@ inline fun <reified T : Any> Any.bindOptionalArgument(name: String? = null, defa
   }
 }
 
-@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND") class OptionalArgumentsVar<T, V>(
+@Suppress("BASE_WITH_NULLABLE_UPPER_BOUND")
+class OptionalArgumentsVar<T, V>(
     private val clazz: Class<V>,
     private val adapter: Adapter<V>?,
     private val source: Any,
@@ -90,7 +92,7 @@ private class ArgumentsVarDelegate<T, V>(
     }
 
     if (value != null) {
-      adapter.set(target, extra, value)
+      adapter[target, extra] = value
     } else {
       target.remove(extra)
     }
@@ -131,7 +133,7 @@ private fun <T> createTypeAdapterFor(clazz: Class<T>): Adapter<T> {
   fun typed(desiredClass: Class<*>): Boolean {
     return desiredClass.isAssignableFrom(clazz)
   }
-  
+
   return when {
     typed(kotlin.Boolean::class.java) -> BooleanAdapter
     typed(kotlin.Double::class.java) -> DoubleAdapter

@@ -18,7 +18,7 @@ inline fun <reified T : Any> Any.bindResource(id: Int): ReadOnlyProperty<Any, T>
 interface ResourcesAware {
   companion object {
     operator fun invoke(factory: () -> Resources): ResourcesAware = object : ResourcesAware {
-      override val resources: Resources by lazy(LazyThreadSafetyMode.NONE) {
+      override val resources by lazy(LazyThreadSafetyMode.NONE) {
         factory()
       }
     }
@@ -55,6 +55,7 @@ class ResourcesVal<T : Any, V : Any>(
   @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "DEPRECATED_SYMBOL_WITH_MESSAGE", "IMPLICIT_CAST_TO_ANY", "DEPRECATION")
   private fun onLazyGetValue(resources: Resources): V {
     val type = resources.getResourceTypeName(id)
+
     val typed = fun (desiredType: String, desiredClass: Class<*>): Boolean {
       return desiredType == type && desiredClass.isAssignableFrom(clazz)
     }

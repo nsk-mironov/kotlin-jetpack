@@ -101,7 +101,7 @@ class PreferencesVar<T : Any, V : Any, P : Any>(
 
   override final operator fun setValue(thisRef: T, property: KProperty<*>, value: V) {
     preferences.edit().apply {
-      preference.set(this, key ?: property.name, adapter.toPreference(value))
+      preference[this, key ?: property.name] = adapter.toPreference(value)
       apply()
     }
   }
@@ -133,7 +133,7 @@ class PreferencesVar<T : Any, V : Any, P : Any>(
       val name = key ?: property.name
 
       if (value != null) {
-        preference.set(this, name, adapter.toPreference(value))
+        preference[this, name] = adapter.toPreference(value)
       } else {
         remove(name)
       }
