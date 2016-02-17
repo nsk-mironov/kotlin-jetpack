@@ -1,5 +1,12 @@
-apply plugin: "com.android.library"
+buildscript {
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
+  }
+}
+
+apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
 
 android {
   compileSdkVersion projectCompileSdkVersion
@@ -7,18 +14,16 @@ android {
 
   defaultConfig {
     targetSdkVersion projectTargetSdkVersion
-    minSdkVersion projectMinSdkVersion
+    minSdkVersion 21
   }
 
   sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
-    main.java.srcDirs += 'src/main/generated'
   }
 }
 
 dependencies {
   compile "com.android.support:support-v4:$supportVersion"
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+  compile project(":jetpack-library")
 }
-
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

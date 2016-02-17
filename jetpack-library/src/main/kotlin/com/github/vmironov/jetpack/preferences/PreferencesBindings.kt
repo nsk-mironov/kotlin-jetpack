@@ -146,15 +146,15 @@ class PreferencesVar<T : Any, V : Any, P : Any>(
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
 private fun onGetPropertyFromClass(clazz: Class<*>): Preference<Any> {
   return when (clazz) {
-    kotlin.Boolean::class.java -> BooleanPreference
-    kotlin.Float::class.java -> FloatPreference
-    kotlin.Int::class.java -> IntPreference
-    kotlin.Long::class.java -> LongPreference
-    kotlin.String::class.java -> StringPreference
+    Boolean::class.java -> BooleanPreference
+    Float::class.java -> FloatPreference
+    Int::class.java -> IntPreference
+    Long::class.java -> LongPreference
+    String::class.java -> StringPreference
 
     java.lang.Boolean::class.java -> BooleanPreference
     java.lang.Float::class.java -> FloatPreference
-    java.lang.Integer::class.java -> IntPreference
+    Integer::class.java -> IntPreference
     java.lang.Long::class.java -> LongPreference
     java.lang.String::class.java -> StringPreference
 
@@ -167,7 +167,7 @@ private fun onGetPreferencesFromSource(source: Any): SharedPreferences {
     is SharedPreferences -> source
     is PreferencesAware -> source.preferences
     is Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
-    is SupportFragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
+    is android.support.v4.app.Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
     is Context -> PreferenceManager.getDefaultSharedPreferences(source)
     is View -> PreferenceManager.getDefaultSharedPreferences(source.context)
     is Dialog -> PreferenceManager.getDefaultSharedPreferences(source.context)
