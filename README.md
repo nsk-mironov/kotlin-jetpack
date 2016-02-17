@@ -5,6 +5,12 @@ A collection of useful extension methods for Android
 * [Preferences Bindings](#preferences-bindings)
 * [Resources Bindings](#resources-bindings)
 
+# Download
+Gradle dependency:
+```gradle
+compile "com.github.vmironov.jetpack:jetpack-library:0.14.2"
+```
+
 # Arguments Bindings
 ```kotlin
 public class ArgumentsFragment : Fragment() {
@@ -56,11 +62,6 @@ public class UserProfileFragment : Fragment() {
 }
 ```
 
-Gradle dependency:
-```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-arguments:0.14.2"
-```
-
 # Preferences Bindings
 ```kotlin
 public class PreferencesFragment : Fragment() {
@@ -81,7 +82,7 @@ public class PreferencesFragment : Fragment() {
 }
 ```
 
-These methods can be used with `Context`, `Fragment`, support library `Fragment`, `View`, and `ViewHolder` subclasses. The example above uses a default `SharedPreferences` instance. You can always provide a custom one by implementing `PreferencesAware` interface:
+These methods can be used with `Context`, `Fragment`, support library `Fragment`, and `View` subclasses. The example above uses a default `SharedPreferences` instance. You can always provide a custom one by implementing `PreferencesAware` interface:
 ```kotlin
 public class PreferencesFragment : Fragment() {
   val preferences = PreferencesAware {
@@ -129,11 +130,6 @@ public class ProfileManager(val context: Context) {
 }
 ```
 
-Gradle dependency:
-```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-preferences:0.14.2"
-```
-
 # Resources Bindings
 ```kotlin
 public class ResourcesFragment : Fragment() {
@@ -156,7 +152,7 @@ public class ResourcesFragment : Fragment() {
   val string by bindResource<String>(R.string.string_resource)
 }
 ```
-These methods can be used with `Activity`, `Context`, `Fragment`, support library `Fragment`, `View`, and `ViewHolder` subclasses. You can also implement `ResourcesAware` interface to provide a custom resources source. Full list of supported bindings:
+These methods can be used with `Activity`, `Context`, `Fragment`, support library `Fragment`, and `View` subclasses. You can also implement `ResourcesAware` interface to provide a custom resources source. Full list of supported bindings:
 - `bindResource<Boolean>(R.boolean.boolean_resource)`
 - `bindResource<Int>(R.integer.integer_resource)`
 - `bindResource<Int>(R.color.color_resource)`
@@ -169,11 +165,6 @@ These methods can be used with `Activity`, `Context`, `Fragment`, support librar
 - `bindResource<IntArray>(R.array.array_resource)`
 - `bindResource<Array<String>>(R.array.array_resource)`
 - `bindResource<Array<CharSequence>>(R.array.array_resource)`
-
-Gradle dependency:
-```gradle
-compile "com.github.vmironov.jetpack:jetpack-bindings-resources:0.14.2"
-```
 
 # License
 
