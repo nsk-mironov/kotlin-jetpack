@@ -5,6 +5,7 @@ import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.v4.app.Fragment as SupportFragment
 import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -96,25 +97,25 @@ private class ArgumentsVarDelegate<T, V>(
   }
 
   private fun getArgumentsFromSource(source: Any): Bundle? {
-    return when {
-      source is ArgumentsAware -> source.arguments
-      SupportHelper.isFragment(source) -> SupportFragmentHelper.getArguments(source)
-      source is Activity -> source.intent.extras
-      source is Bundle -> source
-      source is Intent -> source.extras
-      source is Fragment -> source.arguments
+    return when (source) {
+      is ArgumentsAware -> source.arguments
+      is SupportFragment -> source.arguments
+      is Activity -> source.intent.extras
+      is Bundle -> source
+      is Intent -> source.extras
+      is Fragment -> source.arguments
       else -> throw IllegalArgumentException("Unable to get arguments on type ${source.javaClass.simpleName}")
     }
   }
 
   private fun setArgumentsToSource(source: Any, bundle: Bundle) {
-    when {
-      source is ArgumentsAware -> source.arguments = bundle
-      SupportHelper.isFragment(source) -> SupportFragmentHelper.setArguments(source, bundle)
-      source is Activity -> source.intent.replaceExtras(bundle)
-      source is Bundle -> source.replaceExtras(bundle)
-      source is Intent -> source.replaceExtras(bundle)
-      source is Fragment -> source.arguments = bundle
+    when (source) {
+      is ArgumentsAware -> source.arguments = bundle
+      is SupportFragment -> source.arguments = bundle
+      is Activity -> source.intent.replaceExtras(bundle)
+      is Bundle -> source.replaceExtras(bundle)
+      is Intent -> source.replaceExtras(bundle)
+      is Fragment -> source.arguments = bundle
       else -> throw IllegalArgumentException("Unable to set arguments on type ${source.javaClass.simpleName}")
     }
   }

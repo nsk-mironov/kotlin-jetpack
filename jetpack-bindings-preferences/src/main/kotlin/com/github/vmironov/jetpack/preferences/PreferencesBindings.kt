@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.view.View
+import android.support.v4.app.Fragment as SupportFragment
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -75,7 +76,8 @@ class EnumAdapter<E : Enum<E>>(val clazz: Class<E>) : Adapter<E, String> {
   override fun toPreference(value: E): String = value.name
 }
 
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST") class PreferencesVar<T : Any, V : Any, P : Any>(
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
+class PreferencesVar<T : Any, V : Any, P : Any>(
     private val adapter: Adapter<V, P>,
     private val source: Any,
     private val key: String?,
@@ -161,18 +163,14 @@ private fun onGetPropertyFromClass(clazz: Class<*>): Preference<Any> {
 }
 
 private fun onGetPreferencesFromSource(source: Any): SharedPreferences {
-  return when {
-    source is SharedPreferences -> source
-    source is PreferencesAware -> source.preferences
-    source is Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
-    source is Context -> PreferenceManager.getDefaultSharedPreferences(source)
-
-    SupportHelper.isFragment(source) -> SupportFragmentHelper.getPreferences(source)
-    SupportHelper.isHolder(source) -> SupportRecyclerHelper.getPreferences(source)
-
-    source is View -> PreferenceManager.getDefaultSharedPreferences(source.context)
-    source is Dialog -> PreferenceManager.getDefaultSharedPreferences(source.context)
-
+  return when (source) {
+    is SharedPreferences -> source
+    is PreferencesAware -> source.preferences
+    is Fragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
+    is SupportFragment -> PreferenceManager.getDefaultSharedPreferences(source.activity)
+    is Context -> PreferenceManager.getDefaultSharedPreferences(source)
+    is View -> PreferenceManager.getDefaultSharedPreferences(source.context)
+    is Dialog -> PreferenceManager.getDefaultSharedPreferences(source.context)
     else -> throw IllegalArgumentException("Unable to find \"SharedPreferences\" instance on type \"${source.javaClass.simpleName}\"")
   }
 }

@@ -23,6 +23,7 @@ android {
 }
 
 dependencies {
+  compile "com.android.support:support-v4:$supportVersion"
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
   compile project(":jetpack-bindings-arguments")

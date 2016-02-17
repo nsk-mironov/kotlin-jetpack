@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.view.View
+import android.support.v4.app.Fragment as SupportFragment
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -26,7 +27,8 @@ interface ResourcesAware {
   val resources: Resources
 }
 
-@Suppress("UNCHECKED_CAST", "USELESS_CAST") class ResourcesVal<T : Any, V : Any>(
+@Suppress("UNCHECKED_CAST", "USELESS_CAST")
+class ResourcesVal<T : Any, V : Any>(
     private val clazz: Class<V>,
     private val source: Any,
     private val id: Int
@@ -35,15 +37,14 @@ interface ResourcesAware {
 
   override operator fun getValue(thisRef: T, property: KProperty<*>): V {
     if (value === Unit) {
-      value = onLazyGetValue(when {
-        source is ResourcesAware -> source.resources
-        source is Context -> source.resources
-        source is Fragment -> source.activity.resources
-        source is Resources -> source as Resources
-        source is View -> source.resources
-        SupportHelper.isFragment(source) -> SupportFragmentHelper.getResources(source)
-        SupportHelper.isHolder(source) -> SupportRecyclerHelper.getResources(source)
-        source is Dialog -> source.context.resources
+      value = onLazyGetValue(when (source) {
+        is ResourcesAware -> source.resources
+        is Context -> source.resources
+        is Fragment -> source.activity.resources
+        is Resources -> source as Resources
+        is View -> source.resources
+        is SupportFragment -> source.activity.resources
+        is Dialog -> source.context.resources
         else -> throw IllegalArgumentException("Unable to find resources on type ${source.javaClass.simpleName}")
       })
     }
@@ -54,8 +55,8 @@ interface ResourcesAware {
   @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "DEPRECATED_SYMBOL_WITH_MESSAGE", "IMPLICIT_CAST_TO_ANY", "DEPRECATION")
   private fun onLazyGetValue(resources: Resources): V {
     val type = resources.getResourceTypeName(id)
-    val typed = { desiredType: String, desiredClass: Class<*> ->
-      desiredType == type && desiredClass.isAssignableFrom(clazz)
+    val typed = fun (desiredType: String, desiredClass: Class<*>): Boolean {
+      return desiredType == type && desiredClass.isAssignableFrom(clazz)
     }
 
     return when {
