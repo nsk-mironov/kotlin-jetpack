@@ -1,5 +1,6 @@
 package com.github.vmironov.jetpack.resources
 
+import android.content.Context
 import android.content.res.Resources
 
 internal object SupportHelper {
@@ -29,8 +30,8 @@ internal object SupportFragmentHelper {
     return target is android.support.v4.app.Fragment
   }
 
-  internal fun getResources(target: Any): Resources {
-    return (target as android.support.v4.app.Fragment).resources
+  internal fun getResources(target: Any): Pair<Context, Resources> {
+    return (target as android.support.v4.app.Fragment).let { it.context to it.resources }
   }
 }
 
@@ -39,8 +40,8 @@ internal object SupportRecyclerHelper {
     return target is android.support.v7.widget.RecyclerView.ViewHolder
   }
 
-  internal fun getResources(target: Any): Resources {
-    return (target as android.support.v7.widget.RecyclerView.ViewHolder).itemView.resources
+  internal fun getResources(target: Any): Pair<Context, Resources> {
+    return (target as android.support.v7.widget.RecyclerView.ViewHolder).itemView.let { it.context to it.resources }
   }
 }
 

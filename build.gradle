@@ -1,12 +1,12 @@
 buildscript {
-  ext.kotlinVersion = "1.0.0"
+  ext.kotlinVersion = "1.1.51"
 
   repositories {
     jcenter()
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:1.5.0"
+    classpath 'com.android.tools.build:gradle:3.0.0-rc1'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
   }
 }
@@ -15,20 +15,28 @@ allprojects {
   buildscript {
     repositories {
       jcenter()
+      maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+      }
     }
   }
 
   repositories {
     jcenter()
+    maven {
+      url 'https://maven.google.com/'
+      name 'Google'
+    }
   }
 }
 
 ext {
-  projectCompileSdkVersion = 23
-  projectBuildToolsVersion = "23.0.1"
+  projectCompileSdkVersion = 26
+  projectBuildToolsVersion = "26.0.2"
 
   projectMinSdkVersion = 14
-  projectTargetSdkVersion = 23
+  projectTargetSdkVersion = 26
 
-  supportVersion = "23.1.1"
+  supportVersion = "26.1.0"
 }
