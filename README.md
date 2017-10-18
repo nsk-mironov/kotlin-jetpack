@@ -154,6 +154,9 @@ public class ResourcesFragment : Fragment() {
 
   // String resource binding
   val string by bindResource<String>(R.string.string_resource)
+
+  // Font resource
+  val lobster by bindResource<Typeface>(R.font.lobster)
 }
 ```
 These methods can be used with `Activity`, `Context`, `Fragment`, support library `Fragment`, `View`, and `ViewHolder` subclasses. You can also implement `ResourcesAware` interface to provide a custom resources source. Full list of supported bindings:
@@ -169,6 +172,7 @@ These methods can be used with `Activity`, `Context`, `Fragment`, support librar
 - `bindResource<IntArray>(R.array.array_resource)`
 - `bindResource<Array<String>>(R.array.array_resource)`
 - `bindResource<Array<CharSequence>>(R.array.array_resource)`
+- `bindResource<Typeface>(R.font.font_resource)`
 
 Gradle dependency:
 ```gradle
